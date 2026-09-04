@@ -1,0 +1,288 @@
+{
+  "Metadata": {
+    "siteName": "INVICSOL",
+    "titleTemplate": "%s | INVICSOL",
+    "defaultTitle": "INVICSOL — turnkey solar stations in Lviv",
+    "defaultDescription": "Design, installation, and service for solar stations in Lviv and the region. Grid-tied and hybrid systems, backup power, and green-tariff support."
+  },
+  "Nav": {
+    "services": "Services",
+    "stations": "Stations",
+    "projects": "Projects",
+    "about": "About",
+    "calculator": "Calculator",
+    "contact": "Contact",
+    "contactCta": "Request a quote",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "Hero": {
+    "titlePrefix": "Solar stations that ",
+    "titleHighlight": "actually work",
+    "titleSuffix": " in your climate",
+    "description": "We design, install, and service grid-tied and hybrid solar stations in Lviv and the region. No prices guessed online — just an honest quote after a site visit.",
+    "ctaPrimary": "Estimate payback",
+    "ctaSecondary": "Our stations"
+  },
+  "WhyUs": {
+    "heading": "Why choose INVICSOL"
+  },
+  "Services": {
+    "heading": "Services",
+    "teaser": "From a grid-tied station to full outage backup — we size the right solution for your property.",
+    "viewAll": "All services",
+    "pageTitle": "Services",
+    "pageDescription": "The full range of solar work: from grid-tied stations to commercial installations."
+  },
+  "Stats": {
+    "heading": "INVICSOL by the numbers"
+  },
+  "Expertise": {
+    "heading": "Our expertise"
+  },
+  "Quote": {
+    "heading": "Our approach"
+  },
+  "Testimonials": {
+    "heading": "Client reviews",
+    "placeholderBadge": "Demo content"
+  },
+  "Stations": {
+    "heading": "Station catalogue",
+    "teaser": "Five ready-made configurations — from a small private home to a commercial property.",
+    "viewAll": "All stations",
+    "pageTitle": "Stations",
+    "pageDescription": "Ready-made solar station configurations at 5, 10, 15, and 30 kW, plus a custom configuration for your property.",
+    "customTitle": "Custom configuration",
+    "customText": "Doesn't fit the standard lineup? We'll size a station for your consumption and budget.",
+    "customCta": "Discuss your project",
+    "suitableFor": "Who it suits",
+    "outcomes": "Main outcome",
+    "kit": "What's in the kit",
+    "kitMain": "Main equipment",
+    "kitExtra": "Additional items",
+    "specs": "Key specifications",
+    "specPower": "Power",
+    "specSystemType": "System type",
+    "specPurpose": "Purpose",
+    "specScalability": "Scalability",
+    "whatYouGet": "What you get",
+    "cta": "Request a quote for this station",
+    "notFoundTitle": "Station not found",
+    "notFoundText": "This station configuration doesn't exist.",
+    "backToCatalog": "Back to the catalogue",
+    "kwUnit": "kW"
+  },
+  "Projects": {
+    "heading": "Completed projects",
+    "teaser": "Recent installations we designed and built.",
+    "viewAll": "All projects",
+    "pageTitle": "Projects",
+    "pageDescription": "A gallery of completed solar installations, filterable by property type, purpose, and capacity.",
+    "filterType": "Property type",
+    "filterUsage": "Purpose",
+    "filterCapacity": "Capacity",
+    "typeAll": "All",
+    "typeHouse": "Private home",
+    "typeBusiness": "Business",
+    "usageAll": "All",
+    "usageSelf": "Self-consumption",
+    "usageGreenTariff": "Green tariff",
+    "usageHybridBackup": "Hybrid with backup",
+    "capacityAll": "Any",
+    "capacityLow": "under 10 kW",
+    "capacityMid": "10–20 kW",
+    "capacityHigh": "over 20 kW",
+    "resetFilters": "Reset filters",
+    "empty": "No projects match the selected filters.",
+    "placeholderBadge": "Sample case study",
+    "notFoundTitle": "Project not found",
+    "backToProjects": "Back to all projects",
+    "challenge": "Challenge",
+    "solution": "Solution",
+    "result": "Result",
+    "capacityLabel": "Capacity",
+    "locationLabel": "Location",
+    "completedLabel": "Completed"
+  },
+  "Calculator": {
+    "heading": "Estimate payback",
+    "teaser": "Seven short steps, and we'll get back to you with an honest quote and an estimated payback period.",
+    "pageTitle": "Payback calculator",
+    "pageDescription": "Get an estimated payback period for a solar station on your property. No guessed prices.",
+    "step": "Step {current} of {total}",
+    "back": "Back",
+    "next": "Next",
+    "submit": "Submit request",
+    "submitting": "Submitting…",
+    "noPriceNotice": "We never quote a price blind — real cost depends on details only visible on site. Instead, we'll contact you with a real quote.",
+    "propertyType": {
+      "title": "Property type",
+      "house": "Private home",
+      "business": "Business / commercial property"
+    },
+    "solutionType": {
+      "title": "Solution type",
+      "station": "Solar station",
+      "storage": "Energy storage",
+      "both": "Station + storage"
+    },
+    "consumption": {
+      "title": "Connection and consumption",
+      "phase": "Connection phase",
+      "phase1": "1-phase",
+      "phase3": "3-phase",
+      "monthlyKwh": "Average consumption, kWh/month",
+      "autoEstimate": "Not sure — estimate automatically",
+      "estimatedPower": "Estimated required power: {power} kW"
+    },
+    "goals": {
+      "title": "Installation goal",
+      "hint": "You can select more than one",
+      "savings": "Lower bills",
+      "backup": "Backup during outages",
+      "independence": "Grid independence",
+      "payback": "Fast payback",
+      "sellExcess": "Sell surplus to the grid"
+    },
+    "parameters": {
+      "title": "Station parameters",
+      "tariff": "Tariff, ₴/kWh",
+      "desiredPower": "Desired power, kW"
+    },
+    "mount": {
+      "title": "Mounting and extras",
+      "mountType": "Mount type",
+      "roof": "Roof mount",
+      "ground": "Ground mount",
+      "extras": "Additional options",
+      "generator": "Generator integration",
+      "criticalBackup": "Critical-load backup"
+    },
+    "contact": {
+      "title": "Contact details",
+      "name": "Name",
+      "phone": "Phone",
+      "contactMethod": "Preferred contact method",
+      "methodPhone": "Phone call",
+      "methodViber": "Viber",
+      "methodTelegram": "Telegram",
+      "namePlaceholder": "Your name",
+      "phonePlaceholder": "+380"
+    },
+    "paybackEstimate": "Estimated payback period: {years} years",
+    "errors": {
+      "required": "This field is required",
+      "phoneInvalid": "Enter a valid phone number",
+      "selectAtLeastOne": "Select at least one option"
+    }
+  },
+  "ContactForm": {
+    "heading": "Request a quote",
+    "text": "Leave your contact details and we'll call to discuss your property.",
+    "name": "Name",
+    "phone": "Phone",
+    "message": "Comment (optional)",
+    "contactMethod": "Preferred contact method",
+    "submit": "Send",
+    "submitting": "Sending…",
+    "success": "Thank you! We'll be in touch shortly.",
+    "methodPhone": "Phone call",
+    "methodViber": "Viber",
+    "methodTelegram": "Telegram"
+  },
+  "Contact": {
+    "pageTitle": "Contact",
+    "pageDescription": "Phone, office address, and directions to INVICSOL in Lviv.",
+    "heading": "Get in touch",
+    "phone": "Phone",
+    "email": "Email",
+    "address": "Address",
+    "hours": "Business hours",
+    "messengers": "Messengers"
+  },
+  "About": {
+    "pageTitle": "About",
+    "pageDescription": "The INVICSOL team, certifications, and warranties.",
+    "heading": "About INVICSOL",
+    "intro": "We've been designing and installing solar stations in Lviv and the region since 2016.",
+    "teamHeading": "Team",
+    "warrantyHeading": "Warranty",
+    "brandsHeading": "Equipment we work with",
+    "placeholderBadge": "Sample team"
+  },
+  "Warranty": {
+    "pageTitle": "Warranty",
+    "pageDescription": "Warranty terms for panels, inverters, and installation work at INVICSOL."
+  },
+  "Financing": {
+    "pageTitle": "Financing",
+    "pageDescription": "Installment and financing options for installing a solar station.",
+    "heading": "Financing and installment plans",
+    "intro": "Buying a solar station is an investment, and most of our clients use an installment plan or a loan. Here are the typical terms.",
+    "placeholderBadge": "Sample terms",
+    "disclaimer": "Exact terms depend on the partner bank at the time of application. Confirm current programs with a manager."
+  },
+  "BackupPower": {
+    "pageTitle": "Backup power during outages",
+    "pageDescription": "Hybrid solar stations with storage as a solution for blackouts in Lviv and the region.",
+    "heading": "Stop depending on the grid",
+    "intro": "Scheduled and emergency outages are the main reason more households are switching to hybrid stations with storage.",
+    "cta": "Find a backup solution"
+  },
+  "GreenTariff": {
+    "pageTitle": "Green tariff",
+    "pageDescription": "Self-consumption vs. selling surplus to the grid — a comparison for your property.",
+    "heading": "Green tariff or self-consumption",
+    "intro": "Both scenarios can make sense depending on your consumption profile and system size. Let's work out which fits you.",
+    "cta": "Discuss your case"
+  },
+  "Articles": {
+    "pageTitle": "Blog",
+    "pageDescription": "Articles on solar energy, equipment, and the Ukrainian market.",
+    "heading": "Blog",
+    "empty": "Articles are coming soon."
+  },
+  "Footer": {
+    "rights": "All rights reserved.",
+    "quickLinks": "Quick links",
+    "legal": "Legal",
+    "privacyPolicy": "Privacy policy",
+    "contactUs": "Contact us"
+  },
+  "CallbackModal": {
+    "trigger": "Request a call",
+    "heading": "Request a callback",
+    "text": "Leave your number — we'll call back within the business day.",
+    "close": "Close",
+    "namePlaceholder": "Your name",
+    "phonePlaceholder": "+380"
+  },
+  "FloatingButtons": {
+    "telegram": "Message on Telegram",
+    "viber": "Message on Viber"
+  },
+  "Faq": {
+    "heading": "Frequently asked questions"
+  },
+  "ThankYou": {
+    "pageTitle": "Thank you",
+    "heading": "Thanks for your request!",
+    "text": "We've received your request and will be in touch shortly.",
+    "backHome": "Back to home"
+  },
+  "NotFound": {
+    "heading": "Page not found",
+    "text": "It may have been moved or no longer exists.",
+    "backHome": "Back to home"
+  },
+  "Error": {
+    "heading": "Something went wrong",
+    "text": "Try refreshing the page. If the problem persists, contact us directly.",
+    "retry": "Try again"
+  },
+  "Legal": {
+    "privacyTitle": "Privacy policy",
+    "privacyDescription": "How INVICSOL handles website visitors' personal data."
+  }
+}

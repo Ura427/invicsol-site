@@ -1,0 +1,16 @@
+node_modules
+.next
+out
+coverage
+.env
+.env*.local
+*.tsbuildinfo
+next-env.d.ts
+src/generated
+
+# Local SQLite database — never commit the binary. The seed script is the
+# source of truth; see prisma/seed.ts.
+dev.db
+dev.db-journal
+prisma/dev.db
+prisma/dev.db-journal

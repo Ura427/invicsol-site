@@ -1,0 +1,25 @@
+import { useTranslations, useLocale } from 'next-intl';
+import { getContent } from '@/shared/lib/content';
+import { SectionHeading } from '@/shared/ui/SectionHeading';
+
+export function Stats() {
+  const t = useTranslations('Stats');
+  const locale = useLocale();
+  const { stats } = getContent(locale);
+
+  return (
+    <section className="bg-surface py-16">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <SectionHeading title={t('heading')} />
+        <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.map((stat) => (
+            <div key={stat.id} className="text-center">
+              <p className="text-gold-600 text-4xl font-extrabold sm:text-5xl">{stat.value}</p>
+              <p className="text-muted mt-2 text-sm">{stat.label}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}

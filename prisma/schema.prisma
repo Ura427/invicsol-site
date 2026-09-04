@@ -1,0 +1,153 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+/// LOCALIZATION STRATEGY
+/// Base row = facts (numbers, enums, dates, filenames, slugs).
+/// Translation row = prose (titles, paragraphs, bullet lists).
+///
+/// This keeps server-side filtering possible: filters always run against typed
+/// columns on the base table, never against a translated string. It also avoids
+/// the two schemes we deliberately rejected — suffixed columns (`titleUk`/`titleEn`,
+/// a migration per new locale) and locale-keyed rows (locale-neutral facts get
+/// duplicated, so fixing a wrong capacity means fixing it twice).
+///
+/// SQLite has no native enums. Every enum-ish column below is a `String` with a
+/// documented vocabulary, narrowed back to a real TypeScript union in
+/// `src/entities/<name>/parse.ts` — the single seam where raw rows are validated.
+
+model Station {
+  id     String @id @default(cuid())
+  /// "5kw" | "10kw" | "15kw" | "30kw" | "custom"
+  slug   String @unique
+  /// Nominal power. Null only for the bespoke "custom" configuration card.
+  powerKw Float?
+  /// "grid-tied" | "hybrid" | "custom"
+  systemType String
+  /// "default" | "gold" — the custom card is styled distinctly.
+  accent     String @default("default")
+  /// Display order in the catalogue grid.
+  sortOrder  Int
+  imagePath  String
+  /// Launch blocker: placeholder rows must be replaced with real content.
+  isPlaceholder Boolean @default(false)
+
+  translations StationTranslation[]
+
+  @@index([sortOrder])
+}
+
+model StationTranslation {
+  id        String @id @default(cuid())
+  stationId String
+  /// "uk" | "en"
+  locale    String
+
+  badge String
+  title String
+  intro String
+
+  /// JSON string arrays — parsed and validated in entities/station/parse.ts.
+  suitableFor String
+  outcomes    String
+  kitMain     String
+  kitExtra    String
+  benefits    String
+
+  specPurpose     String
+  specScalability String
+
+  station Station @relation(fields: [stationId], references: [id], onDelete: Cascade)
+
+  @@unique([stationId, locale])
+  @@index([locale])
+}
+
+model Project {
+  id   String @id @default(cuid())
+  slug String @unique
+
+  /// Locale-neutral, filterable facts. The vocabularies below are kept
+  /// IDENTICAL to the calculator wizard's own state unions, so a calculator
+  /// answer can deep-link into a filtered projects list of similar work.
+  capacityKw  Float
+  /// "house" | "business"
+  objectType  String
+  /// "self" | "green-tariff" | "hybrid-backup"
+  usage       String
+  /// "roof" | "ground"
+  mountType   String
+  /// Locale-neutral key resolved to a translated city name in messages/*.json.
+  locationKey String
+  completedAt DateTime
+
+  coverImage String
+  /// Launch blocker: invented case studies must never ship as real work.
+  isPlaceholder Boolean @default(false)
+
+  translations ProjectTranslation[]
+  images       ProjectImage[]
+
+  @@index([objectType])
+  @@index([usage])
+  @@index([capacityKw])
+  @@index([completedAt])
+}
+
+model ProjectTranslation {
+  id        String @id @default(cuid())
+  projectId String
+  /// "uk" | "en"
+  locale    String
+
+  title     String
+  summary   String
+  challenge String
+  solution  String
+  result    String
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@unique([projectId, locale])
+  @@index([locale])
+}
+
+model ProjectImage {
+  id        String @id @default(cuid())
+  projectId String
+  path      String
+  sortOrder Int
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@index([projectId, sortOrder])
+}
+
+model Lead {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+
+  /// "calculator" | "contact" | "callback"
+  source        String
+  name          String
+  phone         String
+  /// "phone" | "viber" | "telegram"
+  contactMethod String
+  locale        String
+
+  /// The full submission, stored verbatim as JSON rather than normalised into
+  /// columns: a lead is an immutable record of what was submitted at that
+  /// moment, is never queried field-by-field, and the wizard's shape will evolve.
+  payload String
+
+  /// Set once the Telegram notification has been delivered. A null value on a
+  /// row is the signal that the durable side effect did not fire.
+  notifiedAt DateTime?
+
+  @@index([createdAt])
+}
