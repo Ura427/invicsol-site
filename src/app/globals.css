@@ -12,6 +12,13 @@
   --color-gold-500: #e8a020;
   --color-gold-400: #f3b94a;
 
+  /* Text-only gold. gold-600 on white measures 3.04:1 — fine for large display
+     type and decorative icons, but below the 4.5:1 WCAG AA needs for normal
+     text. This one measures 5.18:1 on white and 4.88:1 on --color-surface.
+     Use it for any gold text under ~24px; keep gold-600 for big numbers,
+     icons and fills. */
+  --color-gold-700: #96620f;
+
   --color-ink: #0d1e3d;
   --color-paper: #ffffff;
   --color-muted: #5b667e;
@@ -37,6 +44,50 @@ body {
 ::selection {
   background-color: var(--color-gold-400);
   color: var(--color-navy-900);
+}
+
+/* A visible focus ring on every interactive element. Tailwind's reset removes the
+   UA default outline, and several components style their own colors, so without
+   this a keyboard user can lose track of where they are entirely. :focus-visible
+   (not :focus) keeps it off for mouse clicks. */
+:focus-visible {
+  outline: 2px solid var(--color-gold-700);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Skip link: hidden until focused, then pinned to the top-left. Without it a
+   keyboard user tabs through the whole nav on every single page before reaching
+   content. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+  background-color: var(--color-navy-800);
+  color: #ffffff;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+}
+
+/* Native <dialog> ships with a UA border and sits at the top of the viewport;
+   these bring it in line with the rest of the design. ::backdrop is the browser's
+   own overlay layer, so no separate overlay div is needed. */
+.callback-dialog {
+  position: relative;
+  margin: auto;
+  border: none;
+  box-shadow: 0 24px 60px -20px rgb(13 30 61 / 0.45);
+}
+
+.callback-dialog::backdrop {
+  background-color: rgb(0 0 0 / 0.5);
 }
 
 @keyframes hero-in {

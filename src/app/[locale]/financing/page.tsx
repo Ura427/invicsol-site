@@ -29,7 +29,7 @@ export default async function FinancingPage({ params }: { params: Promise<{ loca
           <Card key={option.id} className="relative">
             {option.isPlaceholder ? <PlaceholderBadge label={t('placeholderBadge')} /> : null}
             <h2 className="text-navy-800 font-semibold">{option.provider}</h2>
-            <p className="text-gold-600 mt-1 text-sm font-medium">{option.terms}</p>
+            <p className="text-gold-700 mt-1 text-sm font-medium">{option.terms}</p>
             <p className="text-muted mt-2 text-sm">{option.note}</p>
           </Card>
         ))}

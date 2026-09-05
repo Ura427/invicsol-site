@@ -32,7 +32,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
             <Card key={member.id} className="relative">
               {member.isPlaceholder ? <PlaceholderBadge label={t('placeholderBadge')} /> : null}
               <h3 className="text-navy-800 font-semibold">{member.name}</h3>
-              <p className="text-gold-600 text-sm">{member.role}</p>
+              <p className="text-gold-700 text-sm">{member.role}</p>
               <p className="text-muted mt-2 text-sm">{member.bio}</p>
             </Card>
           ))}
@@ -58,7 +58,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           {brands.map((brand) => (
             <div key={brand.id} className="border-border rounded-xl border p-4">
               <p className="text-navy-800 font-semibold">{brand.name}</p>
-              <p className="text-gold-600 text-xs">{brand.category}</p>
+              <p className="text-gold-700 text-xs">{brand.category}</p>
               <p className="text-muted mt-1 text-sm">{brand.note}</p>
             </div>
           ))}

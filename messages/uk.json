@@ -14,7 +14,8 @@
     "contact": "Контакти",
     "contactCta": "Залишити заявку",
     "openMenu": "Відкрити меню",
-    "closeMenu": "Закрити меню"
+    "closeMenu": "Закрити меню",
+    "skipToContent": "Перейти до основного вмісту"
   },
   "Hero": {
     "titlePrefix": "Сонячні станції, які ",
@@ -103,7 +104,14 @@
     "result": "Результат",
     "capacityLabel": "Потужність",
     "locationLabel": "Локація",
-    "completedLabel": "Рік реалізації"
+    "completedLabel": "Рік реалізації",
+    "kwUnit": "кВт",
+    "locations": {
+      "lviv": "Львів",
+      "bryukhovychi": "Брюховичі",
+      "horodok": "Городоцький р-н",
+      "sokilnyky": "Сокільники"
+    }
   },
   "Calculator": {
     "heading": "Розрахувати окупність",
@@ -256,7 +264,11 @@
     "text": "Залиште номер — передзвонимо протягом робочого дня.",
     "close": "Закрити",
     "namePlaceholder": "Ваше ім'я",
-    "phonePlaceholder": "+380"
+    "phonePlaceholder": "+380",
+    "nameLabel": "Ім'я",
+    "phoneLabel": "Телефон",
+    "submitting": "Надсилаємо…",
+    "submit": "Надіслати"
   },
   "FloatingButtons": {
     "telegram": "Написати в Telegram",

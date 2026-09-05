@@ -42,7 +42,7 @@ export function Nav() {
                 <Link
                   href={link.href}
                   className={`relative text-sm font-medium transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform hover:after:scale-x-100 ${
-                    isActive ? 'text-gold-600 after:scale-x-100' : 'text-navy-800 hover:text-gold-600'
+                    isActive ? 'text-gold-700 after:scale-x-100' : 'text-navy-800 hover:text-gold-700'
                   }`}
                 >
                   {t(link.key)}
@@ -78,7 +78,7 @@ export function Nav() {
                 <Link
                   href={link.href}
                   onClick={() => setIsMenuOpen(false)}
-                  className="text-navy-800 hover:text-gold-600 block text-base font-medium"
+                  className="text-navy-800 hover:text-gold-700 block text-base font-medium"
                 >
                   {t(link.key)}
                 </Link>

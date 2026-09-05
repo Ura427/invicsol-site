@@ -26,7 +26,7 @@ export function StationCard({ station, translation }: StationCardProps) {
     >
       <span
         className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${
-          isCustom ? 'bg-gold-500 text-navy-900' : 'bg-gold-500/10 text-gold-600'
+          isCustom ? 'bg-gold-500 text-navy-900' : 'bg-gold-500/10 text-gold-700'
         }`}
       >
         {translation.badge}

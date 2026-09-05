@@ -55,6 +55,7 @@ export default async function LocaleLayout({
   // Enables static rendering for this locale's server components.
   setRequestLocale(locale);
 
+  const t = await getTranslations('Nav');
   const localBusinessJsonLd = buildLocalBusinessJsonLd();
 
   return (
@@ -65,8 +66,13 @@ export default async function LocaleLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}
         />
         <NextIntlClientProvider>
+          <a href="#main" className="skip-link">
+            {t('skipToContent')}
+          </a>
           <Nav />
-          <main className="flex-1">{children}</main>
+          <main id="main" className="flex-1">
+            {children}
+          </main>
           <Footer />
           <FloatingButtons />
         </NextIntlClientProvider>

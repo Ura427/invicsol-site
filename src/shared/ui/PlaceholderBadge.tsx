@@ -6,7 +6,7 @@
  */
 export function PlaceholderBadge({ label }: { label: string }) {
   return (
-    <span className="border-gold-500 text-gold-600 absolute top-3 right-3 rounded-full border bg-white/90 px-2.5 py-0.5 text-xs font-semibold">
+    <span className="border-gold-500 text-gold-700 absolute top-3 right-3 rounded-full border bg-white/90 px-2.5 py-0.5 text-xs font-semibold">
       {label}
     </span>
   );

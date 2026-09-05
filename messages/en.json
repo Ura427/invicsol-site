@@ -14,7 +14,8 @@
     "contact": "Contact",
     "contactCta": "Request a quote",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "skipToContent": "Skip to main content"
   },
   "Hero": {
     "titlePrefix": "Solar stations that ",
@@ -103,7 +104,14 @@
     "result": "Result",
     "capacityLabel": "Capacity",
     "locationLabel": "Location",
-    "completedLabel": "Completed"
+    "completedLabel": "Completed",
+    "kwUnit": "kW",
+    "locations": {
+      "lviv": "Lviv",
+      "bryukhovychi": "Bryukhovychi",
+      "horodok": "Horodok district",
+      "sokilnyky": "Sokilnyky"
+    }
   },
   "Calculator": {
     "heading": "Estimate payback",
@@ -256,7 +264,11 @@
     "text": "Leave your number — we'll call back within the business day.",
     "close": "Close",
     "namePlaceholder": "Your name",
-    "phonePlaceholder": "+380"
+    "phonePlaceholder": "+380",
+    "nameLabel": "Name",
+    "phoneLabel": "Phone",
+    "submitting": "Sending…",
+    "submit": "Send"
   },
   "FloatingButtons": {
     "telegram": "Message on Telegram",

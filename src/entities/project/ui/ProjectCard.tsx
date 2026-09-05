@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import type { ParsedProject, ParsedProjectTranslation } from '@/entities/project/parse';
@@ -18,13 +19,26 @@ export function ProjectCard({ project, translation }: ProjectCardProps) {
     >
       {project.isPlaceholder ? <PlaceholderBadge label={t('placeholderBadge')} /> : null}
 
-      {/* eslint-disable-next-line @next/next/no-img-element -- build-time static gallery, next/image adds no benefit here */}
-      <img src={project.coverImage} alt="" className="aspect-[4/3] w-full object-cover" />
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
+        <Image
+          src={project.coverImage}
+          // The photo IS the content here, not decoration — a screen reader user
+          // scanning the gallery needs to know which installation this card shows.
+          alt={translation.title}
+          fill
+          // Card is full width on mobile, half at sm, a third at lg — telling the
+          // browser this stops it downloading a 3 MB original for a 400px slot.
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+          className="object-cover"
+        />
+      </div>
 
       <div className="p-5">
         <h3 className="text-navy-800 text-lg font-semibold">{translation.title}</h3>
         <p className="text-muted mt-1 text-sm">{translation.summary}</p>
-        <p className="text-gold-600 mt-3 text-sm font-semibold">{project.capacityKw} kW</p>
+        <p className="text-gold-700 mt-3 text-sm font-semibold">
+          {project.capacityKw} {t('kwUnit')}
+        </p>
       </div>
     </Link>
   );
