@@ -72,7 +72,12 @@
     "notFoundTitle": "Станцію не знайдено",
     "notFoundText": "Такої конфігурації станції не існує.",
     "backToCatalog": "До каталогу станцій",
-    "kwUnit": "кВт"
+    "kwUnit": "кВт",
+    "systemTypes": {
+      "grid-tied": "Мережева",
+      "hybrid": "Гібридна",
+      "custom": "За проєктом"
+    }
   },
   "Projects": {
     "heading": "Реалізовані проєкти",
@@ -182,7 +187,10 @@
     "errors": {
       "required": "Заповніть це поле",
       "phoneInvalid": "Введіть коректний номер телефону",
-      "selectAtLeastOne": "Оберіть хоча б один варіант"
+      "selectAtLeastOne": "Оберіть хоча б один варіант",
+      "submitFailed": "Не вдалося надіслати заявку. Спробуйте ще раз або зателефонуйте нам.",
+      "selectOption": "Оберіть варіант, щоб продовжити",
+      "fillFields": "Заповніть поля, щоб продовжити"
     }
   },
   "ContactForm": {
@@ -197,7 +205,8 @@
     "success": "Дякуємо! Ми зв’яжемось з вами найближчим часом.",
     "methodPhone": "Дзвінок",
     "methodViber": "Viber",
-    "methodTelegram": "Telegram"
+    "methodTelegram": "Telegram",
+    "error": "Не вдалося надіслати заявку. Спробуйте ще раз або зателефонуйте нам."
   },
   "Contact": {
     "pageTitle": "Контакти",

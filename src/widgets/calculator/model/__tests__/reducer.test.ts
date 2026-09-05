@@ -106,6 +106,44 @@ describe('calculatorReducer', () => {
     });
   });
 
+  describe('SET_MONTHLY_KWH while auto-estimate is on', () => {
+    it('recalculates desiredPowerKw when consumption changes', () => {
+      // Regression: the estimate used to be computed only when the checkbox was
+      // toggled, so editing the kWh figure afterwards left a stale power value.
+      const autoOn: CalculatorState = {
+        ...initialCalculatorState,
+        useAutoEstimate: true,
+        monthlyKwh: 600,
+        desiredPowerKw: 6.3,
+      };
+      // daily = 300 / 30 = 10; required = 10 / (4 * 0.8) = 3.125 -> 3.1
+      const result = calculatorReducer(autoOn, { type: 'SET_MONTHLY_KWH', value: 300 });
+      expect(result.desiredPowerKw).toBe(3.1);
+    });
+
+    it('leaves desiredPowerKw alone when auto-estimate is off', () => {
+      const manual: CalculatorState = {
+        ...initialCalculatorState,
+        useAutoEstimate: false,
+        desiredPowerKw: 12,
+      };
+      const result = calculatorReducer(manual, { type: 'SET_MONTHLY_KWH', value: 300 });
+      expect(result.desiredPowerKw).toBe(12);
+    });
+
+    it('does not attempt an estimate when consumption is cleared', () => {
+      const autoOn: CalculatorState = {
+        ...initialCalculatorState,
+        useAutoEstimate: true,
+        monthlyKwh: 600,
+        desiredPowerKw: 6.3,
+      };
+      const result = calculatorReducer(autoOn, { type: 'SET_MONTHLY_KWH', value: null });
+      expect(result.monthlyKwh).toBeNull();
+      expect(result.desiredPowerKw).toBe(6.3);
+    });
+  });
+
   it('sets tariff on SET_TARIFF', () => {
     const result = calculatorReducer(initialCalculatorState, { type: 'SET_TARIFF', value: 4.5 });
     expect(result.tariff).toBe(4.5);

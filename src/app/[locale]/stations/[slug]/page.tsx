@@ -129,7 +129,9 @@ export default async function StationDetailPage({
             </div>
             <div className="border-border rounded-xl border p-4 text-center">
               <p className="text-muted text-xs">{t('specSystemType')}</p>
-              <p className="text-navy-800 mt-1 font-semibold">{station.systemType}</p>
+              <p className="text-navy-800 mt-1 font-semibold">
+                {t(`systemTypes.${station.systemType}`)}
+              </p>
             </div>
             <div className="border-border rounded-xl border p-4 text-center">
               <p className="text-muted text-xs">{t('specPurpose')}</p>

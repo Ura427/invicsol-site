@@ -34,7 +34,7 @@ export function ContactForm() {
     setIsSubmitting(false);
 
     if (!result.ok) {
-      setError(t('submit'));
+      setError(t('error'));
       return;
     }
 
@@ -96,7 +96,9 @@ export function ContactForm() {
           />
         </label>
 
-        {error ? <p className="text-sm text-red-600">{error}</p> : null}
+        <p className="text-sm text-red-600" role="alert" aria-live="polite">
+          {error}
+        </p>
 
         <Button type="submit" variant="gold" disabled={isSubmitting} className="w-full">
           {isSubmitting ? t('submitting') : t('submit')}

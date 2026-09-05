@@ -75,9 +75,17 @@ export async function submitLead(submission: LeadSubmission): Promise<LeadSubmis
     },
   });
 
-  const notified = await sendTelegramNotification(buildNotificationText(submission));
-  if (notified) {
-    await db.lead.update({ where: { id: lead.id }, data: { notifiedAt: new Date() } });
+  // The lead is already safely persisted above. Telegram is a *second*, independent
+  // side effect, so a network failure here must not surface to the visitor as a
+  // failed submission — that would make them submit again, or give up entirely,
+  // over a lead we already captured. A null `notifiedAt` is the signal to follow up.
+  try {
+    const notified = await sendTelegramNotification(buildNotificationText(submission));
+    if (notified) {
+      await db.lead.update({ where: { id: lead.id }, data: { notifiedAt: new Date() } });
+    }
+  } catch (error) {
+    console.error('[lead] Telegram notification failed for lead', lead.id, error);
   }
 
   return { ok: true };

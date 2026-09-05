@@ -21,8 +21,19 @@ export function calculatorReducer(
       return { ...state, solutionType: action.value };
     case 'SET_PHASE':
       return { ...state, phase: action.value };
-    case 'SET_MONTHLY_KWH':
-      return { ...state, monthlyKwh: action.value };
+    case 'SET_MONTHLY_KWH': {
+      // While auto-estimate is on, the estimate must track consumption. Without
+      // this the user turns the checkbox on, then edits their kWh figure, and the
+      // suggested power silently keeps the value from the old figure.
+      if (!state.useAutoEstimate || action.value === null) {
+        return { ...state, monthlyKwh: action.value };
+      }
+      return {
+        ...state,
+        monthlyKwh: action.value,
+        desiredPowerKw: estimatePowerFromConsumption(action.value),
+      };
+    }
     case 'SET_USE_AUTO_ESTIMATE': {
       if (!action.value || state.monthlyKwh === null) {
         return { ...state, useAutoEstimate: action.value };

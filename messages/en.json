@@ -72,7 +72,12 @@
     "notFoundTitle": "Station not found",
     "notFoundText": "This station configuration doesn't exist.",
     "backToCatalog": "Back to the catalogue",
-    "kwUnit": "kW"
+    "kwUnit": "kW",
+    "systemTypes": {
+      "grid-tied": "Grid-tied",
+      "hybrid": "Hybrid",
+      "custom": "Custom-designed"
+    }
   },
   "Projects": {
     "heading": "Completed projects",
@@ -182,7 +187,10 @@
     "errors": {
       "required": "This field is required",
       "phoneInvalid": "Enter a valid phone number",
-      "selectAtLeastOne": "Select at least one option"
+      "selectAtLeastOne": "Select at least one option",
+      "submitFailed": "Could not send your request. Please try again or call us.",
+      "selectOption": "Choose an option to continue",
+      "fillFields": "Fill in the fields to continue"
     }
   },
   "ContactForm": {
@@ -197,7 +205,8 @@
     "success": "Thank you! We'll be in touch shortly.",
     "methodPhone": "Phone call",
     "methodViber": "Viber",
-    "methodTelegram": "Telegram"
+    "methodTelegram": "Telegram",
+    "error": "Could not send your request. Please try again or call us."
   },
   "Contact": {
     "pageTitle": "Contact",

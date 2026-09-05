@@ -5,6 +5,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { calculatorReducer } from './model/reducer';
 import { initialCalculatorState, TOTAL_STEPS } from './model/types';
+import { canAdvanceFromStep, blockedReasonKey } from './model/validation';
 import { submitLead } from '@/entities/lead/actions';
 import { Button } from '@/shared/ui/Button';
 import { Step1PropertyType } from './ui/Step1PropertyType';
@@ -39,11 +40,22 @@ export function CalculatorWizard() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
+    // Guard every step, not just the last one. Previously the wizard let you click
+    // straight through all seven steps without answering anything, and then did
+    // nothing at all on submit if no contact method was picked — a dead button
+    // with no explanation.
+    if (!canAdvanceFromStep(state, state.step)) {
+      setError(t(blockedReasonKey(state.step)));
+      return;
+    }
+
     if (!isLastStep) {
+      setError(null);
       dispatch({ type: 'NEXT_STEP' });
       return;
     }
 
+    // Narrowing for TypeScript; canAdvanceFromStep already guarantees this on step 7.
     if (!state.contactMethod) return;
 
     setError(null);
@@ -74,7 +86,7 @@ export function CalculatorWizard() {
     setIsSubmitting(false);
 
     if (!result.ok) {
-      setError(t('submit'));
+      setError(t('errors.submitFailed'));
       return;
     }
 
@@ -86,7 +98,9 @@ export function CalculatorWizard() {
       <form onSubmit={handleSubmit} className="relative">
         <StepComponent state={state} dispatch={dispatch} />
 
-        {error ? <p className="mt-4 text-sm text-red-600">{error}</p> : null}
+        <p className="mt-4 text-sm text-red-600" role="alert" aria-live="polite">
+          {error}
+        </p>
 
         <div className="mt-8 flex items-center justify-between">
           <Button
