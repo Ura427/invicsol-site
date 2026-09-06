@@ -2,6 +2,7 @@
 
 @theme inline {
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-manrope), var(--font-inter), ui-sans-serif, system-ui, sans-serif;
 
   --color-navy-900: #0a1730;
   --color-navy-800: #0d1e3d;
@@ -39,6 +40,17 @@ body {
   background-color: var(--color-paper);
   color: var(--color-ink);
   font-family: var(--font-sans);
+}
+
+/* One deliberate typographic contrast — Manrope for headings, Inter for
+   everything else — rather than a single font everywhere. Tighter tracking
+   on the display face reads as more confident at large sizes than Inter's
+   default spacing does. */
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  letter-spacing: -0.02em;
 }
 
 ::selection {

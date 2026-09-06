@@ -26,13 +26,24 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
       <WhyUs />
       <ServicesTeaser />
       <StationGrid />
-      <ProjectsCarousel />
+      {/* Backgrounds below are deliberately alternated (white/surface/navy)
+          so no two adjacent homepage sections share the same background —
+          several of these widgets are transparent by default so they can be
+          reused elsewhere (e.g. StationGrid on /stations) without carrying
+          a homepage-specific color; the wrapping here is homepage-only. */}
+      <div className="bg-surface">
+        <ProjectsCarousel />
+      </div>
       <Stats />
       <Expertise />
       <Quote />
-      <Testimonials />
+      <div className="bg-surface">
+        <Testimonials />
+      </div>
       <Faq />
-      <ContactForm />
+      <div className="bg-surface">
+        <ContactForm />
+      </div>
     </>
   );
 }

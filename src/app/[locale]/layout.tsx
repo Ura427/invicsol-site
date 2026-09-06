@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Inter, Manrope } from 'next/font/google';
 import Script from 'next/script';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -13,6 +13,17 @@ import { FloatingButtons } from '@/widgets/floating-buttons';
 import '../globals.css';
 
 const inter = Inter({ subsets: ['latin', 'latin-ext', 'cyrillic'], variable: '--font-inter' });
+// A distinctive geometric display face for headings only — body copy stays
+// Inter. One deliberate typographic contrast is usually enough to shed a
+// "default template" look without redesigning layout; Manrope was picked
+// specifically for full Cyrillic + Cyrillic Extended support (verified
+// against next/font's own bundled font manifest) alongside a confident,
+// slightly technical character that fits a solar/energy brand.
+const manrope = Manrope({
+  subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
+  weight: ['700', '800'],
+  variable: '--font-manrope',
+});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -65,7 +76,11 @@ export default async function LocaleLayout({
   const plausibleDomain = process.env['NEXT_PUBLIC_PLAUSIBLE_DOMAIN'];
 
   return (
-    <html lang={locale} className={inter.variable} data-scroll-behavior="smooth">
+    <html
+      lang={locale}
+      className={`${inter.variable} ${manrope.variable}`}
+      data-scroll-behavior="smooth"
+    >
       <body className="flex min-h-screen flex-col antialiased">
         {plausibleDomain ? (
           <>

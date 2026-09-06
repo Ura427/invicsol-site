@@ -8,14 +8,14 @@ export function Stats() {
   const { stats } = getContent(locale);
 
   return (
-    <section className="bg-surface py-16">
+    <section className="bg-navy-800 py-16">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeading title={t('heading')} />
+        <SectionHeading title={t('heading')} tone="light" />
         <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {stats.map((stat) => (
             <div key={stat.id} className="text-center">
-              <p className="text-gold-600 text-4xl font-extrabold sm:text-5xl">{stat.value}</p>
-              <p className="text-muted mt-2 text-sm">{stat.label}</p>
+              <p className="text-gold-400 text-4xl font-extrabold sm:text-5xl">{stat.value}</p>
+              <p className="mt-2 text-sm text-white/70">{stat.label}</p>
             </div>
           ))}
         </div>

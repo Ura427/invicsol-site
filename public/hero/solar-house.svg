@@ -1,17 +1,73 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
   <defs>
     <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#e8a020"/>
-      <stop offset="100%" stop-color="#f3b94a"/>
+      <stop offset="0%" stop-color="#f3b94a" />
+      <stop offset="100%" stop-color="#e8a020" />
+    </linearGradient>
+    <radialGradient id="sun-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fff6e0" stop-opacity="0.9" />
+      <stop offset="100%" stop-color="#fff6e0" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="panel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1c3763" />
+      <stop offset="100%" stop-color="#0d1e3d" />
+    </linearGradient>
+    <linearGradient id="panel-sheen" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16" />
+      <stop offset="60%" stop-color="#ffffff" stop-opacity="0" />
     </linearGradient>
   </defs>
-  <rect width="800" height="600" fill="url(#sky)"/>
-  <rect x="0" y="380" width="800" height="220" fill="#0a1730"/>
-  <polygon points="150,380 400,220 650,380" fill="#162d56"/>
-  <g fill="#0d1e3d" opacity="0.9">
-    <rect x="220" y="260" width="70" height="45" rx="2"/>
-    <rect x="300" y="260" width="70" height="45" rx="2"/>
-    <rect x="380" y="260" width="70" height="45" rx="2"/>
-    <rect x="460" y="260" width="70" height="45" rx="2"/>
+
+  <rect width="800" height="600" fill="url(#sky)" />
+
+  <!-- sun -->
+  <circle cx="610" cy="120" r="110" fill="url(#sun-glow)" />
+  <circle cx="610" cy="120" r="46" fill="#fff6e0" opacity="0.95" />
+
+  <!-- distant hills for depth -->
+  <path d="M0,420 Q160,375 340,410 T800,395 V600 H0 Z" fill="#162d56" opacity="0.55" />
+
+  <!-- ground -->
+  <rect x="0" y="440" width="800" height="160" fill="#0a1730" />
+
+  <!-- house body -->
+  <rect x="200" y="360" width="400" height="120" fill="#162d56" />
+  <rect x="240" y="400" width="60" height="80" fill="#0d1e3d" />
+  <rect x="500" y="400" width="70" height="55" rx="4" fill="#0a1730" />
+  <rect x="512" y="412" width="46" height="30" rx="2" fill="url(#sun-glow)" opacity="0.35" />
+
+  <!-- roof -->
+  <polygon points="170,360 400,210 630,360" fill="#0d1e3d" />
+  <polygon points="170,360 400,210 400,238 210,362" fill="#162d56" opacity="0.5" />
+
+  <!-- chimney -->
+  <rect x="500" y="240" width="26" height="70" fill="#0a1730" />
+
+  <!-- solar panel array on the roof's front-facing slope -->
+  <g>
+    <!-- three columns x two rows, each cell drawn with a slight parallax offset
+         to sit flush on the sloped roof plane rather than reading as flat
+         floating rectangles -->
+    <g>
+      <polygon points="230,330 328,330 322,290 240,290" fill="url(#panel)" stroke="#0a1730" stroke-width="2" />
+      <polygon points="230,330 328,330 322,290 240,290" fill="url(#panel-sheen)" />
+      <line x1="279" y1="290" x2="275" y2="330" stroke="#0a1730" stroke-width="1.5" />
+      <line x1="253" y1="290" x2="248" y2="330" stroke="#0a1730" stroke-width="1" opacity="0.6" />
+      <line x1="305" y1="290" x2="302" y2="330" stroke="#0a1730" stroke-width="1" opacity="0.6" />
+    </g>
+    <g>
+      <polygon points="333,290 415,290 421,330 339,330" fill="url(#panel)" stroke="#0a1730" stroke-width="2" />
+      <polygon points="333,290 415,290 421,330 339,330" fill="url(#panel-sheen)" />
+      <line x1="374" y1="290" x2="379" y2="330" stroke="#0a1730" stroke-width="1.5" />
+      <line x1="350" y1="290" x2="354" y2="330" stroke="#0a1730" stroke-width="1" opacity="0.6" />
+      <line x1="398" y1="290" x2="404" y2="330" stroke="#0a1730" stroke-width="1" opacity="0.6" />
+    </g>
+    <g>
+      <polygon points="426,330 432,290 514,290 526,330" fill="url(#panel)" stroke="#0a1730" stroke-width="2" />
+      <polygon points="426,330 432,290 514,290 526,330" fill="url(#panel-sheen)" />
+      <line x1="473" y1="290" x2="478" y2="330" stroke="#0a1730" stroke-width="1.5" />
+      <line x1="448" y1="290" x2="452" y2="330" stroke="#0a1730" stroke-width="1" opacity="0.6" />
+      <line x1="498" y1="290" x2="503" y2="330" stroke="#0a1730" stroke-width="1" opacity="0.6" />
+    </g>
   </g>
 </svg>
