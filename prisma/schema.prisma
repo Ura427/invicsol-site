@@ -173,3 +173,41 @@ model Admin {
   passwordHash String
   createdAt    DateTime @default(now())
 }
+
+/// DB-backed, same reasoning as Station/Project: an editorial library that
+/// grows over time belongs in the database, not the typed content.ts system
+/// (which is for fixed, non-filterable content — a why-us grid, not a
+/// library of posts that will eventually need its own admin CRUD).
+model Article {
+  id          String   @id @default(cuid())
+  slug        String   @unique
+  publishedAt DateTime
+  coverImage  String
+
+  translations ArticleTranslation[]
+
+  @@index([publishedAt])
+}
+
+model ArticleTranslation {
+  id        String @id @default(cuid())
+  articleId String
+  /// "uk" | "en"
+  locale    String
+
+  title   String
+  excerpt String
+
+  /// An array of content blocks, stored as jsonb — validated in
+  /// entities/article/parse.ts, same pattern as Station's equipment lists.
+  /// A block starting with "## " renders as a subheading, otherwise as a
+  /// paragraph — the same lightweight in-string markup convention already
+  /// used elsewhere in this project (next-intl's t.rich for <em> highlights),
+  /// rather than reaching for a full rich-text editor for three articles.
+  body Json
+
+  article Article @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@unique([articleId, locale])
+  @@index([locale])
+}

@@ -1,5 +1,6 @@
 /**
- * Seeds Station, StationTranslation, Project, ProjectTranslation, ProjectImage.
+ * Seeds Station, StationTranslation, Project, ProjectTranslation, ProjectImage,
+ * Article, ArticleTranslation.
  *
  * Station copy is sourced from the same place the Phase-4-equivalent content
  * lives — kept here directly (not imported from src/shared/lib/content) because
@@ -16,6 +17,7 @@
 import 'dotenv/config';
 import { PrismaClient } from '../src/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
+import { articles } from './seed-data/articles';
 
 const connectionString = process.env['DATABASE_URL'];
 if (!connectionString) {
@@ -405,6 +407,33 @@ async function main() {
     for (const [index, path] of project.images.entries()) {
       await prisma.projectImage.create({
         data: { projectId: record.id, path, sortOrder: index },
+      });
+    }
+  }
+
+  for (const article of articles) {
+    const record = await prisma.article.upsert({
+      where: { slug: article.slug },
+      update: {},
+      create: {
+        slug: article.slug,
+        publishedAt: new Date(article.publishedAt),
+        coverImage: article.coverImage,
+      },
+    });
+
+    for (const locale of ['uk', 'en'] as const) {
+      const t = article[locale];
+      await prisma.articleTranslation.upsert({
+        where: { articleId_locale: { articleId: record.id, locale } },
+        update: {},
+        create: {
+          articleId: record.id,
+          locale,
+          title: t.title,
+          excerpt: t.excerpt,
+          body: t.body,
+        },
       });
     }
   }

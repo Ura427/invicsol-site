@@ -43,5 +43,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     entries.push(withAlternates(`/projects/${project.slug}`));
   }
 
+  const articles = await db.article.findMany({ select: { slug: true } });
+  for (const article of articles) {
+    entries.push(withAlternates(`/articles/${article.slug}`));
+  }
+
   return entries;
 }

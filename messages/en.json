@@ -15,7 +15,8 @@
     "contactCta": "Request a quote",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
-    "skipToContent": "Skip to main content"
+    "skipToContent": "Skip to main content",
+    "articles": "Blog"
   },
   "Hero": {
     "titlePrefix": "Solar stations that ",
@@ -258,7 +259,11 @@
     "pageTitle": "Blog",
     "pageDescription": "Articles on solar energy, equipment, and the Ukrainian market.",
     "heading": "Blog",
-    "empty": "Articles are coming soon."
+    "empty": "Articles are coming soon.",
+    "readMore": "Read more",
+    "publishedLabel": "Published",
+    "backToArticles": "Back to all articles",
+    "notFoundTitle": "Article not found"
   },
   "Footer": {
     "rights": "All rights reserved.",

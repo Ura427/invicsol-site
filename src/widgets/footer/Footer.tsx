@@ -7,6 +7,7 @@ const QUICK_LINKS = [
   { href: '/stations', key: 'stations' },
   { href: '/projects', key: 'projects' },
   { href: '/calculator', key: 'calculator' },
+  { href: '/articles', key: 'articles' },
 ] as const;
 
 export function Footer() {
