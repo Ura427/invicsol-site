@@ -108,6 +108,7 @@ export interface WarrantyItem {
 
 export interface FinancingOption {
   readonly id: string;
+  readonly icon: IconName;
   readonly provider: string;
   readonly terms: string;
   readonly note: string;

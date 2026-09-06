@@ -283,6 +283,7 @@ export const en = {
   financing: [
     {
       id: 'bank-installment',
+      icon: 'Building2',
       provider: 'Bank installment plan',
       terms: '6–24 months, 0% on part of the amount via partner banks',
       note: 'Applied for in person or online; decisions are usually same-day.',
@@ -290,6 +291,7 @@ export const en = {
     },
     {
       id: 'energy-credit',
+      icon: 'PiggyBank',
       provider: 'Energy-efficiency loan',
       terms: 'up to 5 years, reduced rate',
       note: 'Suited to combined solutions — a station paired with storage.',
@@ -297,6 +299,7 @@ export const en = {
     },
     {
       id: 'staged',
+      icon: 'FileCheck2',
       provider: 'Staged payment',
       terms: '50% deposit / 40% before installation / 10% after commissioning',
       note: 'Standard contract terms, no bank involved.',
