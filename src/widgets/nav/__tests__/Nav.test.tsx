@@ -13,6 +13,15 @@ jest.mock('@/i18n/navigation', () => ({
   usePathname: () => '/',
 }));
 
+// Nav renders CallbackModal, which imports the submitLead server action. Without
+// this mock, Jest would pull in the real db.ts -> the real `pg` driver -> code
+// that references TextEncoder in a way jsdom doesn't provide, crashing every Nav
+// test on an unrelated dependency. Testing Nav should never exercise the real
+// lead-submission path anyway.
+jest.mock('@/entities/lead/actions', () => ({
+  submitLead: jest.fn(),
+}));
+
 function renderNav() {
   return render(
     <NextIntlClientProvider locale="uk" messages={messages}>

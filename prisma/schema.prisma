@@ -4,7 +4,7 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
 }
 
 /// LOCALIZATION STRATEGY
@@ -17,9 +17,14 @@ datasource db {
 /// a migration per new locale) and locale-keyed rows (locale-neutral facts get
 /// duplicated, so fixing a wrong capacity means fixing it twice).
 ///
-/// SQLite has no native enums. Every enum-ish column below is a `String` with a
-/// documented vocabulary, narrowed back to a real TypeScript union in
-/// `src/entities/<name>/parse.ts` — the single seam where raw rows are validated.
+/// These columns are kept as `String` with a documented vocabulary rather than
+/// native Postgres enums. Every value is still narrowed to a real TypeScript
+/// union in `src/entities/<name>/parse.ts` — the single seam where raw rows are
+/// validated — and that boundary already gives the same safety a DB enum would,
+/// without a migration required every time a station or project vocabulary
+/// gains a value, and without the hyphenated values ("grid-tied",
+/// "green-tariff") needing to become underscored enum identifiers everywhere
+/// they're used — including the /projects URL filter query params.
 
 model Station {
   id     String @id @default(cuid())
@@ -52,12 +57,14 @@ model StationTranslation {
   title String
   intro String
 
-  /// JSON string arrays — parsed and validated in entities/station/parse.ts.
-  suitableFor String
-  outcomes    String
-  kitMain     String
-  kitExtra    String
-  benefits    String
+  /// String arrays, stored as native Postgres jsonb — validated (never trusted
+  /// blindly) in entities/station/parse.ts. SQLite forced these into
+  /// JSON-in-a-string columns; Postgres doesn't need that workaround.
+  suitableFor Json
+  outcomes    Json
+  kitMain     Json
+  kitExtra    Json
+  benefits    Json
 
   specPurpose     String
   specScalability String

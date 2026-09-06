@@ -13,12 +13,15 @@
  * `isPlaceholder: true` — see `entities/project/parse.ts` and the brief's launch
  * blocker list. None of it should ever be presented to a visitor as real work.
  */
+import 'dotenv/config';
 import { PrismaClient } from '../src/generated/prisma/client';
-import { PrismaBetterSqlite3 } from '@prisma/adapter-better-sqlite3';
+import { PrismaPg } from '@prisma/adapter-pg';
 
-const adapter = new PrismaBetterSqlite3({
-  url: process.env['DATABASE_URL'] ?? 'file:./dev.db',
-});
+const connectionString = process.env['DATABASE_URL'];
+if (!connectionString) {
+  throw new Error('DATABASE_URL is not set. Copy .env.example to .env and fill it in.');
+}
+const adapter = new PrismaPg(connectionString);
 const prisma = new PrismaClient({ adapter });
 
 interface StationSeed {
@@ -352,11 +355,11 @@ async function main() {
           badge: t.badge,
           title: t.title,
           intro: t.intro,
-          suitableFor: JSON.stringify(t.suitableFor),
-          outcomes: JSON.stringify(t.outcomes),
-          kitMain: JSON.stringify(t.kitMain),
-          kitExtra: JSON.stringify(t.kitExtra),
-          benefits: JSON.stringify(t.benefits),
+          suitableFor: t.suitableFor,
+          outcomes: t.outcomes,
+          kitMain: t.kitMain,
+          kitExtra: t.kitExtra,
+          benefits: t.benefits,
           specPurpose: t.specPurpose,
           specScalability: t.specScalability,
         },

@@ -1,50 +1,55 @@
 -- CreateTable
 CREATE TABLE "Station" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
-    "powerKw" REAL,
+    "powerKw" DOUBLE PRECISION,
     "systemType" TEXT NOT NULL,
     "accent" TEXT NOT NULL DEFAULT 'default',
     "sortOrder" INTEGER NOT NULL,
     "imagePath" TEXT NOT NULL,
-    "isPlaceholder" BOOLEAN NOT NULL DEFAULT false
+    "isPlaceholder" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "Station_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "StationTranslation" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "stationId" TEXT NOT NULL,
     "locale" TEXT NOT NULL,
     "badge" TEXT NOT NULL,
     "title" TEXT NOT NULL,
     "intro" TEXT NOT NULL,
-    "suitableFor" TEXT NOT NULL,
-    "outcomes" TEXT NOT NULL,
-    "kitMain" TEXT NOT NULL,
-    "kitExtra" TEXT NOT NULL,
-    "benefits" TEXT NOT NULL,
+    "suitableFor" JSONB NOT NULL,
+    "outcomes" JSONB NOT NULL,
+    "kitMain" JSONB NOT NULL,
+    "kitExtra" JSONB NOT NULL,
+    "benefits" JSONB NOT NULL,
     "specPurpose" TEXT NOT NULL,
     "specScalability" TEXT NOT NULL,
-    CONSTRAINT "StationTranslation_stationId_fkey" FOREIGN KEY ("stationId") REFERENCES "Station" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+
+    CONSTRAINT "StationTranslation_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Project" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
-    "capacityKw" REAL NOT NULL,
+    "capacityKw" DOUBLE PRECISION NOT NULL,
     "objectType" TEXT NOT NULL,
     "usage" TEXT NOT NULL,
     "mountType" TEXT NOT NULL,
     "locationKey" TEXT NOT NULL,
-    "completedAt" DATETIME NOT NULL,
+    "completedAt" TIMESTAMP(3) NOT NULL,
     "coverImage" TEXT NOT NULL,
-    "isPlaceholder" BOOLEAN NOT NULL DEFAULT false
+    "isPlaceholder" BOOLEAN NOT NULL DEFAULT false,
+
+    CONSTRAINT "Project_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "ProjectTranslation" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "projectId" TEXT NOT NULL,
     "locale" TEXT NOT NULL,
     "title" TEXT NOT NULL,
@@ -52,29 +57,33 @@ CREATE TABLE "ProjectTranslation" (
     "challenge" TEXT NOT NULL,
     "solution" TEXT NOT NULL,
     "result" TEXT NOT NULL,
-    CONSTRAINT "ProjectTranslation_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+
+    CONSTRAINT "ProjectTranslation_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "ProjectImage" (
-    "id" TEXT NOT NULL PRIMARY KEY,
+    "id" TEXT NOT NULL,
     "projectId" TEXT NOT NULL,
     "path" TEXT NOT NULL,
     "sortOrder" INTEGER NOT NULL,
-    CONSTRAINT "ProjectImage_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project" ("id") ON DELETE CASCADE ON UPDATE CASCADE
+
+    CONSTRAINT "ProjectImage_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "Lead" (
-    "id" TEXT NOT NULL PRIMARY KEY,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "source" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "phone" TEXT NOT NULL,
     "contactMethod" TEXT NOT NULL,
     "locale" TEXT NOT NULL,
     "payload" TEXT NOT NULL,
-    "notifiedAt" DATETIME
+    "notifiedAt" TIMESTAMP(3),
+
+    CONSTRAINT "Lead_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
@@ -115,3 +124,12 @@ CREATE INDEX "ProjectImage_projectId_sortOrder_idx" ON "ProjectImage"("projectId
 
 -- CreateIndex
 CREATE INDEX "Lead_createdAt_idx" ON "Lead"("createdAt");
+
+-- AddForeignKey
+ALTER TABLE "StationTranslation" ADD CONSTRAINT "StationTranslation_stationId_fkey" FOREIGN KEY ("stationId") REFERENCES "Station"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProjectTranslation" ADD CONSTRAINT "ProjectTranslation_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ProjectImage" ADD CONSTRAINT "ProjectImage_projectId_fkey" FOREIGN KEY ("projectId") REFERENCES "Project"("id") ON DELETE CASCADE ON UPDATE CASCADE;

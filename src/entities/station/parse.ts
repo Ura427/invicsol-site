@@ -43,10 +43,11 @@ function isAccent(value: string): value is StationAccent {
   return value === 'default' || value === 'gold';
 }
 
-function parseStringArray(json: string, field: string): readonly string[] {
-  const value: unknown = JSON.parse(json);
+function parseStringArray(value: unknown, field: string): readonly string[] {
   if (!Array.isArray(value) || !value.every((item) => typeof item === 'string')) {
-    throw new Error(`Station translation field "${field}" is not a JSON string array: ${json}`);
+    throw new Error(
+      `Station translation field "${field}" is not a JSON string array: ${JSON.stringify(value)}`,
+    );
   }
   return value;
 }
