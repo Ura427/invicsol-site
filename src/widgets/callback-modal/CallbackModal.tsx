@@ -4,6 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { X } from 'lucide-react';
 import { submitLead } from '@/entities/lead/actions';
+import { trackEvent } from '@/shared/lib/analytics';
 import { Button } from '@/shared/ui/Button';
 
 /**
@@ -52,7 +53,10 @@ export function CallbackModal() {
     });
 
     setIsSubmitting(false);
-    if (result.ok) setIsSuccess(true);
+    if (result.ok) {
+      trackEvent('Lead', { source: 'callback' });
+      setIsSuccess(true);
+    }
   }
 
   return (

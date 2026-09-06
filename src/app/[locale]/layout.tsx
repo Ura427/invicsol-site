@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
@@ -57,10 +58,33 @@ export default async function LocaleLayout({
 
   const t = await getTranslations('Nav');
   const localBusinessJsonLd = buildLocalBusinessJsonLd();
+  // Analytics are entirely disabled — no script tag at all, not even the
+  // shim — when no domain is configured. Same graceful-degradation pattern
+  // as the Telegram and Resend integrations: local dev and preview builds
+  // never need a Plausible account to run the rest of the site.
+  const plausibleDomain = process.env['NEXT_PUBLIC_PLAUSIBLE_DOMAIN'];
 
   return (
     <html lang={locale} className={inter.variable} data-scroll-behavior="smooth">
       <body className="flex min-h-screen flex-col antialiased">
+        {plausibleDomain ? (
+          <>
+            {/* beforeInteractive scripts must live directly in the root
+                layout file per Next's own lint rule — this file plays that
+                role (there is no separate app/layout.tsx). Runs before
+                hydration so window.plausible safely queues events even if
+                the real script below hasn't finished loading yet. */}
+            <Script id="plausible-queue" strategy="beforeInteractive">
+              {`window.plausible = window.plausible || function () { (window.plausible.q = window.plausible.q || []).push(arguments); };`}
+            </Script>
+            <Script
+              defer
+              data-domain={plausibleDomain}
+              src="https://plausible.io/js/script.js"
+              strategy="afterInteractive"
+            />
+          </>
+        ) : null}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusinessJsonLd) }}

@@ -4,6 +4,7 @@ import { useState, type FormEvent } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from '@/i18n/navigation';
 import { submitLead } from '@/entities/lead/actions';
+import { trackEvent } from '@/shared/lib/analytics';
 import { Button } from '@/shared/ui/Button';
 import { SectionHeading } from '@/shared/ui/SectionHeading';
 import type { ContactMethod } from '@/entities/lead/types';
@@ -38,6 +39,7 @@ export function ContactForm() {
       return;
     }
 
+    trackEvent('Lead', { source: 'contact' });
     router.push('/thank-you');
   }
 

@@ -7,6 +7,7 @@ import { calculatorReducer } from './model/reducer';
 import { initialCalculatorState, TOTAL_STEPS } from './model/types';
 import { canAdvanceFromStep, blockedReasonKey } from './model/validation';
 import { submitLead } from '@/entities/lead/actions';
+import { trackEvent } from '@/shared/lib/analytics';
 import { Button } from '@/shared/ui/Button';
 import { Step1PropertyType } from './ui/Step1PropertyType';
 import { Step2SolutionType } from './ui/Step2SolutionType';
@@ -90,6 +91,7 @@ export function CalculatorWizard() {
       return;
     }
 
+    trackEvent('Lead', { source: 'calculator' });
     router.push('/thank-you');
   }
 
