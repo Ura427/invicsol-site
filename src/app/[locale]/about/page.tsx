@@ -5,6 +5,16 @@ import { SectionHeading } from '@/shared/ui/SectionHeading';
 import { Card } from '@/shared/ui/Card';
 import { PlaceholderBadge } from '@/shared/ui/PlaceholderBadge';
 
+/**
+ * Initials rather than a stock headshot: team entries are honest placeholders
+ * (name = role title, e.g. "Lead Engineer"), and a real, identifiable
+ * stranger's photo next to that would misrepresent them as an actual
+ * employee — the same reasoning Testimonials.tsx uses for its avatars.
+ */
+function initialFrom(name: string): string {
+  return name.trim().charAt(0).toUpperCase();
+}
+
 export async function generateMetadata({
   params,
 }: {
@@ -31,7 +41,13 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
           {team.map((member) => (
             <Card key={member.id} className="relative">
               {member.isPlaceholder ? <PlaceholderBadge label={t('placeholderBadge')} /> : null}
-              <h3 className="text-navy-800 font-semibold">{member.name}</h3>
+              <div
+                className="bg-gold-500/10 text-gold-700 flex h-12 w-12 items-center justify-center rounded-full text-lg font-bold"
+                aria-hidden
+              >
+                {initialFrom(member.name)}
+              </div>
+              <h3 className="text-navy-800 mt-4 font-semibold">{member.name}</h3>
               <p className="text-gold-700 text-sm">{member.role}</p>
               <p className="text-muted mt-2 text-sm">{member.bio}</p>
             </Card>
