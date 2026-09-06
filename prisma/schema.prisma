@@ -156,5 +156,20 @@ model Lead {
   /// row is the signal that the durable side effect did not fire.
   notifiedAt DateTime?
 
+  /// Set by the admin leads inbox once someone has followed up. A separate
+  /// timestamp rather than a boolean, for the same reason notifiedAt is one —
+  /// "when" is more useful than "whether" once you're looking back at a list.
+  handledAt DateTime?
+
   @@index([createdAt])
+}
+
+/// Exactly one row is expected to ever exist. There is no public signup route
+/// anywhere in the app — this table is populated only by the seed script at
+/// scripts/create-admin.ts, run once, by hand, by the site owner.
+model Admin {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
 }
