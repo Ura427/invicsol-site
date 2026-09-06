@@ -5,6 +5,16 @@ import { SectionHeading } from '@/shared/ui/SectionHeading';
 import { Card } from '@/shared/ui/Card';
 import { PlaceholderBadge } from '@/shared/ui/PlaceholderBadge';
 
+/**
+ * Initials rather than a stock headshot: these cards are explicitly
+ * placeholder ("Sample review"), and pairing a fabricated quote with a real,
+ * identifiable stranger's photo would misrepresent that person as a client —
+ * a step past the generic object photography used for stations/projects.
+ */
+function initialFrom(role: string): string {
+  return role.trim().charAt(0).toUpperCase();
+}
+
 export function Testimonials() {
   const t = useTranslations('Testimonials');
   const locale = useLocale();
@@ -25,8 +35,18 @@ export function Testimonials() {
             <p className="text-navy-800 relative text-sm leading-relaxed italic">
               &ldquo;{testimonial.text}&rdquo;
             </p>
-            <p className="text-navy-800 mt-4 text-sm font-semibold">{testimonial.author}</p>
-            <p className="text-muted text-xs">{testimonial.role}</p>
+            <div className="relative mt-4 flex items-center gap-3">
+              <div
+                className="bg-gold-500/10 text-gold-700 flex h-10 w-10 shrink-0 items-center justify-center rounded-full text-sm font-bold"
+                aria-hidden
+              >
+                {initialFrom(testimonial.role)}
+              </div>
+              <div>
+                <p className="text-navy-800 text-sm font-semibold">{testimonial.author}</p>
+                <p className="text-muted text-xs">{testimonial.role}</p>
+              </div>
+            </div>
           </Card>
         ))}
       </div>
