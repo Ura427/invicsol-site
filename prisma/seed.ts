@@ -236,8 +236,8 @@ const projects: ProjectSeed[] = [
     mountType: 'roof',
     locationKey: 'bryukhovychi',
     completedAt: '2025-04-14',
-    coverImage: '/placeholders/project-placeholder.svg',
-    images: ['/placeholders/project-placeholder.svg'],
+    coverImage: '/projects/bryukhovychi-house-8kw.jpg',
+    images: ['/projects/bryukhovychi-house-8kw.jpg'],
     uk: {
       title: 'Приватний будинок, Брюховичі — 8 кВт',
       summary: 'Мережева станція на металочерепиці для родини з високим денним споживанням.',
@@ -261,8 +261,8 @@ const projects: ProjectSeed[] = [
     mountType: 'roof',
     locationKey: 'lviv',
     completedAt: '2025-07-02',
-    coverImage: '/placeholders/project-placeholder.svg',
-    images: ['/placeholders/project-placeholder.svg'],
+    coverImage: '/projects/lviv-hotel-25kw.jpg',
+    images: ['/projects/lviv-hotel-25kw.jpg'],
     uk: {
       title: 'Готель, Львів — 25 кВт',
       summary: 'Комерційна станція на плоскій покрівлі з баластним кріпленням.',
@@ -286,8 +286,8 @@ const projects: ProjectSeed[] = [
     mountType: 'ground',
     locationKey: 'horodok',
     completedAt: '2024-11-20',
-    coverImage: '/placeholders/project-placeholder.svg',
-    images: ['/placeholders/project-placeholder.svg'],
+    coverImage: '/projects/horodok-farm-40kw.jpg',
+    images: ['/projects/horodok-farm-40kw.jpg'],
     uk: {
       title: 'Фермерське господарство, Городоцький р-н — 40 кВт',
       summary: 'Наземна станція під зелений тариф на вільній ділянці поряд із господарськими будівлями.',
@@ -311,8 +311,8 @@ const projects: ProjectSeed[] = [
     mountType: 'roof',
     locationKey: 'sokilnyky',
     completedAt: '2025-01-30',
-    coverImage: '/placeholders/project-placeholder.svg',
-    images: ['/placeholders/project-placeholder.svg'],
+    coverImage: '/projects/sokilnyky-house-12kw.jpg',
+    images: ['/projects/sokilnyky-house-12kw.jpg'],
     uk: {
       title: 'Приватний будинок, Сокільники — 12 кВт',
       summary: 'Гібридна станція з накопичувачем для будинку з частими відключеннями.',
