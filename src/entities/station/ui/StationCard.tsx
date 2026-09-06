@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import type { ParsedStation, ParsedStationTranslation } from '@/entities/station/parse';
@@ -20,37 +21,49 @@ export function StationCard({ station, translation }: StationCardProps) {
   return (
     <Link
       href={`/stations/${station.slug}`}
-      className={`group border-border shadow-card block h-full rounded-2xl border p-6 transition-transform hover:-translate-y-1 ${
+      className={`group border-border shadow-card block h-full overflow-hidden rounded-2xl border transition-transform hover:-translate-y-1 ${
         isCustom ? 'bg-navy-800 border-navy-800 text-white' : 'bg-white'
       }`}
     >
-      <span
-        className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${
-          isCustom ? 'bg-gold-500 text-navy-900' : 'bg-gold-500/10 text-gold-700'
-        }`}
-      >
-        {translation.badge}
-      </span>
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
+        <Image
+          src={station.imagePath}
+          alt=""
+          fill
+          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
+          className="object-cover"
+        />
+      </div>
 
-      <h3 className={`mt-4 text-xl font-bold ${isCustom ? 'text-white' : 'text-navy-800'}`}>
-        {translation.title}
-      </h3>
+      <div className="p-6">
+        <span
+          className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${
+            isCustom ? 'bg-gold-500 text-navy-900' : 'bg-gold-500/10 text-gold-700'
+          }`}
+        >
+          {translation.badge}
+        </span>
 
-      {station.powerKw !== null ? (
-        <p className={`mt-1 text-3xl font-extrabold ${isCustom ? 'text-gold-400' : 'text-gold-600'}`}>
-          {station.powerKw} <span className="text-base font-medium">{t('kwUnit')}</span>
-        </p>
-      ) : null}
+        <h3 className={`mt-4 text-xl font-bold ${isCustom ? 'text-white' : 'text-navy-800'}`}>
+          {translation.title}
+        </h3>
 
-      <p className={`mt-3 text-sm ${isCustom ? 'text-white/70' : 'text-muted'}`}>{translation.intro}</p>
+        {station.powerKw !== null ? (
+          <p className={`mt-1 text-3xl font-extrabold ${isCustom ? 'text-gold-400' : 'text-gold-600'}`}>
+            {station.powerKw} <span className="text-base font-medium">{t('kwUnit')}</span>
+          </p>
+        ) : null}
 
-      <span
-        className={`mt-6 inline-block text-sm font-semibold underline-offset-4 group-hover:underline ${
-          isCustom ? 'text-gold-400' : 'text-navy-800'
-        }`}
-      >
-        {isCustom ? t('customCta') : t('cta')}
-      </span>
+        <p className={`mt-3 text-sm ${isCustom ? 'text-white/70' : 'text-muted'}`}>{translation.intro}</p>
+
+        <span
+          className={`mt-6 inline-block text-sm font-semibold underline-offset-4 group-hover:underline ${
+            isCustom ? 'text-gold-400' : 'text-navy-800'
+          }`}
+        >
+          {isCustom ? t('customCta') : t('cta')}
+        </span>
+      </div>
     </Link>
   );
 }

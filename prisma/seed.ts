@@ -55,7 +55,7 @@ const stations: StationSeed[] = [
     systemType: 'grid-tied',
     accent: 'default',
     sortOrder: 1,
-    imagePath: '/placeholders/station-placeholder.svg',
+    imagePath: '/stations/5kw.jpg',
     uk: {
       badge: 'Стартова',
       title: 'Станція 5 кВт',
@@ -89,7 +89,7 @@ const stations: StationSeed[] = [
     systemType: 'hybrid',
     accent: 'default',
     sortOrder: 2,
-    imagePath: '/placeholders/station-placeholder.svg',
+    imagePath: '/stations/10kw.jpg',
     uk: {
       badge: 'Популярна',
       title: 'Станція 10 кВт',
@@ -121,7 +121,7 @@ const stations: StationSeed[] = [
     systemType: 'hybrid',
     accent: 'default',
     sortOrder: 3,
-    imagePath: '/placeholders/station-placeholder.svg',
+    imagePath: '/stations/15kw.jpg',
     uk: {
       badge: 'Розширена',
       title: 'Станція 15 кВт',
@@ -153,7 +153,7 @@ const stations: StationSeed[] = [
     systemType: 'grid-tied',
     accent: 'default',
     sortOrder: 4,
-    imagePath: '/placeholders/station-placeholder.svg',
+    imagePath: '/stations/30kw.jpg',
     uk: {
       badge: 'Комерційна',
       title: 'Станція 30 кВт',
@@ -185,7 +185,7 @@ const stations: StationSeed[] = [
     systemType: 'custom',
     accent: 'gold',
     sortOrder: 5,
-    imagePath: '/placeholders/station-placeholder.svg',
+    imagePath: '/stations/custom.jpg',
     uk: {
       badge: 'Індивідуально',
       title: 'Індивідуальна конфігурація',
@@ -334,7 +334,16 @@ async function main() {
   for (const station of stations) {
     const record = await prisma.station.upsert({
       where: { slug: station.slug },
-      update: {},
+      // Unlike Project and Lead, stations have no admin-editable UI — the seed
+      // file is the only source of truth, so re-running it should sync fields
+      // (e.g. a swapped imagePath) rather than leave existing rows untouched.
+      update: {
+        powerKw: station.powerKw,
+        systemType: station.systemType,
+        accent: station.accent,
+        sortOrder: station.sortOrder,
+        imagePath: station.imagePath,
+      },
       create: {
         slug: station.slug,
         powerKw: station.powerKw,

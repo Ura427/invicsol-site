@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { Check } from 'lucide-react';
@@ -59,8 +60,12 @@ export default async function StationDetailPage({
     <div>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
 
-      <section className="from-navy-800 to-navy-700 bg-gradient-to-br px-4 py-16 text-white sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-4xl">
+      <section className="from-navy-800 to-navy-700 relative overflow-hidden bg-gradient-to-br text-white">
+        <div className="absolute inset-0">
+          <Image src={station.imagePath} alt="" fill priority sizes="100vw" className="object-cover opacity-30" />
+          <div className="from-navy-800 via-navy-800/80 absolute inset-0 bg-gradient-to-t to-transparent" />
+        </div>
+        <div className="relative mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
           <span className="bg-gold-500 text-navy-900 inline-block rounded-full px-3 py-1 text-xs font-semibold">
             {translation.badge}
           </span>
