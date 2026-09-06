@@ -10,7 +10,10 @@ const config: Config = {
   moduleNameMapper: {
     '^@/(.*)$': '<rootDir>/src/$1',
   },
-  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/'],
+  // e2e/ holds Playwright specs, which use @playwright/test's own test/expect
+  // globals — incompatible with Jest's, and meant to run against a live
+  // server via `npm run test:e2e`, not the unit test suite.
+  testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/', '<rootDir>/e2e/'],
 };
 
 export default createJestConfig(config);

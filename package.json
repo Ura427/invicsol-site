@@ -5,10 +5,11 @@
   "scripts": {
     "dev": "next dev --port 3100",
     "build": "next build",
-    "start": "next start",
+    "start": "next start --port 3100",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "jest",
+    "test:e2e": "playwright test",
     "postinstall": "prisma generate",
     "prebuild": "prisma migrate deploy && prisma db seed",
     "db:reset": "prisma migrate reset --force",
@@ -33,6 +34,7 @@
     "resend": "^6.26.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@tailwindcss/postcss": "^4.3.3",
     "@testing-library/jest-dom": "^7.0.0",
     "@testing-library/react": "^16.3.3",

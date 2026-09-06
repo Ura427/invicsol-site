@@ -16,6 +16,13 @@ import { db } from '@/shared/lib/db';
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: 'jwt' },
   pages: { signIn: '/admin/login' },
+  // Auth.js refuses to trust the request's Host header by default (protects
+  // against host-header spoofing in OAuth redirect flows). This app has no
+  // OAuth provider and no public signup — only a Credentials check against
+  // one row we control — so that attack surface doesn't apply, and without
+  // this the admin panel logs UntrustedHost errors under `next start` and
+  // on any host Auth.js doesn't auto-recognize (it auto-detects Vercel).
+  trustHost: true,
   providers: [
     Credentials({
       credentials: {

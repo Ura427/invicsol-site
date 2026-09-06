@@ -1,0 +1,83 @@
+name: CI
+
+# Required repository secrets for this workflow to pass:
+#   DATABASE_URL       — a Postgres connection string (Neon or otherwise).
+#                        `npm run build`'s prebuild hook runs `prisma migrate
+#                        deploy` (safe: only applies new pending migrations)
+#                        and `prisma db seed` (safe: every write is an
+#                        upsert) against whatever this points to. Point it at
+#                        a dedicated CI/preview database rather than
+#                        production once one exists — this repo doesn't have
+#                        a separate one set up yet, so until then this
+#                        secret is the same database the site itself reads.
+#   AUTH_SECRET        — any random string; only needs to exist for
+#                        NextAuth's config to initialize during the build.
+# Optional:
+#   TELEGRAM_BOT_TOKEN / TELEGRAM_CHAT_ID — leaving these unset is fine; the
+#     lead-notification code degrades gracefully with no credentials (see
+#     src/entities/lead/telegram.ts), it's just never exercised in CI.
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+env:
+  DATABASE_URL: ${{ secrets.DATABASE_URL }}
+  AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+  TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+  TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+  NEXT_PUBLIC_SITE_URL: 'https://invicsol.com.ua'
+
+jobs:
+  checks:
+    name: Typecheck, lint, unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm test
+
+  build:
+    name: Production build
+    runs-on: ubuntu-latest
+    needs: checks
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      # Exercises generateStaticParams and build-time database reads for
+      # real — a broken migration or a missing seed row fails here, not
+      # silently at runtime on a live site.
+      - run: npm run build
+
+  e2e:
+    name: End-to-end tests
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npm run build
+      - run: npm run test:e2e
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14
