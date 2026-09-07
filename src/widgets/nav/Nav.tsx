@@ -6,6 +6,7 @@ import { Menu, X } from 'lucide-react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { Button } from '@/shared/ui/Button';
 import { Logo } from '@/shared/ui/Logo';
+import { LocaleSwitcher } from './LocaleSwitcher';
 import { CallbackModal } from '@/widgets/callback-modal';
 import { useScrollShadow } from './useScrollShadow';
 
@@ -61,6 +62,7 @@ export function Nav() {
         </ul>
 
         <div className="hidden items-center gap-3 lg:flex">
+          <LocaleSwitcher />
           <CallbackModal />
           <Button href="/contact" variant="gold">
             {t('contactCta')}
@@ -93,8 +95,19 @@ export function Nav() {
               </li>
             ))}
           </ul>
-          <div className="mt-6">
-            <Button href="/contact" variant="gold" className="w-full" onClick={() => setIsMenuOpen(false)}>
+          {/* Mobile gets the switcher too — the desktop nav collapses entirely
+              below lg, and a visitor on a phone is the one most likely to be
+              stuck in the wrong language. */}
+          <div className="border-border mt-6 border-t pt-5">
+            <LocaleSwitcher />
+          </div>
+          <div className="mt-5">
+            <Button
+              href="/contact"
+              variant="gold"
+              className="w-full"
+              onClick={() => setIsMenuOpen(false)}
+            >
               {t('contactCta')}
             </Button>
           </div>
