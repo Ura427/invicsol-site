@@ -148,7 +148,24 @@ export default async function StationDetailPage({
       <section className="bg-surface py-20">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <Label>{t('kit')}</Label>
-          <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-20">
+
+          {/* Deliberately a section-level image, not one photo per line item.
+              The kit list names specific models (Longi 500W, Deye 10kW,
+              Pylontech 10kWh) and this is generic stock photography — placing
+              it beside a named model would imply it IS that product. As a
+              decorative header for the block it claims nothing. Empty alt for
+              the same reason: there is no information here to announce. */}
+          <div className="relative mt-8 aspect-[21/9] overflow-hidden rounded-[var(--radius-image)]">
+            <Image
+              src="/equipment/panel-detail.jpg"
+              alt=""
+              fill
+              sizes="(max-width: 1024px) 100vw, 1152px"
+              className="object-cover"
+            />
+          </div>
+
+          <div className="mt-14 grid gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
               <h2 className="text-navy-800 text-2xl">{t('kitMain')}</h2>
               <ul className="border-border divide-border mt-6 divide-y border-t">
