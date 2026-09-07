@@ -152,9 +152,9 @@ export const en = {
   faq: [
     {
       id: 'price',
-      question: 'Why isn’t there a price calculator on the site?',
+      question: 'Why is the kit price listed but installation given as a range?',
       answer:
-        'Because an honest online price isn’t possible. Cost depends on roof type and mounting, the cable run from panels to inverter and inverter to the panel, the state of the incoming service cable, battery count, and a dozen things only visible on site. A formula in a browser would produce a tidy but dishonest number. Instead we quote after a free site visit.',
+        'Because the two differ in how predictable they are. Equipment cost we know exactly — it is listed on each station page. Installation depends on roof type and mounting, the cable run from panels to inverter and inverter to the panel, the state of the incoming service cable, and a dozen things only visible on site. So we publish installation as a range and give the exact figure after a free site visit, rather than quoting it blind.',
     },
     {
       id: 'blackout',
@@ -166,7 +166,7 @@ export const en = {
       id: 'payback',
       question: 'How many years until the station pays for itself?',
       answer:
-        'For a private home with daytime consumption, expect roughly 5–8 years; a commercial property with steady daytime load is often faster. The exact number depends on tariff, self-consumption share, and system cost. Our calculator estimates payback, never a price.',
+        'For a private home with daytime consumption, expect roughly 5–8 years; a commercial property with steady daytime load is often faster. The exact number depends on tariff, self-consumption share, and system cost. Our calculator estimates payback; the kit price is on each station page.',
     },
     {
       id: 'green-tariff',
@@ -307,7 +307,7 @@ export const en = {
     },
   ],
   quote: {
-    text: 'A solar station isn’t a piece of equipment you buy — it’s an engineering project. The same kit on two different roofs produces two different results, which is exactly why we never quote a price blind.',
+    text: 'A solar station isn’t only equipment you buy — it’s also an engineering project. The same kit mounts differently on two different roofs, which is why we name the kit price up front and the installation cost after the visit.',
     author: 'The INVICSOL team',
     authorRole: 'Lviv',
   },

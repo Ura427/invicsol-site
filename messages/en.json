@@ -22,7 +22,7 @@
     "titlePrefix": "Solar stations that ",
     "titleHighlight": "actually work",
     "titleSuffix": " in your climate",
-    "description": "We design, install, and service grid-tied and hybrid solar stations in Lviv and the region. No prices guessed online — just an honest quote after a site visit.",
+    "description": "We design, install, and service grid-tied and hybrid solar stations in Lviv and the region. Kit prices up front; the exact installation figure after a free site visit.",
     "ctaPrimary": "Estimate payback",
     "ctaSecondary": "Our stations"
   },
@@ -83,7 +83,16 @@
       "hybrid": "Hybrid",
       "custom": "Custom-designed"
     },
-    "ctaHeading": "Ready to size this station for your property?"
+    "ctaHeading": "Ready to size this station for your property?",
+    "priceEquipment": "Equipment kit",
+    "priceInstall": "Installation",
+    "priceInstallNote": "Exact installation cost after a free site visit",
+    "priceOnRequest": "Priced per project",
+    "inStock": "In stock",
+    "outOfStock": "To order",
+    "reviews": "reviews",
+    "demoBadge": "Demo data",
+    "from": "from"
   },
   "Projects": {
     "heading": "Completed projects",

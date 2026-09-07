@@ -16,6 +16,21 @@ export interface ParsedStation {
   sortOrder: number;
   imagePath: string;
   isPlaceholder: boolean;
+  /**
+   * Commercial data. `pricing` is null when no equipment price is set, so the
+   * UI has one thing to check rather than three loose nullable numbers. The
+   * install range is deliberately separate from the kit price — see the schema
+   * comment for why a single turnkey figure is not published.
+   */
+  pricing: {
+    equipmentUah: number;
+    installMinUah: number | null;
+    installMaxUah: number | null;
+  } | null;
+  inStock: boolean | null;
+  rating: { value: number; count: number } | null;
+  /** True while any commercial value above is a demo figure, not a real one. */
+  commercialIsPlaceholder: boolean;
 }
 
 export interface ParsedStationTranslation {
@@ -67,6 +82,25 @@ export function parseStation(row: StationModel): ParsedStation {
   if (!isAccent(row.accent)) {
     throw new Error(`Unknown station accent: "${row.accent}"`);
   }
+  // A price of 0 is meaningless for a solar station and almost certainly a data
+  // entry slip, so it is treated as "no price" rather than rendered as free.
+  const equipmentUah = row.priceEquipmentUah;
+  const pricing =
+    equipmentUah !== null && equipmentUah > 0
+      ? {
+          equipmentUah,
+          installMinUah: row.priceInstallMinUah,
+          installMaxUah: row.priceInstallMaxUah,
+        }
+      : null;
+
+  // Both halves of a rating are required: a score with no count is unverifiable
+  // and a count with no score says nothing.
+  const rating =
+    row.ratingValue !== null && row.ratingCount !== null && row.ratingCount > 0
+      ? { value: row.ratingValue, count: row.ratingCount }
+      : null;
+
   return {
     id: row.id,
     slug: row.slug,
@@ -76,6 +110,10 @@ export function parseStation(row: StationModel): ParsedStation {
     sortOrder: row.sortOrder,
     imagePath: row.imagePath,
     isPlaceholder: row.isPlaceholder,
+    pricing,
+    inStock: row.inStock,
+    rating,
+    commercialIsPlaceholder: row.commercialIsPlaceholder,
   };
 }
 

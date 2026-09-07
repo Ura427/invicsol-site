@@ -2,10 +2,11 @@ import type { Metadata } from 'next';
 import Image from 'next/image';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
-import { Check } from 'lucide-react';
+import { Check, Star } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import { STATION_SLUGS } from '@/entities/station/parse';
 import { getStationBySlug } from '@/entities/station/queries';
+import { StationPrice } from '@/entities/station/ui/StationPrice';
 import { Button } from '@/shared/ui/Button';
 import { SITE } from '@/shared/lib/site';
 
@@ -50,6 +51,7 @@ export default async function StationDetailPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('Stations');
+  const tHero = await getTranslations('Hero');
 
   const data = await getStationBySlug(slug, locale);
   if (!data) notFound();
@@ -86,29 +88,77 @@ export default async function StationDetailPage({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
-      {/* Same hero treatment as the homepage: the photograph carries the page
-          at full strength with a bottom-weighted scrim, rather than sitting at
-          30% opacity behind a gradient panel. */}
-      <section className="bg-navy-900 relative isolate flex min-h-[26rem] items-end overflow-hidden lg:min-h-[32rem]">
-        <Image src={station.imagePath} alt="" fill priority sizes="100vw" className="object-cover" />
-        <div
-          className="from-navy-900/95 via-navy-900/70 absolute inset-0 bg-gradient-to-t to-transparent"
-          aria-hidden
-        />
-        <div className="relative mx-auto w-full max-w-6xl px-4 pt-24 pb-14 sm:px-6 lg:px-8 lg:pb-20">
-          <span className="bg-gold-500 text-navy-900 inline-block rounded-full px-3.5 py-1.5 text-xs font-medium">
-            {translation.badge}
-          </span>
-          <h1 className="mt-6 max-w-3xl text-4xl text-white sm:text-5xl lg:text-6xl">
-            {translation.title}
-          </h1>
-          <p className="mt-5 max-w-xl leading-relaxed text-white/75">{translation.intro}</p>
+      {/* Product header: contained photograph beside price, specs and CTA, so
+          the four things a visitor decides on are all visible without
+          scrolling. This is why the photo is no longer full-bleed — a
+          cinematic hero pushed the price and specs below the fold, and on this
+          page deciding beats impressing. */}
+      <div className="mx-auto max-w-6xl px-4 pt-10 sm:px-6 lg:px-8">
+        <div className="grid gap-10 lg:grid-cols-2 lg:gap-16">
+          <div className="relative aspect-[4/3] overflow-hidden rounded-[var(--radius-image)] lg:aspect-[5/4]">
+            <Image
+              src={station.imagePath}
+              alt=""
+              fill
+              priority
+              sizes="(max-width: 1024px) 100vw, 576px"
+              className="object-cover"
+            />
+          </div>
+
+          <div className="flex flex-col">
+            <div className="flex flex-wrap items-center gap-3">
+              <span className="bg-gold-500 text-navy-900 inline-block rounded-full px-3.5 py-1.5 text-xs font-medium">
+                {translation.badge}
+              </span>
+              {station.inStock !== null ? (
+                <span className="text-muted text-xs tracking-[0.08em] uppercase">
+                  {station.inStock ? t('inStock') : t('outOfStock')}
+                </span>
+              ) : null}
+              {station.rating ? (
+                <span className="text-muted flex items-center gap-1.5 text-xs">
+                  <Star className="text-gold-600 h-3.5 w-3.5 fill-current" aria-hidden />
+                  {station.rating.value.toFixed(1)}
+                  {/* Full muted, not muted/70 — at 12px the faded variant
+                      measured 3.03:1, under the 4.5 AA floor. */}
+                  <span className="text-muted">
+                    ({station.rating.count} {t('reviews')})
+                  </span>
+                </span>
+              ) : null}
+            </div>
+
+            <h1 className="text-navy-800 mt-5 text-4xl sm:text-5xl">{translation.title}</h1>
+            <p className="text-muted mt-4 max-w-[52ch] leading-relaxed">{translation.intro}</p>
+
+            <div className="border-border mt-8 border-t pt-8">
+              {/* Every commercial figure on this page is demo data until the
+                  flag is cleared per station. The badge is not decoration —
+                  it is what stops an invented price reading as a real one. */}
+              {station.commercialIsPlaceholder ? (
+                <p className="border-gold-500 text-gold-700 mb-5 inline-block rounded-full border px-3 py-1 text-xs font-medium">
+                  {t('demoBadge')}
+                </p>
+              ) : null}
+              <StationPrice station={station} locale={locale} />
+            </div>
+
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Button href="/contact" variant="gold">
+                {t('cta')}
+              </Button>
+              <Button href="/calculator" variant="outline">
+                {tHero('ctaPrimary')}
+              </Button>
+            </div>
+          </div>
         </div>
-      </section>
+      </div>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         {/* Spec band */}
-        <div className="bg-border border-border grid gap-px border-b sm:grid-cols-2 lg:grid-cols-4">
+        <div className="bg-border border-border mt-16 grid gap-px border-y sm:grid-cols-2 lg:grid-cols-4">
           {specs.map((spec) => (
             <div key={spec.label} className="bg-paper px-6 py-8 first:pl-0">
               <p className="text-muted text-xs tracking-[0.08em] uppercase">{spec.label}</p>

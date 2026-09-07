@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import { Link } from '@/i18n/navigation';
 import type { ParsedStation, ParsedStationTranslation } from '@/entities/station/parse';
 
@@ -16,6 +16,7 @@ interface StationCardProps {
  */
 export function StationCard({ station, translation }: StationCardProps) {
   const t = useTranslations('Stations');
+  const locale = useLocale();
   const isCustom = station.accent === 'gold';
 
   return (
@@ -54,7 +55,29 @@ export function StationCard({ station, translation }: StationCardProps) {
           </p>
         ) : null}
 
-        <p className={`mt-3 text-sm ${isCustom ? 'text-white/70' : 'text-muted'}`}>{translation.intro}</p>
+        <p className={`mt-3 text-sm ${isCustom ? 'text-white/70' : 'text-muted'}`}>
+          {translation.intro}
+        </p>
+
+        {/* Kit price on the card too, so the catalogue can be compared at a
+            glance the way a visitor actually shops. The install range stays on
+            the detail page — a card is too small to carry the caveat that has
+            to travel with it, and the number without the caveat is the
+            misleading half. */}
+        {station.pricing ? (
+          <p
+            className={`mt-5 border-t pt-4 text-xl ${
+              isCustom ? 'border-white/15 text-white' : 'border-border text-navy-800'
+            }`}
+          >
+            {t('from')}{' '}
+            {new Intl.NumberFormat(locale, {
+              style: 'currency',
+              currency: 'UAH',
+              maximumFractionDigits: 0,
+            }).format(station.pricing.equipmentUah)}
+          </p>
+        ) : null}
 
         <span
           className={`mt-6 inline-block text-sm font-semibold underline-offset-4 group-hover:underline ${

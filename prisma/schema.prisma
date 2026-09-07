@@ -42,6 +42,27 @@ model Station {
   /// Launch blocker: placeholder rows must be replaced with real content.
   isPlaceholder Boolean @default(false)
 
+  /// COMMERCIAL FIELDS — all nullable, all editable from the admin panel.
+  /// The price is for the EQUIPMENT KIT only. Installation is published as a
+  /// range rather than folded into one number, because it genuinely varies
+  /// with roof type, cable runs and the state of the incoming service — a
+  /// single turnkey figure would be the "beautiful but untrue" number the FAQ
+  /// argues against, and an equipment-only price with no installation context
+  /// would be the same trick in the other direction.
+  priceEquipmentUah  Int?
+  priceInstallMinUah Int?
+  priceInstallMaxUah Int?
+  /// Null means "not stated". Never claim stock for equipment that is not
+  /// actually held or reliably sourceable.
+  inStock            Boolean?
+  ratingValue        Float?
+  ratingCount        Int?
+  /// LAUNCH BLOCKER. True while ANY commercial field above holds a demo value.
+  /// While set, the UI renders a visible placeholder badge beside the price and
+  /// rating, so fabricated figures cannot ship silently as real ones. Flip to
+  /// false per station only when every value above is genuine.
+  commercialIsPlaceholder Boolean @default(true)
+
   translations StationTranslation[]
 
   @@index([sortOrder])

@@ -33,6 +33,19 @@ interface StationSeed {
   accent: 'default' | 'gold';
   sortOrder: number;
   imagePath: string;
+  /**
+   * DEMO COMMERCIAL DATA — every figure below is invented so the product page
+   * layout can be judged. Each station carries commercialIsPlaceholder: true,
+   * which renders a visible badge beside the price and rating, so none of this
+   * can reach a visitor presented as fact. Replace with real numbers and flip
+   * the flag per station before launch.
+   */
+  priceEquipmentUah: number | null;
+  priceInstallMinUah: number | null;
+  priceInstallMaxUah: number | null;
+  inStock: boolean | null;
+  ratingValue: number | null;
+  ratingCount: number | null;
   uk: {
     badge: string;
     title: string;
@@ -56,6 +69,12 @@ const stations: StationSeed[] = [
     accent: 'default',
     sortOrder: 1,
     imagePath: '/stations/5kw.jpg',
+    priceEquipmentUah: 118000,
+    priceInstallMinUah: 22000,
+    priceInstallMaxUah: 34000,
+    inStock: true,
+    ratingValue: 4.8,
+    ratingCount: 12,
     uk: {
       badge: 'Стартова',
       title: 'Станція 5 кВт',
@@ -90,6 +109,12 @@ const stations: StationSeed[] = [
     accent: 'default',
     sortOrder: 2,
     imagePath: '/stations/10kw.jpg',
+    priceEquipmentUah: 196000,
+    priceInstallMinUah: 28000,
+    priceInstallMaxUah: 45000,
+    inStock: true,
+    ratingValue: 4.9,
+    ratingCount: 21,
     uk: {
       badge: 'Популярна',
       title: 'Станція 10 кВт',
@@ -122,6 +147,12 @@ const stations: StationSeed[] = [
     accent: 'default',
     sortOrder: 3,
     imagePath: '/stations/15kw.jpg',
+    priceEquipmentUah: 271000,
+    priceInstallMinUah: 34000,
+    priceInstallMaxUah: 56000,
+    inStock: false,
+    ratingValue: 4.7,
+    ratingCount: 8,
     uk: {
       badge: 'Розширена',
       title: 'Станція 15 кВт',
@@ -154,6 +185,12 @@ const stations: StationSeed[] = [
     accent: 'default',
     sortOrder: 4,
     imagePath: '/stations/30kw.jpg',
+    priceEquipmentUah: 468000,
+    priceInstallMinUah: 52000,
+    priceInstallMaxUah: 88000,
+    inStock: false,
+    ratingValue: 5,
+    ratingCount: 5,
     uk: {
       badge: 'Комерційна',
       title: 'Станція 30 кВт',
@@ -186,6 +223,12 @@ const stations: StationSeed[] = [
     accent: 'gold',
     sortOrder: 5,
     imagePath: '/stations/custom.jpg',
+    priceEquipmentUah: null,
+    priceInstallMinUah: null,
+    priceInstallMaxUah: null,
+    inStock: null,
+    ratingValue: null,
+    ratingCount: null,
     uk: {
       badge: 'Індивідуально',
       title: 'Індивідуальна конфігурація',
@@ -332,17 +375,35 @@ const projects: ProjectSeed[] = [
 
 async function main() {
   for (const station of stations) {
+    // Prices ARE admin-editable, so re-seeding must never overwrite a real one.
+    // Structural fields (power, image, ordering) stay seed-owned and always
+    // sync; the commercial block is refreshed only while the row is still
+    // flagged as demo. Once someone enters a genuine price in the admin panel
+    // and clears that flag, the seed stops touching it.
+    const existing = await prisma.station.findUnique({
+      where: { slug: station.slug },
+      select: { commercialIsPlaceholder: true },
+    });
+    const commercials = {
+      priceEquipmentUah: station.priceEquipmentUah,
+      priceInstallMinUah: station.priceInstallMinUah,
+      priceInstallMaxUah: station.priceInstallMaxUah,
+      inStock: station.inStock,
+      ratingValue: station.ratingValue,
+      ratingCount: station.ratingCount,
+      commercialIsPlaceholder: true,
+    };
+    const mayRefreshCommercials = !existing || existing.commercialIsPlaceholder;
+
     const record = await prisma.station.upsert({
       where: { slug: station.slug },
-      // Unlike Project and Lead, stations have no admin-editable UI — the seed
-      // file is the only source of truth, so re-running it should sync fields
-      // (e.g. a swapped imagePath) rather than leave existing rows untouched.
       update: {
         powerKw: station.powerKw,
         systemType: station.systemType,
         accent: station.accent,
         sortOrder: station.sortOrder,
         imagePath: station.imagePath,
+        ...(mayRefreshCommercials ? commercials : {}),
       },
       create: {
         slug: station.slug,
@@ -352,6 +413,7 @@ async function main() {
         sortOrder: station.sortOrder,
         imagePath: station.imagePath,
         isPlaceholder: false,
+        ...commercials,
       },
     });
 
