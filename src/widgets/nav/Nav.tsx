@@ -2,9 +2,10 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
-import { Menu, X, Sun } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { Button } from '@/shared/ui/Button';
+import { Logo } from '@/shared/ui/Logo';
 import { CallbackModal } from '@/widgets/callback-modal';
 import { useScrollShadow } from './useScrollShadow';
 
@@ -34,7 +35,7 @@ export function Nav() {
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
-          <Sun className="text-gold-500 h-6 w-6" aria-hidden />
+          <Logo size={30} />
           {/* Solid, not a bg-clip-text gradient. Gradient type is decorative
               rather than meaningful and is a common generated-UI tell; it also
               fights the restraint the rest of this design commits to. */}
