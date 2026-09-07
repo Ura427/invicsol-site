@@ -37,7 +37,7 @@ export async function ProjectDetailContent({
     <div>
       <div className="relative">
         {project.isPlaceholder ? (
-          <span className="border-gold-500 text-gold-700 mb-4 inline-block rounded-full border bg-white px-3 py-1 text-xs font-semibold">
+          <span className="border-gold-700/40 text-gold-700 bg-elevated mb-4 inline-block rounded-full border px-3 py-1 text-xs font-medium">
             {t('placeholderBadge')}
           </span>
         ) : null}

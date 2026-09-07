@@ -16,7 +16,11 @@ export async function generateMetadata({
   return { title: t('pageTitle'), description: t('pageDescription') };
 }
 
-export default async function FinancingPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function FinancingPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('Financing');
@@ -30,7 +34,9 @@ export default async function FinancingPage({ params }: { params: Promise<{ loca
           const Icon = ICONS[option.icon];
           return (
             <Card key={option.id} className="relative">
-              {option.isPlaceholder ? <PlaceholderBadge label={t('placeholderBadge')} /> : null}
+              {option.isPlaceholder ? (
+                <PlaceholderBadge label={t('placeholderBadge')} />
+              ) : null}
               <div className="bg-gold-500/10 flex h-12 w-12 items-center justify-center rounded-full">
                 <Icon className="text-gold-600 h-6 w-6" aria-hidden />
               </div>
@@ -41,7 +47,9 @@ export default async function FinancingPage({ params }: { params: Promise<{ loca
           );
         })}
       </div>
-      <p className="text-muted mt-8 text-xs">{t('disclaimer')}</p>
+      <p className="text-muted mt-10 max-w-[78ch] text-xs leading-relaxed">
+        {t('disclaimer')}
+      </p>
     </div>
   );
 }

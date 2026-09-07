@@ -27,9 +27,11 @@
     "ctaSecondary": "Our stations"
   },
   "WhyUs": {
+    "eyebrow": "Advantages",
     "heading": "Why choose INVICSOL"
   },
   "Services": {
+    "eyebrow": "Solutions",
     "heading": "Services",
     "teaser": "From a grid-tied station to full outage backup — we size the right solution for your property.",
     "viewAll": "All services",
@@ -37,6 +39,7 @@
     "pageDescription": "The full range of solar work: from grid-tied stations to commercial installations."
   },
   "Stats": {
+    "eyebrow": "Track record",
     "heading": "INVICSOL by the numbers"
   },
   "Expertise": {

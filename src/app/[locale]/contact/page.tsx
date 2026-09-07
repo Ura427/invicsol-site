@@ -66,7 +66,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
           <iframe
             title="INVICSOL — map"
             src={contact.mapEmbedUrl}
-            className="border-border mt-4 h-64 w-full rounded-2xl border"
+            className="border-border mt-4 h-64 w-full rounded-[var(--radius-lg)] border"
             loading="lazy"
           />
         </div>

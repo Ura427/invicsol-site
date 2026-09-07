@@ -14,7 +14,11 @@ export async function generateMetadata({
   return { title: t('pageTitle'), description: t('pageDescription') };
 }
 
-export default async function ArticlesPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function ArticlesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('Articles');
@@ -22,7 +26,11 @@ export default async function ArticlesPage({ params }: { params: Promise<{ local
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-24 sm:px-6 lg:px-8">
-      <SectionHeading title={t('heading')} description={t('pageDescription')} />
+      <SectionHeading
+        title={t('heading')}
+        description={t('pageDescription')}
+        align="left"
+      />
 
       {articles.length === 0 ? (
         <p className="text-muted mt-8 text-center">{t('empty')}</p>
@@ -35,10 +43,14 @@ export default async function ArticlesPage({ params }: { params: Promise<{ local
               className="bg-elevated block rounded-[var(--radius-lg)] p-7 transition-transform duration-300 hover:-translate-y-0.5"
             >
               <p className="text-muted text-xs">
-                {new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(article.publishedAt)}
+                {new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(
+                  article.publishedAt,
+                )}
               </p>
               <h2 className="text-navy-800 mt-2 text-xl">{translation.title}</h2>
-              <p className="text-muted mt-2 text-sm">{translation.excerpt}</p>
+              <p className="text-muted mt-2 max-w-[70ch] text-sm leading-relaxed">
+                {translation.excerpt}
+              </p>
               <span className="text-gold-700 mt-4 inline-block text-sm font-semibold">
                 {t('readMore')} →
               </span>
