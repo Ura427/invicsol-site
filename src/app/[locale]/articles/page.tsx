@@ -48,7 +48,10 @@ export default async function ArticlesPage({
                 )}
               </p>
               <h2 className="text-navy-800 mt-2 text-xl">{translation.title}</h2>
-              <p className="text-muted mt-2 max-w-[70ch] text-sm leading-relaxed">
+              {/* 58ch, not the ~75ch the reading-measure rule implies: the ch unit is the
+                  width of "0", and Cyrillic lowercase is far narrower than that, so
+                  max-w-[70ch] was rendering ~88 characters per line. */}
+              <p className="text-muted mt-2 max-w-[58ch] text-sm leading-relaxed">
                 {translation.excerpt}
               </p>
               <span className="text-gold-700 mt-4 inline-block text-sm font-semibold">

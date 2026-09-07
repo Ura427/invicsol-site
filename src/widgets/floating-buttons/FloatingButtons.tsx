@@ -9,6 +9,15 @@ import { SITE } from '@/shared/lib/site';
 export function FloatingButtons() {
   const t = useTranslations('FloatingButtons');
 
+  // These buttons were dead for a data reason, not a code one: they point at
+  // SITE.telegram and SITE.viber, which are still the invented handle
+  // (t.me/invicsol) and the invented phone number. A messenger button that
+  // opens a chat with nobody is worse than no button, because the visitor
+  // believes they have made contact and stops trying. While the contact details
+  // are flagged as placeholders the buttons stay hidden; they return on their
+  // own once real details are entered and isPlaceholderContact is cleared.
+  if (SITE.isPlaceholderContact) return null;
+
   return (
     <div className="fixed right-4 bottom-4 z-40 flex flex-col gap-3">
       <a

@@ -34,7 +34,15 @@ export function Nav() {
         hasShadow ? 'border-border' : 'border-transparent'
       }`}
     >
-      <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
+      {/* A three-column grid rather than justify-between.
+          With justify-between the link group is positioned by whatever space is
+          left over, so translating the labels moved the entire block: switching
+          uk -> en slid it 41px right and shrank it 35px, which is the jolt you
+          see on language change. Here the outer columns size to their content
+          and the links sit centred in a fixed middle column, so a width change
+          is absorbed symmetrically inside that column instead of shoving
+          everything sideways. */}
+      <nav className="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-6 px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
           <Logo size={30} />
           {/* Solid, not a bg-clip-text gradient. Gradient type is decorative
@@ -43,7 +51,7 @@ export function Nav() {
           <span className="text-navy-800 text-xl font-medium tracking-[-0.03em]">INVICSOL</span>
         </Link>
 
-        <ul className="hidden items-center gap-8 lg:flex">
+        <ul className="hidden items-center justify-center gap-8 lg:flex">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -61,7 +69,14 @@ export function Nav() {
           })}
         </ul>
 
-        <div className="hidden items-center gap-3 lg:flex">
+        {/* Reserved width, right-aligned. The two CTA labels differ in length
+            between locales ("Замовити дзвінок" vs "Order a callback"), and
+            because this column sizes to its content, that difference was
+            squeezing the centre column and dragging the nav links 45px sideways
+            on every language switch. Applied from xl only: at lg (1024px) reserving it overflowed the
+            viewport. 31rem clears the longer (Ukrainian) pair
+            measured at 1440px, so the column width stops depending on locale. */}
+        <div className="hidden items-center justify-end gap-3 lg:flex xl:min-w-[31rem]">
           <LocaleSwitcher />
           <CallbackModal />
           <Button href="/contact" variant="gold">
@@ -71,7 +86,7 @@ export function Nav() {
 
         <button
           type="button"
-          className="text-navy-800 lg:hidden"
+          className="text-navy-800 col-start-3 justify-self-end lg:hidden"
           aria-label={isMenuOpen ? t('closeMenu') : t('openMenu')}
           aria-expanded={isMenuOpen}
           onClick={() => setIsMenuOpen((open) => !open)}

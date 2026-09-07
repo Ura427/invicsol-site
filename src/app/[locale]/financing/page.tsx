@@ -47,7 +47,7 @@ export default async function FinancingPage({
           );
         })}
       </div>
-      <p className="text-muted mt-10 max-w-[78ch] text-xs leading-relaxed">
+      <p className="text-muted mt-10 max-w-[62ch] text-xs leading-relaxed">
         {t('disclaimer')}
       </p>
     </div>
