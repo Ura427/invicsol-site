@@ -29,9 +29,10 @@ export function Nav() {
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">
           <Sun className="text-gold-500 h-6 w-6" aria-hidden />
-          <span className="from-navy-800 to-navy-600 bg-gradient-to-r bg-clip-text text-xl font-extrabold text-transparent">
-            INVICSOL
-          </span>
+          {/* Solid, not a bg-clip-text gradient. Gradient type is decorative
+              rather than meaningful and is a common generated-UI tell; it also
+              fights the restraint the rest of this design commits to. */}
+          <span className="text-navy-800 text-xl font-medium tracking-[-0.03em]">INVICSOL</span>
         </Link>
 
         <ul className="hidden items-center gap-8 lg:flex">
@@ -71,7 +72,7 @@ export function Nav() {
       </nav>
 
       {isMenuOpen ? (
-        <div className="border-border border-t bg-white px-4 pb-6 lg:hidden">
+        <div className="border-border bg-paper border-t px-4 pb-6 lg:hidden">
           <ul className="flex flex-col gap-4 pt-4">
             {NAV_LINKS.map((link) => (
               <li key={link.href}>

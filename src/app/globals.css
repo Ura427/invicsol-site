@@ -13,23 +13,48 @@
   --color-gold-500: #e8a020;
   --color-gold-400: #f3b94a;
 
-  /* Text-only gold. gold-600 on white measures 3.04:1 — fine for large display
-     type and decorative icons, but below the 4.5:1 WCAG AA needs for normal
-     text. This one measures 5.18:1 on white and 4.88:1 on --color-surface.
-     Use it for any gold text under ~24px; keep gold-600 for big numbers,
-     icons and fills. */
-  --color-gold-700: #96620f;
+  /* Text-only gold. gold-600 measures 2.89:1 on the warm canvas — fine for large
+     display type, icons and fills, but far below the 4.5:1 WCAG AA floor for
+     normal text. This one was re-measured against the warm palette (the previous
+     #96620f fell to 4.55:1 on --color-surface, too close to the line): it clears
+     5.19:1 on every surface in the system — 5.62 on paper, 5.19 on surface,
+     5.92 on white. Use it for any gold text under ~24px. */
+  --color-gold-700: #8a5a0d;
 
   --color-ink: #0d1e3d;
-  --color-paper: #ffffff;
-  --color-muted: #5b667e;
-  --color-border: #e4e8f0;
-  --color-surface: #f6f8fc;
+
+  /* Warm off-white canvas, the single defining move of this design. Elevation is
+     expressed by tonal layering — surface (deepest) → paper (canvas) → elevated
+     (white) → navy — never by shadow. White is now the RAISED surface rather than
+     the page background, inverting the previous relationship. */
+  --color-paper: #faf9f5;
+  --color-surface: #f2f0e9;
+  --color-elevated: #ffffff;
+
+  /* Warmed to sit on the new canvas; the previous cool blue-grays (#5b667e,
+     #e4e8f0) read as a different, colder system against it. muted measures
+     5.62:1 on paper and 5.19:1 on surface. */
+  --color-muted: #6b6357;
+  --color-border: #e3ded2;
 
   --breakpoint-xs: 30rem;
 
+  /* A real radius scale rather than ad-hoc rounded-2xl/3xl guesses per component.
+     Generous rounding is a signature of this direction; `image` is deliberately
+     dramatic, `pill` is for buttons. */
+  --radius-sm: 0.5rem;
+  --radius-md: 0.875rem;
+  --radius-lg: 1.25rem;
+  --radius-image: 2.5rem;
+  --radius-pill: 999px;
+
+  /* --shadow-card is deliberately gone. This design is shadowless: hierarchy
+     comes from tonal layering and space, never elevation. It also removed the
+     single largest detector finding — a 1px border paired with a 32px-blur
+     shadow on the same element, 22 hits on the homepage alone. --shadow-nav
+     survives because a floating nav genuinely needs to separate from content
+     scrolling under it. */
   --shadow-nav: 0 8px 24px -12px rgb(13 30 61 / 0.25);
-  --shadow-card: 0 12px 32px -16px rgb(13 30 61 / 0.2);
 }
 
 html {
@@ -43,14 +68,22 @@ body {
 }
 
 /* One deliberate typographic contrast — Manrope for headings, Inter for
-   everything else — rather than a single font everywhere. Tighter tracking
-   on the display face reads as more confident at large sizes than Inter's
-   default spacing does. */
+   everything else — rather than a single font everywhere.
+
+   Headings are LIGHT, not bold. This is the single highest-impact decision in
+   the design and it is deliberately anti-convention: both reference systems
+   set large display type at weight 300, and the effect is that a headline reads
+   as etched and architectural rather than shouted. Tight negative tracking is
+   what keeps a light weight from feeling thin and airy at large sizes — the two
+   must travel together. Components should not re-bold these with font-bold or
+   font-extrabold; if something needs more weight, it needs more size. */
 h1,
 h2,
 h3 {
   font-family: var(--font-display);
-  letter-spacing: -0.02em;
+  font-weight: 300;
+  letter-spacing: -0.035em;
+  line-height: 1.05;
 }
 
 ::selection {

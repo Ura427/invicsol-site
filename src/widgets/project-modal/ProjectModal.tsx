@@ -45,7 +45,7 @@ export function ProjectModal({ children }: ProjectModalProps) {
       onClick={(event) => {
         if (event.target === dialogRef.current) handleClose();
       }}
-      className="project-modal-dialog w-full max-w-2xl rounded-2xl bg-white p-6 sm:p-8"
+      className="project-modal-dialog bg-elevated w-full max-w-2xl rounded-[var(--radius-lg)] p-7 sm:p-8"
     >
       <button
         type="button"

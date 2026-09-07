@@ -29,7 +29,7 @@ export default async function ProjectsPage({ params, searchParams }: ProjectsPag
   const filters = parseProjectFilters(resolvedSearchParams);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('pageTitle')} description={t('pageDescription')} align="left" />
 
       <div className="mt-8">

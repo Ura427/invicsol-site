@@ -32,11 +32,11 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
   const { team, brands, warranty } = getContent(locale);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('heading')} description={t('intro')} align="left" />
 
       <div className="mt-12">
-        <h2 className="text-navy-800 text-xl font-bold">{t('teamHeading')}</h2>
+        <h2 className="text-navy-800 text-xl">{t('teamHeading')}</h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-3">
           {team.map((member) => (
             <Card key={member.id} className="relative">
@@ -47,7 +47,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
               >
                 {initialFrom(member.name)}
               </div>
-              <h3 className="text-navy-800 mt-4 font-semibold">{member.name}</h3>
+              <h3 className="text-navy-800 mt-4">{member.name}</h3>
               <p className="text-gold-700 text-sm">{member.role}</p>
               <p className="text-muted mt-2 text-sm">{member.bio}</p>
             </Card>
@@ -56,12 +56,12 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       </div>
 
       <div className="mt-12">
-        <h2 className="text-navy-800 text-xl font-bold">{t('warrantyHeading')}</h2>
+        <h2 className="text-navy-800 text-xl">{t('warrantyHeading')}</h2>
         <div className="mt-6 grid gap-6 sm:grid-cols-3">
           {warranty.map((item) => (
             <Card key={item.id}>
-              <p className="text-gold-600 text-3xl font-extrabold">{item.years}</p>
-              <h3 className="text-navy-800 mt-2 font-semibold">{item.title}</h3>
+              <p className="text-gold-600 text-4xl font-light tracking-[-0.03em]">{item.years}</p>
+              <h3 className="text-navy-800 mt-2">{item.title}</h3>
               <p className="text-muted mt-2 text-sm">{item.text}</p>
             </Card>
           ))}
@@ -69,7 +69,7 @@ export default async function AboutPage({ params }: { params: Promise<{ locale: 
       </div>
 
       <div className="mt-12">
-        <h2 className="text-navy-800 text-xl font-bold">{t('brandsHeading')}</h2>
+        <h2 className="text-navy-800 text-xl">{t('brandsHeading')}</h2>
         <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {brands.map((brand) => (
             <div key={brand.id} className="border-border rounded-xl border p-4">

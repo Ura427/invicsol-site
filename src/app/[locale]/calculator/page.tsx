@@ -19,7 +19,7 @@ export default async function CalculatorPage({ params }: { params: Promise<{ loc
   const t = await getTranslations('Calculator');
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('pageTitle')} description={t('pageDescription')} />
       <div className="mt-12">
         <CalculatorWizard />

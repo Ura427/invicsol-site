@@ -44,12 +44,12 @@ export default async function ArticleDetailPage({
   const { article, translation } = data;
 
   return (
-    <article className="mx-auto max-w-2xl px-4 py-16 sm:px-6 lg:px-8">
+    <article className="mx-auto max-w-2xl px-4 py-24 sm:px-6 lg:px-8">
       <p className="text-muted text-sm">
         {t('publishedLabel')}{' '}
         {new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(article.publishedAt)}
       </p>
-      <h1 className="text-navy-800 mt-2 text-3xl font-extrabold sm:text-4xl">
+      <h1 className="text-navy-800 mt-2 text-3xl sm:text-4xl">
         {translation.title}
       </h1>
 

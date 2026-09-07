@@ -21,7 +21,7 @@ export function Testimonials() {
   const { testimonials } = getContent(locale);
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('heading')} />
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {testimonials.map((testimonial) => (

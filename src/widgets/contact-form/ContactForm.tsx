@@ -44,7 +44,7 @@ export function ContactForm() {
   }
 
   return (
-    <section className="mx-auto max-w-xl px-4 py-16 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('heading')} description={t('text')} />
 
       <form onSubmit={handleSubmit} className="mt-8 space-y-4">

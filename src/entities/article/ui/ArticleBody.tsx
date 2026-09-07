@@ -5,7 +5,7 @@ export function ArticleBody({ blocks }: { blocks: readonly ArticleBlock[] }) {
     <div className="space-y-4">
       {blocks.map((block, index) =>
         block.type === 'heading' ? (
-          <h2 key={index} className="text-navy-800 pt-2 text-xl font-bold">
+          <h2 key={index} className="text-navy-800 pt-2 text-xl">
             {block.text}
           </h2>
         ) : (

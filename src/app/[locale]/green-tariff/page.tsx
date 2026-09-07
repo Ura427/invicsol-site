@@ -23,13 +23,13 @@ export default async function GreenTariffPage({ params }: { params: Promise<{ lo
   const relevantFaq = faq.filter((item) => item.id === 'green-tariff' || item.id === 'payback');
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-4xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('heading')} description={t('intro')} align="left" />
 
       <div className="mt-8 grid gap-6 sm:grid-cols-2">
         {relevantFaq.map((item) => (
           <Card key={item.id}>
-            <h2 className="text-navy-800 font-semibold">{item.question}</h2>
+            <h2 className="text-navy-800">{item.question}</h2>
             <p className="text-muted mt-2 text-sm">{item.answer}</p>
           </Card>
         ))}

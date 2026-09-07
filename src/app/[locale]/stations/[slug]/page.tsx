@@ -65,11 +65,11 @@ export default async function StationDetailPage({
           <Image src={station.imagePath} alt="" fill priority sizes="100vw" className="object-cover opacity-30" />
           <div className="from-navy-800 via-navy-800/80 absolute inset-0 bg-gradient-to-t to-transparent" />
         </div>
-        <div className="relative mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+        <div className="relative mx-auto max-w-4xl px-4 py-24 sm:px-6 lg:px-8">
           <span className="bg-gold-500 text-navy-900 inline-block rounded-full px-3 py-1 text-xs font-semibold">
             {translation.badge}
           </span>
-          <h1 className="mt-4 text-3xl font-extrabold sm:text-4xl">{translation.title}</h1>
+          <h1 className="mt-4 text-3xl sm:text-4xl">{translation.title}</h1>
           <p className="mt-4 max-w-2xl text-white/80">{translation.intro}</p>
         </div>
       </section>
@@ -77,7 +77,7 @@ export default async function StationDetailPage({
       <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
         <div className="grid gap-8 sm:grid-cols-2">
           <div>
-            <h2 className="text-navy-800 text-lg font-bold">{t('suitableFor')}</h2>
+            <h2 className="text-navy-800 text-lg">{t('suitableFor')}</h2>
             <ul className="mt-3 space-y-2">
               {translation.suitableFor.map((item) => (
                 <li key={item} className="text-muted flex gap-2 text-sm">
@@ -88,7 +88,7 @@ export default async function StationDetailPage({
             </ul>
           </div>
           <div>
-            <h2 className="text-navy-800 text-lg font-bold">{t('outcomes')}</h2>
+            <h2 className="text-navy-800 text-lg">{t('outcomes')}</h2>
             <ul className="mt-3 space-y-2">
               {translation.outcomes.map((item) => (
                 <li key={item} className="text-muted flex gap-2 text-sm">
@@ -102,7 +102,7 @@ export default async function StationDetailPage({
 
         <div className="mt-12 grid gap-8 sm:grid-cols-2">
           <div>
-            <h2 className="text-navy-800 text-lg font-bold">{t('kitMain')}</h2>
+            <h2 className="text-navy-800 text-lg">{t('kitMain')}</h2>
             <ul className="mt-3 space-y-2">
               {translation.kitMain.map((item) => (
                 <li key={item} className="text-muted text-sm">
@@ -112,7 +112,7 @@ export default async function StationDetailPage({
             </ul>
           </div>
           <div>
-            <h2 className="text-navy-800 text-lg font-bold">{t('kitExtra')}</h2>
+            <h2 className="text-navy-800 text-lg">{t('kitExtra')}</h2>
             <ul className="mt-3 space-y-2">
               {translation.kitExtra.map((item) => (
                 <li key={item} className="text-muted text-sm">
@@ -124,7 +124,7 @@ export default async function StationDetailPage({
         </div>
 
         <div className="mt-12">
-          <h2 className="text-navy-800 text-lg font-bold">{t('specs')}</h2>
+          <h2 className="text-navy-800 text-lg">{t('specs')}</h2>
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
             <div className="border-border rounded-xl border p-4 text-center">
               <p className="text-muted text-xs">{t('specPower')}</p>
@@ -150,7 +150,7 @@ export default async function StationDetailPage({
         </div>
 
         <div className="mt-12">
-          <h2 className="text-navy-800 text-lg font-bold">{t('whatYouGet')}</h2>
+          <h2 className="text-navy-800 text-lg">{t('whatYouGet')}</h2>
           <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
             {translation.benefits.map((benefit) => (
               <div key={benefit} className="border-border rounded-xl border p-4 text-sm">

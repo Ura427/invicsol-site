@@ -20,8 +20,11 @@ const inter = Inter({ subsets: ['latin', 'latin-ext', 'cyrillic'], variable: '--
 // against next/font's own bundled font manifest) alongside a confident,
 // slightly technical character that fits a solar/energy brand.
 const manrope = Manrope({
+  // 300 carries every heading — see the h1,h2,h3 rule in globals.css; this
+  // design sets display type light rather than bold. 500 is kept for the few
+  // places a heading sits over photography and needs more body to stay legible.
   subsets: ['latin', 'cyrillic', 'cyrillic-ext'],
-  weight: ['700', '800'],
+  weight: ['300', '500'],
   variable: '--font-manrope',
 });
 

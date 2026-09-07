@@ -24,12 +24,19 @@ type ButtonAsLink = BaseProps &
 
 export type ButtonProps = ButtonAsButton | ButtonAsLink;
 
+/**
+ * Flat fills, no shadows, no gradients. The gold variant was a
+ * gold-500→gold-600 gradient with a drop shadow; a decorative gradient on the
+ * one element that carries every conversion is exactly the kind of default this
+ * design avoids. Solid gold reads as more deliberate and stays the single
+ * saturated colour on the page.
+ */
 const VARIANT_STYLES: Record<Variant, string> = {
   primary:
-    'bg-navy-800 text-white hover:bg-navy-700 shadow-sm px-6 py-3 rounded-full font-semibold transition-colors',
+    'bg-navy-800 text-white hover:bg-navy-700 px-7 py-3.5 rounded-full font-medium tracking-[-0.01em] transition-colors',
   outline:
-    'border border-navy-800 text-navy-800 hover:bg-navy-800 hover:text-white px-6 py-3 rounded-full font-semibold transition-colors',
-  gold: 'bg-gradient-to-r from-gold-500 to-gold-600 text-navy-900 hover:brightness-105 shadow-sm px-6 py-3 rounded-full font-semibold transition-all',
+    'border border-navy-800/70 text-navy-800 hover:bg-navy-800 hover:text-white px-7 py-3.5 rounded-full font-medium tracking-[-0.01em] transition-colors',
+  gold: 'bg-gold-500 text-navy-900 hover:bg-gold-400 px-7 py-3.5 rounded-full font-medium tracking-[-0.01em] transition-colors',
 };
 
 export function Button(props: ButtonProps) {

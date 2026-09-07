@@ -42,7 +42,7 @@ export default async function ProjectDetailPage({
   const { project, translation, images } = data;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-4xl px-4 py-24 sm:px-6 lg:px-8">
       <ProjectDetailContent
         locale={locale}
         project={project}

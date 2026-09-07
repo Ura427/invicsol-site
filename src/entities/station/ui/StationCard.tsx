@@ -21,8 +21,8 @@ export function StationCard({ station, translation }: StationCardProps) {
   return (
     <Link
       href={`/stations/${station.slug}`}
-      className={`group border-border shadow-card block h-full overflow-hidden rounded-2xl border transition-transform hover:-translate-y-1 ${
-        isCustom ? 'bg-navy-800 border-navy-800 text-white' : 'bg-white'
+      className={`group block h-full overflow-hidden rounded-[var(--radius-lg)] transition-transform duration-300 hover:-translate-y-0.5 ${
+        isCustom ? 'bg-navy-800 text-white' : 'bg-elevated'
       }`}
     >
       <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
@@ -44,12 +44,12 @@ export function StationCard({ station, translation }: StationCardProps) {
           {translation.badge}
         </span>
 
-        <h3 className={`mt-4 text-xl font-bold ${isCustom ? 'text-white' : 'text-navy-800'}`}>
+        <h3 className={`mt-4 text-xl ${isCustom ? 'text-white' : 'text-navy-800'}`}>
           {translation.title}
         </h3>
 
         {station.powerKw !== null ? (
-          <p className={`mt-1 text-3xl font-extrabold ${isCustom ? 'text-gold-400' : 'text-gold-600'}`}>
+          <p className={`mt-1 text-3xl font-light tracking-[-0.03em] ${isCustom ? "text-gold-400" : "text-gold-600"}`}>
             {station.powerKw} <span className="text-base font-medium">{t('kwUnit')}</span>
           </p>
         ) : null}

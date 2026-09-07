@@ -22,7 +22,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
   const { services } = getContent(locale);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('pageTitle')} description={t('pageDescription')} />
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {services.map((service) => {
@@ -30,7 +30,7 @@ export default async function ServicesPage({ params }: { params: Promise<{ local
           return (
             <Card key={service.id}>
               <Icon className="text-gold-600 h-7 w-7" aria-hidden />
-              <h3 className="text-navy-800 mt-4 text-lg font-semibold">{service.title}</h3>
+              <h3 className="text-navy-800 mt-4 text-lg">{service.title}</h3>
               <p className="text-muted mt-2 text-sm">{service.text}</p>
             </Card>
           );

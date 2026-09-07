@@ -41,7 +41,7 @@ export async function ProjectDetailContent({
             {t('placeholderBadge')}
           </span>
         ) : null}
-        <h1 className="text-navy-800 text-3xl font-extrabold sm:text-4xl">{translation.title}</h1>
+        <h1 className="text-navy-800 text-3xl sm:text-4xl">{translation.title}</h1>
         <p className="text-muted mt-3">{translation.summary}</p>
       </div>
 
@@ -82,15 +82,15 @@ export async function ProjectDetailContent({
 
       <div className="mt-10 space-y-8">
         <div>
-          <h2 className="text-navy-800 text-lg font-bold">{t('challenge')}</h2>
+          <h2 className="text-navy-800 text-lg">{t('challenge')}</h2>
           <p className="text-muted mt-2">{translation.challenge}</p>
         </div>
         <div>
-          <h2 className="text-navy-800 text-lg font-bold">{t('solution')}</h2>
+          <h2 className="text-navy-800 text-lg">{t('solution')}</h2>
           <p className="text-muted mt-2">{translation.solution}</p>
         </div>
         <div>
-          <h2 className="text-navy-800 text-lg font-bold">{t('result')}</h2>
+          <h2 className="text-navy-800 text-lg">{t('result')}</h2>
           <p className="text-muted mt-2">{translation.result}</p>
         </div>
       </div>

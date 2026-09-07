@@ -19,7 +19,7 @@ export async function StationGrid({ showHeading = true }: StationGridProps) {
   );
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       {showHeading ? <SectionHeading title={t('heading')} description={t('teaser')} /> : null}
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {stations.map((station) => {

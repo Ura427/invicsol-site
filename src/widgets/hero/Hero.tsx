@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/shared/ui/Button';
 
@@ -7,59 +8,67 @@ import { Button } from '@/shared/ui/Button';
  * hydration flash, and each element's delay comes from its position in this
  * array instead of a duplicated animation class per element.
  */
-const STAGGER_DELAYS_MS = [0, 100, 200, 300] as const;
+const STAGGER_DELAYS_MS = [0, 100, 200] as const;
 
+/**
+ * Full-bleed photograph with the headline set low and light over it, rather
+ * than the previous split layout (navy gradient panel + illustration in a
+ * rounded box). The photograph carries the credibility — it is real installed
+ * hardware, not an abstract graphic — and the type stays quiet on top of it.
+ *
+ * The scrim is a bottom-weighted gradient, not a flat darkening layer over the
+ * whole image: it puts contrast exactly where the text sits and leaves the top
+ * of the photograph untouched.
+ */
 export function Hero() {
   const t = useTranslations('Hero');
 
   return (
-    <section className="from-navy-800 to-navy-700 relative overflow-hidden bg-gradient-to-br text-white">
-      <div className="mx-auto grid max-w-7xl gap-10 px-4 py-20 sm:px-6 lg:grid-cols-2 lg:items-center lg:py-28 lg:px-8">
-        <div>
-          <h1
-            className="animate-hero-in text-4xl leading-tight font-extrabold opacity-0 sm:text-5xl lg:text-6xl"
-            style={{ animationDelay: `${STAGGER_DELAYS_MS[0]}ms` }}
-          >
-            {t('titlePrefix')}
-            <em className="text-gold-400 not-italic">{t('titleHighlight')}</em>
-            {t('titleSuffix')}
-          </h1>
+    <section className="bg-navy-900 relative isolate flex min-h-[34rem] items-end overflow-hidden lg:min-h-[42rem]">
+      <Image
+        src="/stations/15kw.jpg"
+        alt=""
+        fill
+        priority
+        sizes="100vw"
+        className="object-cover"
+      />
+      <div
+        className="from-navy-900/95 via-navy-900/70 absolute inset-0 bg-gradient-to-t to-transparent"
+        aria-hidden
+      />
 
-          <p
-            className="animate-hero-in mt-6 max-w-lg text-lg text-white/80 opacity-0"
-            style={{ animationDelay: `${STAGGER_DELAYS_MS[1]}ms` }}
-          >
-            {t('description')}
-          </p>
+      <div className="relative mx-auto w-full max-w-7xl px-4 pt-24 pb-16 sm:px-6 lg:px-8 lg:pb-24">
+        <h1
+          className="animate-hero-in max-w-4xl text-[2.5rem] text-white opacity-0 sm:text-6xl lg:text-7xl"
+          style={{ animationDelay: `${STAGGER_DELAYS_MS[0]}ms` }}
+        >
+          {t('titlePrefix')}
+          <em className="text-gold-400 not-italic">{t('titleHighlight')}</em>
+          {t('titleSuffix')}
+        </h1>
 
-          <div
-            className="animate-hero-in mt-8 flex flex-wrap gap-4 opacity-0"
-            style={{ animationDelay: `${STAGGER_DELAYS_MS[2]}ms` }}
-          >
-            <Button href="/calculator" variant="gold">
-              {t('ctaPrimary')}
-            </Button>
-            <Button
-              href="/stations"
-              variant="outline"
-              className="border-white text-white hover:bg-white hover:text-navy-800"
-            >
-              {t('ctaSecondary')}
-            </Button>
-          </div>
-        </div>
+        <p
+          className="animate-hero-in mt-7 max-w-xl text-lg leading-relaxed text-white/75 opacity-0"
+          style={{ animationDelay: `${STAGGER_DELAYS_MS[1]}ms` }}
+        >
+          {t('description')}
+        </p>
 
         <div
-          className="animate-hero-scale-in relative aspect-[4/3] overflow-hidden rounded-3xl bg-white/5 opacity-0 shadow-2xl"
-          style={{ animationDelay: `${STAGGER_DELAYS_MS[3]}ms` }}
+          className="animate-hero-in mt-10 flex flex-wrap gap-3 opacity-0"
+          style={{ animationDelay: `${STAGGER_DELAYS_MS[2]}ms` }}
         >
-          {/* eslint-disable-next-line @next/next/no-img-element -- static hero art, no next/image benefit for a decorative background this size */}
-          <img
-            src="/hero/solar-house.svg"
-            alt=""
-            className="h-full w-full object-cover"
-            role="presentation"
-          />
+          <Button href="/calculator" variant="gold">
+            {t('ctaPrimary')}
+          </Button>
+          <Button
+            href="/stations"
+            variant="outline"
+            className="hover:text-navy-800 border-white/60 text-white hover:bg-white"
+          >
+            {t('ctaSecondary')}
+          </Button>
         </div>
       </div>
     </section>

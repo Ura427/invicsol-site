@@ -6,7 +6,7 @@ export function Quote() {
   const { quote } = getContent(locale);
 
   return (
-    <section className="bg-navy-800 py-16 text-white">
+    <section className="bg-navy-800 py-24 text-white">
       <div className="mx-auto max-w-3xl px-4 text-center sm:px-6 lg:px-8">
         <blockquote className="text-2xl leading-relaxed font-medium sm:text-3xl">
           &ldquo;{quote.text}&rdquo;

@@ -21,13 +21,13 @@ export default async function WarrantyPage({ params }: { params: Promise<{ local
   const { warranty } = getContent(locale);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('pageTitle')} description={t('pageDescription')} />
       <div className="mt-12 grid gap-6 sm:grid-cols-3">
         {warranty.map((item) => (
           <Card key={item.id}>
-            <p className="text-gold-600 text-4xl font-extrabold">{item.years}</p>
-            <h2 className="text-navy-800 mt-2 font-semibold">{item.title}</h2>
+            <p className="text-gold-600 text-4xl font-light tracking-[-0.03em]">{item.years}</p>
+            <h2 className="text-navy-800 mt-2">{item.title}</h2>
             <p className="text-muted mt-2 text-sm">{item.text}</p>
           </Card>
         ))}

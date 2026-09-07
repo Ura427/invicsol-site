@@ -18,8 +18,8 @@ export default async function PrivacyPage({ params }: { params: Promise<{ locale
   const t = await getTranslations('Legal');
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-16 sm:px-6 lg:px-8">
-      <h1 className="text-navy-800 text-3xl font-bold">{t('privacyTitle')}</h1>
+    <div className="mx-auto max-w-3xl px-4 py-24 sm:px-6 lg:px-8">
+      <h1 className="text-navy-800 text-3xl">{t('privacyTitle')}</h1>
       <div className="text-muted mt-6 space-y-4 text-sm leading-relaxed">
         <p>{t('privacyDescription')}</p>
         <p>

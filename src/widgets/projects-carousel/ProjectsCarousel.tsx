@@ -15,7 +15,7 @@ export async function ProjectsCarousel() {
   if (recent.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('heading')} description={t('teaser')} />
       <div className="mt-12">
         <ProjectsCarouselClient items={recent} />

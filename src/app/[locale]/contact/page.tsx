@@ -22,7 +22,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
   const { contact } = getContent(locale);
 
   return (
-    <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('heading')} align="left" />
 
       <div className="mt-10 grid gap-10 lg:grid-cols-2">
@@ -71,7 +71,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
           />
         </div>
 
-        <div className="border-border shadow-card rounded-2xl border bg-white">
+        <div className="bg-elevated rounded-[var(--radius-lg)]">
           <ContactForm />
         </div>
       </div>

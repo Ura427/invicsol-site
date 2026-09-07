@@ -22,7 +22,7 @@ export function StepShell({ step, title, children }: StepShellProps) {
       <p className="text-muted mt-3 text-xs font-semibold tracking-wide uppercase">
         {t('step', { current: step, total: TOTAL_STEPS })}
       </p>
-      <h2 className="text-navy-800 mt-2 text-2xl font-bold">{title}</h2>
+      <h2 className="text-navy-800 mt-2 text-2xl">{title}</h2>
       <div className="mt-6">{children}</div>
     </div>
   );

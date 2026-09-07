@@ -11,7 +11,7 @@ export function ServicesTeaser() {
   const { services } = getContent(locale);
 
   return (
-    <section className="bg-surface py-16">
+    <section className="bg-surface py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading title={t('heading')} description={t('teaser')} />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -20,7 +20,7 @@ export function ServicesTeaser() {
             return (
               <Card key={service.id}>
                 <Icon className="text-gold-600 h-7 w-7" aria-hidden />
-                <h3 className="text-navy-800 mt-4 text-lg font-semibold">{service.title}</h3>
+                <h3 className="text-navy-800 mt-4 text-lg">{service.title}</h3>
                 <p className="text-muted mt-2 text-sm">{service.text}</p>
               </Card>
             );

@@ -76,7 +76,7 @@ export function CallbackModal() {
         onClick={(event) => {
           if (event.target === dialogRef.current) handleClose();
         }}
-        className="callback-dialog w-full max-w-sm rounded-2xl bg-white p-6"
+        className="callback-dialog bg-elevated w-full max-w-sm rounded-[var(--radius-lg)] p-7"
       >
         <button
           type="button"
@@ -87,7 +87,7 @@ export function CallbackModal() {
           <X className="h-5 w-5" aria-hidden />
         </button>
 
-        <h2 id="callback-modal-heading" className="text-navy-800 text-lg font-bold">
+        <h2 id="callback-modal-heading" className="text-navy-800 text-lg">
           {t('heading')}
         </h2>
 

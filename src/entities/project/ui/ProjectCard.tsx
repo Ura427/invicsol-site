@@ -15,7 +15,7 @@ export function ProjectCard({ project, translation }: ProjectCardProps) {
   return (
     <Link
       href={`/projects/${project.slug}`}
-      className="group border-border shadow-card relative block overflow-hidden rounded-2xl border bg-white transition-transform hover:-translate-y-1"
+      className="group bg-elevated relative block overflow-hidden rounded-[var(--radius-lg)] transition-transform duration-300 hover:-translate-y-0.5"
     >
       {project.isPlaceholder ? <PlaceholderBadge label={t('placeholderBadge')} /> : null}
 
@@ -34,7 +34,7 @@ export function ProjectCard({ project, translation }: ProjectCardProps) {
       </div>
 
       <div className="p-5">
-        <h3 className="text-navy-800 text-lg font-semibold">{translation.title}</h3>
+        <h3 className="text-navy-800 text-lg">{translation.title}</h3>
         <p className="text-muted mt-1 text-sm">{translation.summary}</p>
         <p className="text-gold-700 mt-3 text-sm font-semibold">
           {project.capacityKw} {t('kwUnit')}

@@ -23,7 +23,7 @@ export default async function FinancingPage({ params }: { params: Promise<{ loca
   const { financing } = getContent(locale);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-5xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('heading')} description={t('intro')} align="left" />
       <div className="mt-10 grid gap-6 sm:grid-cols-3">
         {financing.map((option) => {
@@ -34,7 +34,7 @@ export default async function FinancingPage({ params }: { params: Promise<{ loca
               <div className="bg-gold-500/10 flex h-12 w-12 items-center justify-center rounded-full">
                 <Icon className="text-gold-600 h-6 w-6" aria-hidden />
               </div>
-              <h2 className="text-navy-800 mt-4 font-semibold">{option.provider}</h2>
+              <h2 className="text-navy-800 mt-4">{option.provider}</h2>
               <p className="text-gold-700 mt-1 text-sm font-medium">{option.terms}</p>
               <p className="text-muted mt-2 text-sm">{option.note}</p>
             </Card>
