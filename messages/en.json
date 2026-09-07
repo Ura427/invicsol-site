@@ -53,6 +53,7 @@
     "placeholderBadge": "Demo content"
   },
   "Stations": {
+    "eyebrow": "Catalogue",
     "heading": "Station catalogue",
     "teaser": "Five ready-made configurations — from a small private home to a commercial property.",
     "viewAll": "All stations",
@@ -81,7 +82,8 @@
       "grid-tied": "Grid-tied",
       "hybrid": "Hybrid",
       "custom": "Custom-designed"
-    }
+    },
+    "ctaHeading": "Ready to size this station for your property?"
   },
   "Projects": {
     "heading": "Completed projects",

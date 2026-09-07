@@ -32,6 +32,16 @@ export async function generateMetadata({
   return { title: data.translation.title, description: data.translation.intro };
 }
 
+/** Small uppercase label with the square marker, matching SectionHeading's eyebrow. */
+function Label({ children }: { children: React.ReactNode }) {
+  return (
+    <p className="text-gold-700 flex items-center gap-2.5">
+      <span className="bg-gold-700 inline-block h-1 w-1 shrink-0" aria-hidden />
+      <span className="text-xs font-medium tracking-[0.14em] uppercase">{children}</span>
+    </p>
+  );
+}
+
 export default async function StationDetailPage({
   params,
 }: {
@@ -56,116 +66,143 @@ export default async function StationDetailPage({
       : {}),
   };
 
+  // The four headline facts, rendered as one ruled band — a station page is a
+  // specification sheet, and a spec sheet lists values against rules rather
+  // than floating each one inside its own bordered box.
+  const specs = [
+    {
+      label: t('specPower'),
+      value: station.powerKw !== null ? `${station.powerKw} ${t('kwUnit')}` : '—',
+    },
+    { label: t('specSystemType'), value: t(`systemTypes.${station.systemType}`) },
+    { label: t('specPurpose'), value: translation.specPurpose },
+    { label: t('specScalability'), value: translation.specScalability },
+  ];
+
   return (
     <div>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
-      <section className="from-navy-800 to-navy-700 relative overflow-hidden bg-gradient-to-br text-white">
-        <div className="absolute inset-0">
-          <Image src={station.imagePath} alt="" fill priority sizes="100vw" className="object-cover opacity-30" />
-          <div className="from-navy-800 via-navy-800/80 absolute inset-0 bg-gradient-to-t to-transparent" />
-        </div>
-        <div className="relative mx-auto max-w-4xl px-4 py-24 sm:px-6 lg:px-8">
-          <span className="bg-gold-500 text-navy-900 inline-block rounded-full px-3 py-1 text-xs font-semibold">
+      {/* Same hero treatment as the homepage: the photograph carries the page
+          at full strength with a bottom-weighted scrim, rather than sitting at
+          30% opacity behind a gradient panel. */}
+      <section className="bg-navy-900 relative isolate flex min-h-[26rem] items-end overflow-hidden lg:min-h-[32rem]">
+        <Image src={station.imagePath} alt="" fill priority sizes="100vw" className="object-cover" />
+        <div
+          className="from-navy-900/95 via-navy-900/70 absolute inset-0 bg-gradient-to-t to-transparent"
+          aria-hidden
+        />
+        <div className="relative mx-auto w-full max-w-6xl px-4 pt-24 pb-14 sm:px-6 lg:px-8 lg:pb-20">
+          <span className="bg-gold-500 text-navy-900 inline-block rounded-full px-3.5 py-1.5 text-xs font-medium">
             {translation.badge}
           </span>
-          <h1 className="mt-4 text-3xl sm:text-4xl">{translation.title}</h1>
-          <p className="mt-4 max-w-2xl text-white/80">{translation.intro}</p>
+          <h1 className="mt-6 max-w-3xl text-4xl text-white sm:text-5xl lg:text-6xl">
+            {translation.title}
+          </h1>
+          <p className="mt-5 max-w-xl leading-relaxed text-white/75">{translation.intro}</p>
         </div>
       </section>
 
-      <div className="mx-auto max-w-4xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-8 sm:grid-cols-2">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        {/* Spec band */}
+        <div className="bg-border border-border grid gap-px border-b sm:grid-cols-2 lg:grid-cols-4">
+          {specs.map((spec) => (
+            <div key={spec.label} className="bg-paper px-6 py-8 first:pl-0">
+              <p className="text-muted text-xs tracking-[0.08em] uppercase">{spec.label}</p>
+              <p className="text-navy-800 mt-3 text-xl leading-snug">{spec.value}</p>
+            </div>
+          ))}
+        </div>
+
+        <div className="grid gap-14 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 className="text-navy-800 text-lg">{t('suitableFor')}</h2>
-            <ul className="mt-3 space-y-2">
+            <Label>{t('suitableFor')}</Label>
+            <ul className="mt-6 space-y-4">
               {translation.suitableFor.map((item) => (
-                <li key={item} className="text-muted flex gap-2 text-sm">
-                  <Check className="text-gold-600 mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-                  {item}
+                <li key={item} className="text-navy-800 flex gap-3">
+                  <Check className="text-gold-700 mt-1.5 h-4 w-4 shrink-0" aria-hidden />
+                  <span className="leading-relaxed">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
           <div>
-            <h2 className="text-navy-800 text-lg">{t('outcomes')}</h2>
-            <ul className="mt-3 space-y-2">
+            <Label>{t('outcomes')}</Label>
+            <ul className="mt-6 space-y-4">
               {translation.outcomes.map((item) => (
-                <li key={item} className="text-muted flex gap-2 text-sm">
-                  <Check className="text-gold-600 mt-0.5 h-4 w-4 shrink-0" aria-hidden />
-                  {item}
+                <li key={item} className="text-navy-800 flex gap-3">
+                  <Check className="text-gold-700 mt-1.5 h-4 w-4 shrink-0" aria-hidden />
+                  <span className="leading-relaxed">{item}</span>
                 </li>
               ))}
             </ul>
           </div>
         </div>
+      </div>
 
-        <div className="mt-12 grid gap-8 sm:grid-cols-2">
-          <div>
-            <h2 className="text-navy-800 text-lg">{t('kitMain')}</h2>
-            <ul className="mt-3 space-y-2">
-              {translation.kitMain.map((item) => (
-                <li key={item} className="text-muted text-sm">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-          <div>
-            <h2 className="text-navy-800 text-lg">{t('kitExtra')}</h2>
-            <ul className="mt-3 space-y-2">
-              {translation.kitExtra.map((item) => (
-                <li key={item} className="text-muted text-sm">
-                  {item}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
-        <div className="mt-12">
-          <h2 className="text-navy-800 text-lg">{t('specs')}</h2>
-          <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div className="border-border rounded-xl border p-4 text-center">
-              <p className="text-muted text-xs">{t('specPower')}</p>
-              <p className="text-navy-800 mt-1 font-semibold">
-                {station.powerKw !== null ? `${station.powerKw} ${t('kwUnit')}` : '—'}
-              </p>
+      {/* Equipment — the densest, most technical block on the page, so it gets
+          the surface tint and ruled rows to read as a parts list. */}
+      <section className="bg-surface py-20">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <Label>{t('kit')}</Label>
+          <div className="mt-10 grid gap-12 lg:grid-cols-2 lg:gap-20">
+            <div>
+              <h2 className="text-navy-800 text-2xl">{t('kitMain')}</h2>
+              <ul className="border-border divide-border mt-6 divide-y border-t">
+                {translation.kitMain.map((item) => (
+                  <li key={item} className="text-navy-800 py-4 leading-relaxed">
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
-            <div className="border-border rounded-xl border p-4 text-center">
-              <p className="text-muted text-xs">{t('specSystemType')}</p>
-              <p className="text-navy-800 mt-1 font-semibold">
-                {t(`systemTypes.${station.systemType}`)}
-              </p>
-            </div>
-            <div className="border-border rounded-xl border p-4 text-center">
-              <p className="text-muted text-xs">{t('specPurpose')}</p>
-              <p className="text-navy-800 mt-1 font-semibold">{translation.specPurpose}</p>
-            </div>
-            <div className="border-border rounded-xl border p-4 text-center">
-              <p className="text-muted text-xs">{t('specScalability')}</p>
-              <p className="text-navy-800 mt-1 font-semibold">{translation.specScalability}</p>
+            <div>
+              <h2 className="text-navy-800 text-2xl">{t('kitExtra')}</h2>
+              <ul className="border-border divide-border mt-6 divide-y border-t">
+                {translation.kitExtra.map((item) => (
+                  <li key={item} className="text-muted py-4 leading-relaxed">
+                    {item}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
+      </section>
 
-        <div className="mt-12">
-          <h2 className="text-navy-800 text-lg">{t('whatYouGet')}</h2>
-          <div className="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            {translation.benefits.map((benefit) => (
-              <div key={benefit} className="border-border rounded-xl border p-4 text-sm">
-                {benefit}
-              </div>
-            ))}
-          </div>
+      <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
+        <Label>{t('whatYouGet')}</Label>
+        {/* Flex rather than a grid: stations carry two or three benefits, so a
+            fixed column count always left a stub rule hanging under an empty
+            cell. Items size to their content and the rules land between them
+            whatever the count. */}
+        <div className="border-border mt-8 flex flex-wrap gap-y-6 border-t pt-8">
+          {translation.benefits.map((benefit, index) => (
+            <p
+              key={benefit}
+              className={`text-navy-800 leading-relaxed sm:px-8 sm:first:pl-0 ${
+                index > 0 ? 'border-border sm:border-l' : ''
+              }`}
+            >
+              {benefit}
+            </p>
+          ))}
         </div>
+      </div>
 
-        <div className="mt-12 text-center">
+      <section className="bg-navy-800 py-20 text-white">
+        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+          {/* Not the station title again — repeating the h1 verbatim at the
+              foot of the page tells the reader nothing they have not read. */}
+          <h2 className="max-w-xl text-3xl sm:text-4xl">{t('ctaHeading')}</h2>
           <Button href="/contact" variant="gold">
             {t('cta')}
           </Button>
         </div>
-      </div>
+      </section>
     </div>
   );
 }

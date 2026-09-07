@@ -19,8 +19,13 @@ export default async function StationsPage({ params }: { params: Promise<{ local
   const t = await getTranslations('Stations');
 
   return (
-    <div className="mx-auto max-w-7xl px-4 pt-16 sm:px-6 lg:px-8">
-      <SectionHeading title={t('pageTitle')} description={t('pageDescription')} align="left" />
+    <div className="mx-auto max-w-7xl px-4 pt-20 sm:px-6 lg:px-8">
+      <SectionHeading
+        eyebrow={t('eyebrow')}
+        title={t('pageTitle')}
+        description={t('pageDescription')}
+        align="left"
+      />
       <StationGrid showHeading={false} />
     </div>
   );
