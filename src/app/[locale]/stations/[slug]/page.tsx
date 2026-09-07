@@ -6,6 +6,7 @@ import { Check, Star } from 'lucide-react';
 import { routing } from '@/i18n/routing';
 import { STATION_SLUGS } from '@/entities/station/parse';
 import { getStationBySlug } from '@/entities/station/queries';
+import { getContent } from '@/shared/lib/content';
 import { StationPrice } from '@/entities/station/ui/StationPrice';
 import { Button } from '@/shared/ui/Button';
 import { SITE } from '@/shared/lib/site';
@@ -56,6 +57,16 @@ export default async function StationDetailPage({
   const data = await getStationBySlug(slug, locale);
   if (!data) notFound();
   const { station, translation } = data;
+  // The bespoke configuration is a different kind of page: no fixed power, no
+  // fixed kit, no price. It shares the shell but not the middle.
+  const isCustom = station.systemType === 'custom';
+  const { process } = getContent(locale);
+
+  // The demo badge belongs next to a fabricated figure, not on a page that
+  // shows none. The bespoke station has no price, rating or stock to fake, so
+  // badging it only added noise and made a truthful page look provisional.
+  const hasCommercialFigures =
+    station.pricing !== null || station.rating !== null || station.inStock !== null;
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -136,7 +147,7 @@ export default async function StationDetailPage({
               {/* Every commercial figure on this page is demo data until the
                   flag is cleared per station. The badge is not decoration —
                   it is what stops an invented price reading as a real one. */}
-              {station.commercialIsPlaceholder ? (
+              {station.commercialIsPlaceholder && hasCommercialFigures ? (
                 <p className="border-gold-500 text-gold-700 mb-5 inline-block rounded-full border px-3 py-1 text-xs font-medium">
                   {t('demoBadge')}
                 </p>
@@ -157,15 +168,20 @@ export default async function StationDetailPage({
       </div>
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        {/* Spec band */}
-        <div className="bg-border border-border mt-16 grid gap-px border-y sm:grid-cols-2 lg:grid-cols-4">
-          {specs.map((spec) => (
-            <div key={spec.label} className="bg-paper px-6 py-8 first:pl-0">
-              <p className="text-muted text-xs tracking-[0.08em] uppercase">{spec.label}</p>
-              <p className="text-navy-800 mt-3 text-xl leading-snug">{spec.value}</p>
-            </div>
-          ))}
-        </div>
+        {/* The bespoke configuration is not a product with a specification, so
+            it does not get a specification band. Forcing it through the same
+            template printed "—" for power and one-line equipment lists, which
+            made the page read as broken rather than as deliberately open. */}
+        {isCustom ? null : (
+          <div className="bg-border border-border mt-16 grid gap-px border-y sm:grid-cols-2 lg:grid-cols-4">
+            {specs.map((spec) => (
+              <div key={spec.label} className="bg-paper px-6 py-8 first:pl-0">
+                <p className="text-muted text-xs tracking-[0.08em] uppercase">{spec.label}</p>
+                <p className="text-navy-800 mt-3 text-xl leading-snug">{spec.value}</p>
+              </div>
+            ))}
+          </div>
+        )}
 
         <div className="grid gap-14 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
@@ -193,11 +209,46 @@ export default async function StationDetailPage({
         </div>
       </div>
 
-      {/* Equipment — the densest, most technical block on the page, so it gets
-          the surface tint and ruled rows to read as a parts list. */}
-      <section className="bg-surface py-20">
-        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-          <Label>{t('kit')}</Label>
+      {isCustom ? (
+        /* The bespoke page answers a different question. A standard station
+           page tells you what you get; this one has no fixed kit to list, so
+           the useful content is what actually happens after you enquire — and
+           that process is already written and true, rather than invented for
+           this page. Numbered rows, matching the Expertise treatment. */
+        <section className="bg-surface py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <Label>{t('processEyebrow')}</Label>
+            <h2 className="text-navy-800 mt-6 max-w-2xl text-[2rem] sm:text-[2.5rem]">
+              {t('processHeading')}
+            </h2>
+
+            <div className="mt-14 grid gap-x-16 gap-y-10 sm:grid-cols-2">
+              {process.map((step, index) => (
+                <div key={step.id} className="border-border flex gap-5 border-t pt-6">
+                  <span className="font-display text-gold-600/40 text-3xl font-light tracking-[-0.03em]">
+                    {String(index + 1).padStart(2, '0')}
+                  </span>
+                  <div>
+                    <h3 className="text-navy-800 text-lg">{step.title}</h3>
+                    <p className="text-muted mt-2.5 max-w-[46ch] text-sm leading-relaxed">
+                      {step.text}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-muted border-border mt-14 max-w-[62ch] border-t pt-8 text-sm leading-relaxed">
+              {t('customNote')}
+            </p>
+          </div>
+        </section>
+      ) : (
+        /* Equipment — the densest, most technical block on the page, so it gets
+           the surface tint and ruled rows to read as a parts list. */
+        <section className="bg-surface py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <Label>{t('kit')}</Label>
 
           {/* Deliberately a section-level image, not one photo per line item.
               The kit list names specific models (Longi 500W, Deye 10kW,
@@ -234,11 +285,12 @@ export default async function StationDetailPage({
                     {item}
                   </li>
                 ))}
-              </ul>
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       <div className="mx-auto max-w-6xl px-4 py-20 sm:px-6 lg:px-8">
         <Label>{t('whatYouGet')}</Label>

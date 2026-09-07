@@ -92,7 +92,10 @@
     "outOfStock": "To order",
     "reviews": "reviews",
     "demoBadge": "Demo data",
-    "from": "from"
+    "from": "from",
+    "processEyebrow": "How it works",
+    "processHeading": "From enquiry to commissioning",
+    "customNote": "The kit is defined after the site visit — which is why there is no fixed equipment list here."
   },
   "Projects": {
     "heading": "Completed projects",
