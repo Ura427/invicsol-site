@@ -24,5 +24,8 @@ test('the login page itself is reachable without a redirect loop', async ({ page
 
 test('the admin area is not localized — no /uk or /en prefix', async ({ page }) => {
   await page.goto('/admin/login');
-  await expect(page).toHaveURL(/^http:\/\/localhost:3100\/admin\/login$/);
+  // Port-agnostic on purpose: what this asserts is that the path carries no
+  // /uk or /en locale prefix, not which port the suite happens to run on.
+  // Hardcoding 3100 made this fail the moment the server moved to another port.
+  await expect(page).toHaveURL(/^https?:\/\/[^/]+\/admin\/login$/);
 });

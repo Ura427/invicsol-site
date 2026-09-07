@@ -19,7 +19,7 @@ export function ProjectCard({ project, translation }: ProjectCardProps) {
     >
       {project.isPlaceholder ? <PlaceholderBadge label={t('placeholderBadge')} /> : null}
 
-      <div className="relative aspect-[4/3] w-full overflow-hidden bg-gray-100">
+      <div className="relative aspect-[4/3] w-full overflow-hidden bg-surface">
         <Image
           src={project.coverImage}
           // The photo IS the content here, not decoration — a screen reader user

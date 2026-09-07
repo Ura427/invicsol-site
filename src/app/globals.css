@@ -48,13 +48,17 @@
   --radius-image: 2.5rem;
   --radius-pill: 999px;
 
-  /* --shadow-card is deliberately gone. This design is shadowless: hierarchy
-     comes from tonal layering and space, never elevation. It also removed the
-     single largest detector finding — a 1px border paired with a 32px-blur
-     shadow on the same element, 22 hits on the homepage alone. --shadow-nav
-     survives because a floating nav genuinely needs to separate from content
-     scrolling under it. */
-  --shadow-nav: 0 8px 24px -12px rgb(13 30 61 / 0.25);
+  /* There are deliberately no shadow tokens. Hierarchy comes from tonal
+     layering (surface → paper → elevated → navy) and space, never elevation.
+     Removing them also cleared the two largest detector findings: a 1px border
+     paired with a 32px-blur shadow on the same element (22 hits on the homepage
+     alone), and a navy-tinted nav shadow that read as a colored glow wherever
+     the sticky header overlapped the dark hero photograph. The nav now
+     separates itself with a hairline rule on scroll instead.
+
+     The two <dialog> box-shadows in this file are the deliberate exception (and
+     are neutral black, not navy-tinted — a colored shadow reads as a glow) —
+     a modal floating over a dimmed page is genuine elevation, not decoration. */
 }
 
 html {
@@ -128,7 +132,7 @@ h3 {
   position: relative;
   margin: auto;
   border: none;
-  box-shadow: 0 24px 60px -20px rgb(13 30 61 / 0.45);
+  box-shadow: 0 24px 60px -20px rgb(0 0 0 / 0.35);
 }
 
 .callback-dialog::backdrop {
@@ -139,7 +143,7 @@ h3 {
   position: relative;
   margin: auto;
   border: none;
-  box-shadow: 0 24px 60px -20px rgb(13 30 61 / 0.45);
+  box-shadow: 0 24px 60px -20px rgb(0 0 0 / 0.35);
 }
 
 .project-modal-dialog::backdrop {

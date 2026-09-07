@@ -25,7 +25,7 @@ export function StationCard({ station, translation }: StationCardProps) {
         isCustom ? 'bg-navy-800 text-white' : 'bg-elevated'
       }`}
     >
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-gray-100">
+      <div className="relative aspect-[16/10] w-full overflow-hidden bg-surface">
         <Image
           src={station.imagePath}
           alt=""

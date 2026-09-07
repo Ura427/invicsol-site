@@ -13,7 +13,7 @@ export function StepShell({ step, title, children }: StepShellProps) {
 
   return (
     <div>
-      <div className="border-border h-1.5 w-full overflow-hidden rounded-full bg-gray-100">
+      <div className="border-border h-1.5 w-full overflow-hidden rounded-full bg-surface">
         <div
           className="bg-gold-500 h-full rounded-full transition-all"
           style={{ width: `${(step / TOTAL_STEPS) * 100}%` }}

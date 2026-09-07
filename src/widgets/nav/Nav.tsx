@@ -23,8 +23,14 @@ export function Nav() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
+    // A hairline rule on scroll rather than a drop shadow. The navy-tinted
+    // shadow read as a colored glow where the nav overlapped the dark hero
+    // photograph, and this design separates layers by tone and edge, not
+    // elevation.
     <header
-      className={`bg-paper sticky top-0 z-40 transition-shadow ${hasShadow ? 'shadow-nav' : ''}`}
+      className={`bg-paper sticky top-0 z-40 border-b transition-colors ${
+        hasShadow ? 'border-border' : 'border-transparent'
+      }`}
     >
       <nav className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex items-center gap-2">

@@ -67,7 +67,7 @@ export async function ProjectDetailContent({
       </div>
 
       {images.length > 0 ? (
-        <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-2xl bg-gray-100">
+        <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-[var(--radius-image)] bg-surface">
           <Image
             src={project.coverImage}
             alt={translation.title}

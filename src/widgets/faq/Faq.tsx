@@ -15,7 +15,11 @@ export function Faq() {
   return (
     <section className="mx-auto max-w-3xl px-4 py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('heading')} />
-      <div className="border-border mt-10 divide-y divide-gray-200 rounded-2xl border">
+      {/* Full-width rows separated by hairline rules, rather than a rounded
+          bordered box. Same reasoning as the cards: this design draws with
+          rules and tone, not containers. `divide-gray-200` was also a leftover
+          cool gray that no longer matches the warmed border token. */}
+      <div className="border-border divide-border mt-12 divide-y border-t">
         {faq.map((item) => {
           const isOpen = openId === item.id;
           return (
@@ -24,15 +28,17 @@ export function Faq() {
                 type="button"
                 onClick={() => setOpenId(isOpen ? null : item.id)}
                 aria-expanded={isOpen}
-                className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
+                className="flex w-full items-center justify-between gap-4 py-5 text-left"
               >
-                <span className="text-navy-800 font-medium">{item.question}</span>
+                <span className="text-navy-800">{item.question}</span>
                 <ChevronDown
-                  className={`text-muted h-5 w-5 shrink-0 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                  className={`text-muted h-5 w-5 shrink-0 transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}
                   aria-hidden
                 />
               </button>
-              {isOpen ? <p className="text-muted px-5 pb-4 text-sm leading-relaxed">{item.answer}</p> : null}
+              {isOpen ? (
+                <p className="text-muted max-w-[58ch] pb-6 text-sm leading-relaxed">{item.answer}</p>
+              ) : null}
             </div>
           );
         })}
