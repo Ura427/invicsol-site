@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, AnchorHTMLAttributes, ReactNode } from 'react';
 import { Link } from '@/i18n/navigation';
 
-type Variant = 'primary' | 'outline' | 'gold';
+type Variant = 'primary' | 'outline' | 'gold' | 'outline-invert';
 
 interface BaseProps {
   variant?: Variant;
@@ -37,6 +37,19 @@ const VARIANT_STYLES: Record<Variant, string> = {
   outline:
     'border border-navy-800/70 text-navy-800 hover:bg-navy-800 hover:text-white px-7 py-3.5 rounded-full font-medium tracking-[-0.01em] transition-colors',
   gold: 'bg-gold-500 text-navy-900 hover:bg-gold-400 px-7 py-3.5 rounded-full font-medium tracking-[-0.01em] transition-colors',
+  /**
+   * The outline button for dark backgrounds (hero, navy CTA bands).
+   *
+   * This exists as its own variant rather than as `variant="outline"` plus a
+   * className override, because that override left BOTH `hover:text-white`
+   * (from the variant) and `hover:text-navy-800` (from the caller) on the same
+   * element. Tailwind emits one of them last and it won a coin toss: on hover
+   * the background went white and the text stayed white, so the label vanished.
+   * Conflicting utilities on one element cannot be resolved by class order in
+   * the string, so the fix is to not generate the conflict.
+   */
+  'outline-invert':
+    'border border-white/60 text-white hover:bg-white hover:text-navy-800 px-7 py-3.5 rounded-full font-medium tracking-[-0.01em] transition-colors',
 };
 
 export function Button(props: ButtonProps) {

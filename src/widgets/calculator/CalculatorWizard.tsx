@@ -7,6 +7,7 @@ import { calculatorReducer } from './model/reducer';
 import { initialCalculatorState, TOTAL_STEPS } from './model/types';
 import { canAdvanceFromStep, blockedReasonKey } from './model/validation';
 import { submitLead } from '@/entities/lead/actions';
+import { isValidUaPhone } from '@/entities/lead/phone';
 import { trackEvent } from '@/shared/lib/analytics';
 import { Button } from '@/shared/ui/Button';
 import { Step1PropertyType } from './ui/Step1PropertyType';
@@ -29,11 +30,13 @@ const STEP_COMPONENTS = [
 
 export function CalculatorWizard() {
   const t = useTranslations('Calculator');
+  const tf = useTranslations('Forms');
   const locale = useLocale();
   const router = useRouter();
   const [state, dispatch] = useReducer(calculatorReducer, initialCalculatorState);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<{ name?: string; phone?: string }>({});
 
   const StepComponent = STEP_COMPONENTS[state.step - 1]!;
   const isLastStep = state.step === TOTAL_STEPS;
@@ -58,6 +61,18 @@ export function CalculatorWizard() {
 
     // Narrowing for TypeScript; canAdvanceFromStep already guarantees this on step 7.
     if (!state.contactMethod) return;
+
+    // Field-level checks run only here, on submit — not while the visitor is
+    // still typing a half-finished number.
+    const nextFieldErrors: { name?: string; phone?: string } = {};
+    if (!state.name.trim()) nextFieldErrors.name = tf('errRequired');
+    if (!state.phone.trim()) nextFieldErrors.phone = tf('errRequired');
+    else if (!isValidUaPhone(state.phone)) nextFieldErrors.phone = tf('errPhone');
+    setFieldErrors(nextFieldErrors);
+    if (Object.keys(nextFieldErrors).length > 0) {
+      setError(null);
+      return;
+    }
 
     setError(null);
     setIsSubmitting(true);
@@ -87,6 +102,10 @@ export function CalculatorWizard() {
     setIsSubmitting(false);
 
     if (!result.ok) {
+      if (result.error === 'invalid_phone') {
+        setFieldErrors({ phone: tf('errPhone') });
+        return;
+      }
       setError(t('errors.submitFailed'));
       return;
     }
@@ -97,8 +116,8 @@ export function CalculatorWizard() {
 
   return (
     <div className="mx-auto max-w-xl">
-      <form onSubmit={handleSubmit} className="relative">
-        <StepComponent state={state} dispatch={dispatch} />
+      <form noValidate onSubmit={handleSubmit} className="relative">
+        <StepComponent state={state} dispatch={dispatch} fieldErrors={fieldErrors} />
 
         <p className="mt-4 text-sm text-red-600" role="alert" aria-live="polite">
           {error}

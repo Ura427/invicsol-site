@@ -324,5 +324,10 @@
   "Legal": {
     "privacyTitle": "Політика конфіденційності",
     "privacyDescription": "Як INVICSOL обробляє персональні дані відвідувачів сайту."
+  },
+  "Forms": {
+    "requiredNote": "* — обов’язкові поля",
+    "errRequired": "Заповніть це поле",
+    "errPhone": "Вкажіть номер у форматі +380XXXXXXXXX або 0XXXXXXXXX"
   }
 }

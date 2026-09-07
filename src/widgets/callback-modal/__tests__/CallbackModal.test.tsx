@@ -58,8 +58,8 @@ describe('CallbackModal', () => {
     renderModal();
 
     await user.click(screen.getByRole('button', { name: messages.CallbackModal.trigger }));
-    await user.type(screen.getByLabelText(messages.CallbackModal.nameLabel), 'Тарас');
-    await user.type(screen.getByLabelText(messages.CallbackModal.phoneLabel), '+380671112233');
+    await user.type(screen.getByLabelText(new RegExp(messages.CallbackModal.nameLabel)), 'Тарас');
+    await user.type(screen.getByLabelText(new RegExp(messages.CallbackModal.phoneLabel)), '+380671112233');
     await user.click(screen.getByRole('button', { name: messages.CallbackModal.submit }));
 
     expect(submitLeadMock).toHaveBeenCalledWith(
@@ -79,8 +79,8 @@ describe('CallbackModal', () => {
     renderModal();
 
     await user.click(screen.getByRole('button', { name: messages.CallbackModal.trigger }));
-    await user.type(screen.getByLabelText(messages.CallbackModal.nameLabel), 'Тарас');
-    await user.type(screen.getByLabelText(messages.CallbackModal.phoneLabel), '+380671112233');
+    await user.type(screen.getByLabelText(new RegExp(messages.CallbackModal.nameLabel)), 'Тарас');
+    await user.type(screen.getByLabelText(new RegExp(messages.CallbackModal.phoneLabel)), '+380671112233');
     await user.click(screen.getByRole('button', { name: messages.CallbackModal.submit }));
 
     expect(await screen.findByRole('status')).toHaveTextContent(messages.CallbackModal.text);

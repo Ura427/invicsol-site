@@ -4,8 +4,10 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useTranslations, useLocale } from 'next-intl';
 import { X } from 'lucide-react';
 import { submitLead } from '@/entities/lead/actions';
+import { isValidUaPhone } from '@/entities/lead/phone';
 import { trackEvent } from '@/shared/lib/analytics';
 import { Button } from '@/shared/ui/Button';
+import { TextField } from '@/shared/ui/TextField';
 
 /**
  * Built on the native <dialog> element rather than a div with role="dialog".
@@ -15,11 +17,13 @@ import { Button } from '@/shared/ui/Button';
  */
 export function CallbackModal() {
   const t = useTranslations('CallbackModal');
+  const tf = useTranslations('Forms');
   const locale = useLocale();
   const dialogRef = useRef<HTMLDialogElement>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<{ name?: string; phone?: string }>({});
 
   // Syncing React state to an imperative DOM API is exactly what an effect is for.
   useEffect(() => {
@@ -40,19 +44,33 @@ export function CallbackModal() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setIsSubmitting(true);
 
     const formData = new FormData(event.currentTarget);
+    const name = String(formData.get('name') ?? '').trim();
+    const phone = String(formData.get('phone') ?? '').trim();
+
+    const nextErrors: { name?: string; phone?: string } = {};
+    if (!name) nextErrors.name = tf('errRequired');
+    if (!phone) nextErrors.phone = tf('errRequired');
+    else if (!isValidUaPhone(phone)) nextErrors.phone = tf('errPhone');
+    setFieldErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) return;
+
+    setIsSubmitting(true);
     const result = await submitLead({
       source: 'callback',
-      name: String(formData.get('name') ?? ''),
-      phone: String(formData.get('phone') ?? ''),
+      name,
+      phone,
       contactMethod: 'phone',
       locale,
       website: String(formData.get('website') ?? ''),
     });
 
     setIsSubmitting(false);
+    if (!result.ok && result.error === 'invalid_phone') {
+      setFieldErrors({ phone: tf('errPhone') });
+      return;
+    }
     if (result.ok) {
       trackEvent('Lead', { source: 'callback' });
       setIsSuccess(true);
@@ -96,7 +114,7 @@ export function CallbackModal() {
             {t('text')}
           </p>
         ) : (
-          <form onSubmit={handleSubmit} className="mt-4 space-y-3">
+          <form noValidate onSubmit={handleSubmit} className="mt-4 space-y-3">
             {/* Honeypot: hidden from real visitors, filled in by naive bots. */}
             <div className="absolute -left-[9999px]" aria-hidden="true">
               <label htmlFor="callback-website">Website</label>
@@ -109,29 +127,30 @@ export function CallbackModal() {
               />
             </div>
 
-            <label className="block text-sm">
-              <span className="text-muted font-medium">{t('nameLabel')}</span>
-              <input
-                type="text"
-                name="name"
-                required
-                autoComplete="name"
-                placeholder={t('namePlaceholder')}
-                className="border-border mt-1 w-full rounded-lg border px-3 py-2 text-sm"
-              />
-            </label>
+            <p className="text-muted text-xs">{tf('requiredNote')}</p>
 
-            <label className="block text-sm">
-              <span className="text-muted font-medium">{t('phoneLabel')}</span>
-              <input
-                type="tel"
-                name="phone"
-                required
-                autoComplete="tel"
-                placeholder={t('phonePlaceholder')}
-                className="border-border mt-1 w-full rounded-lg border px-3 py-2 text-sm"
-              />
-            </label>
+            <TextField
+              id="callback-name"
+              name="name"
+              type="text"
+              label={t('nameLabel')}
+              required
+              autoComplete="name"
+              placeholder={t('namePlaceholder')}
+              error={fieldErrors.name ?? null}
+            />
+
+            <TextField
+              id="callback-phone"
+              name="phone"
+              type="tel"
+              label={t('phoneLabel')}
+              required
+              autoComplete="tel"
+              inputMode="tel"
+              placeholder={t('phonePlaceholder')}
+              error={fieldErrors.phone ?? null}
+            />
 
             <Button type="submit" variant="gold" disabled={isSubmitting} className="w-full">
               {isSubmitting ? t('submitting') : t('submit')}

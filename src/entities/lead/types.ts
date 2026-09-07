@@ -16,5 +16,7 @@ export interface LeadSubmission {
 
 export interface LeadSubmissionResult {
   ok: boolean;
-  error?: 'spam' | 'rate_limited' | 'invalid';
+  /** `invalid_phone` is distinct from `invalid` so a form can point at the
+   * offending field instead of showing a generic failure message. */
+  error?: 'spam' | 'rate_limited' | 'invalid' | 'invalid_phone';
 }

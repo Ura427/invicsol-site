@@ -4,29 +4,9 @@ import { headers } from 'next/headers';
 import { db } from '@/shared/lib/db';
 import { isRateLimited } from './rateLimit';
 import { sendTelegramNotification } from './telegram';
+import { buildNotificationText } from './notification';
+import { normalizeUaPhone } from './phone';
 import type { LeadSubmission, LeadSubmissionResult } from './types';
-
-const CONTACT_METHOD_LABEL: Record<LeadSubmission['contactMethod'], string> = {
-  phone: 'Дзвінок',
-  viber: 'Viber',
-  telegram: 'Telegram',
-};
-
-const SOURCE_LABEL: Record<LeadSubmission['source'], string> = {
-  calculator: 'Калькулятор',
-  contact: 'Контактна форма',
-  callback: 'Замовлення дзвінка',
-};
-
-function buildNotificationText(submission: LeadSubmission): string {
-  const lines = [
-    `<b>Нова заявка — ${SOURCE_LABEL[submission.source]}</b>`,
-    `Ім'я: ${submission.name}`,
-    `Телефон: ${submission.phone}`,
-    `Зв'язок: ${CONTACT_METHOD_LABEL[submission.contactMethod]}`,
-  ];
-  return lines.join('\n');
-}
 
 /**
  * Every submission does two things: persists to the database AND fires a
@@ -44,6 +24,16 @@ export async function submitLead(submission: LeadSubmission): Promise<LeadSubmis
     return { ok: false, error: 'invalid' };
   }
 
+  // Validated here as well as in the form, because the client check is a
+  // convenience and this is the actual gate — a server function can be called
+  // directly. The stored and notified number is the normalised one, so every
+  // lead arrives in a single dialable format regardless of how it was typed.
+  const phone = normalizeUaPhone(submission.phone);
+  if (phone === null) {
+    return { ok: false, error: 'invalid_phone' };
+  }
+  const normalized: LeadSubmission = { ...submission, phone };
+
   const headerList = await headers();
   const ip =
     headerList.get('x-forwarded-for')?.split(',')[0]?.trim() ??
@@ -55,22 +45,22 @@ export async function submitLead(submission: LeadSubmission): Promise<LeadSubmis
   }
 
   const payload = JSON.stringify({
-    source: submission.source,
-    name: submission.name,
-    phone: submission.phone,
-    contactMethod: submission.contactMethod,
-    locale: submission.locale,
-    extra: submission.extra ?? {},
+    source: normalized.source,
+    name: normalized.name,
+    phone: normalized.phone,
+    contactMethod: normalized.contactMethod,
+    locale: normalized.locale,
+    extra: normalized.extra ?? {},
     submittedAt: new Date().toISOString(),
   });
 
   const lead = await db.lead.create({
     data: {
-      source: submission.source,
-      name: submission.name,
-      phone: submission.phone,
-      contactMethod: submission.contactMethod,
-      locale: submission.locale,
+      source: normalized.source,
+      name: normalized.name,
+      phone: normalized.phone,
+      contactMethod: normalized.contactMethod,
+      locale: normalized.locale,
       payload,
     },
   });
@@ -80,7 +70,7 @@ export async function submitLead(submission: LeadSubmission): Promise<LeadSubmis
   // failed submission — that would make them submit again, or give up entirely,
   // over a lead we already captured. A null `notifiedAt` is the signal to follow up.
   try {
-    const notified = await sendTelegramNotification(buildNotificationText(submission));
+    const notified = await sendTelegramNotification(buildNotificationText(normalized));
     if (notified) {
       await db.lead.update({ where: { id: lead.id }, data: { notifiedAt: new Date() } });
     }

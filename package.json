@@ -13,7 +13,8 @@
     "postinstall": "prisma generate",
     "prebuild": "prisma migrate deploy && prisma db seed",
     "db:reset": "prisma migrate reset --force",
-    "admin:create": "tsx scripts/create-admin.ts"
+    "admin:create": "tsx scripts/create-admin.ts",
+    "db:regen": "node -e \"require('fs').rmSync('src/generated/prisma',{recursive:true,force:true})\" && prisma generate"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"

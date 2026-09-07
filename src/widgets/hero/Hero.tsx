@@ -62,11 +62,7 @@ export function Hero() {
           <Button href="/calculator" variant="gold">
             {t('ctaPrimary')}
           </Button>
-          <Button
-            href="/stations"
-            variant="outline"
-            className="hover:text-navy-800 border-white/60 text-white hover:bg-white"
-          >
+          <Button href="/stations" variant="outline-invert">
             {t('ctaSecondary')}
           </Button>
         </div>

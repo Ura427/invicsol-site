@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl';
 import type { Dispatch } from 'react';
 import type { CalculatorAction, CalculatorState, ContactMethod } from '../model/types';
 import { estimatePaybackYears } from '../model/estimatePayback';
+import { TextField } from '@/shared/ui/TextField';
 import { StepShell } from './StepShell';
 import { OptionCard } from './OptionCard';
 
@@ -10,42 +11,49 @@ const CONTACT_METHODS: readonly ContactMethod[] = ['phone', 'viber', 'telegram']
 export function Step7Contact({
   state,
   dispatch,
+  fieldErrors = {},
 }: {
   state: CalculatorState;
   dispatch: Dispatch<CalculatorAction>;
+  /** Set by the wizard on submit — never while the visitor is still typing. */
+  fieldErrors?: { name?: string; phone?: string };
 }) {
   const t = useTranslations('Calculator');
+  const tf = useTranslations('Forms');
   const paybackYears =
     state.tariff && state.desiredPowerKw ? estimatePaybackYears(state.desiredPowerKw, state.tariff) : null;
 
   return (
     <StepShell step={7} title={t('contact.title')}>
       <div className="space-y-4">
-        <label className="block text-sm">
-          <span className="text-muted font-medium">{t('contact.name')}</span>
-          <input
-            type="text"
-            name="name"
-            required
-            placeholder={t('contact.namePlaceholder')}
-            className="border-border mt-1 w-full rounded-lg border px-3 py-2"
-            value={state.name}
-            onChange={(e) => dispatch({ type: 'SET_NAME', value: e.target.value })}
-          />
-        </label>
+        <p className="text-muted text-xs">{tf('requiredNote')}</p>
 
-        <label className="block text-sm">
-          <span className="text-muted font-medium">{t('contact.phone')}</span>
-          <input
-            type="tel"
-            name="phone"
-            required
-            placeholder={t('contact.phonePlaceholder')}
-            className="border-border mt-1 w-full rounded-lg border px-3 py-2"
-            value={state.phone}
-            onChange={(e) => dispatch({ type: 'SET_PHONE', value: e.target.value })}
-          />
-        </label>
+        <TextField
+          id="calc-name"
+          name="name"
+          type="text"
+          label={t('contact.name')}
+          required
+          autoComplete="name"
+          placeholder={t('contact.namePlaceholder')}
+          value={state.name}
+          onChange={(e) => dispatch({ type: 'SET_NAME', value: e.target.value })}
+          error={fieldErrors.name ?? null}
+        />
+
+        <TextField
+          id="calc-phone"
+          name="phone"
+          type="tel"
+          label={t('contact.phone')}
+          required
+          autoComplete="tel"
+          inputMode="tel"
+          placeholder={t('contact.phonePlaceholder')}
+          value={state.phone}
+          onChange={(e) => dispatch({ type: 'SET_PHONE', value: e.target.value })}
+          error={fieldErrors.phone ?? null}
+        />
 
         <div>
           <p className="text-muted mb-2 text-sm font-medium">{t('contact.contactMethod')}</p>

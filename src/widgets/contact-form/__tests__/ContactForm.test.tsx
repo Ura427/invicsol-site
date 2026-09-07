@@ -29,13 +29,40 @@ describe('ContactForm', () => {
     submitLeadMock.mockClear();
   });
 
+  it('refuses to submit a phone number that is not a phone number', async () => {
+    // The reported bug: this field accepted literally anything, so leads could
+    // arrive with a number nobody could call back.
+    const user = userEvent.setup();
+    renderForm();
+
+    await user.type(screen.getByLabelText(new RegExp(messages.ContactForm.name)), 'Олена');
+    await user.type(
+      screen.getByLabelText(new RegExp(messages.ContactForm.phone)),
+      'подзвоніть мені',
+    );
+    await user.click(screen.getByRole('button', { name: messages.ContactForm.submit }));
+
+    expect(submitLeadMock).not.toHaveBeenCalled();
+    expect(screen.getByText(messages.Forms.errPhone)).toBeInTheDocument();
+  });
+
+  it('marks both empty required fields rather than failing silently', async () => {
+    const user = userEvent.setup();
+    renderForm();
+
+    await user.click(screen.getByRole('button', { name: messages.ContactForm.submit }));
+
+    expect(submitLeadMock).not.toHaveBeenCalled();
+    expect(screen.getAllByText(messages.Forms.errRequired)).toHaveLength(2);
+  });
+
   it('submits the entered values and redirects to /thank-you on success', async () => {
     submitLeadMock.mockResolvedValue({ ok: true });
     const user = userEvent.setup();
     renderForm();
 
-    await user.type(screen.getByLabelText(messages.ContactForm.name), 'Олена');
-    await user.type(screen.getByLabelText(messages.ContactForm.phone), '+380671234567');
+    await user.type(screen.getByLabelText(new RegExp(messages.ContactForm.name)), 'Олена');
+    await user.type(screen.getByLabelText(new RegExp(messages.ContactForm.phone)), '+380671234567');
     await user.click(screen.getByRole('button', { name: messages.ContactForm.submit }));
 
     expect(submitLeadMock).toHaveBeenCalledWith(
@@ -54,8 +81,8 @@ describe('ContactForm', () => {
     const user = userEvent.setup();
     renderForm();
 
-    await user.type(screen.getByLabelText(messages.ContactForm.name), 'Олена');
-    await user.type(screen.getByLabelText(messages.ContactForm.phone), '+380671234567');
+    await user.type(screen.getByLabelText(new RegExp(messages.ContactForm.name)), 'Олена');
+    await user.type(screen.getByLabelText(new RegExp(messages.ContactForm.phone)), '+380671234567');
     await user.click(screen.getByRole('button', { name: messages.ContactForm.submit }));
 
     expect(pushMock).not.toHaveBeenCalled();
