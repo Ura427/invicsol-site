@@ -8,6 +8,7 @@ import { STATION_SLUGS } from '@/entities/station/parse';
 import { getStationBySlug } from '@/entities/station/queries';
 import { getContent } from '@/shared/lib/content';
 import { StationPrice } from '@/entities/station/ui/StationPrice';
+import { PaybackCalculator } from '@/entities/station/ui/PaybackCalculator';
 import { Button } from '@/shared/ui/Button';
 import { SITE } from '@/shared/lib/site';
 
@@ -52,7 +53,6 @@ export default async function StationDetailPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('Stations');
-  const tHero = await getTranslations('Hero');
 
   const data = await getStationBySlug(slug, locale);
   if (!data) notFound();
@@ -155,14 +155,25 @@ export default async function StationDetailPage({
               <StationPrice station={station} locale={locale} />
             </div>
 
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button href="/contact" variant="gold">
-                {t('cta')}
-              </Button>
-              <Button href="/calculator" variant="outline">
-                {tHero('ctaPrimary')}
-              </Button>
-            </div>
+            {/* The payback estimate sits here, in place of the two buttons that
+                used to. Both were broken promises rather than bad ideas:
+                "Request a quote for THIS station" went to a generic contact form
+                that had no idea which station you were reading, and "Estimate
+                payback" went to a seven-step wizard whose fifth step asks what
+                size station you want — the question this page has already
+                answered. The estimator needs power and tariff, and power is
+                known here, so the whole thing collapses to one input.
+
+                Beside the price rather than below the fold, because "what does
+                it cost" and "what does it give back" are the same decision and
+                reading one without the other is what made the price feel like a
+                number with no context. */}
+            {isCustom || station.powerKw === null ? null : (
+              <div className="border-border mt-8 border-t pt-8">
+                <PaybackCalculator powerKw={station.powerKw} compact />
+              </div>
+            )}
+
           </div>
         </div>
       </div>

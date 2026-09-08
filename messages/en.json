@@ -95,7 +95,19 @@
     "from": "from",
     "processEyebrow": "How it works",
     "processHeading": "From enquiry to commissioning",
-    "customNote": "The kit is defined after the site visit — which is why there is no fixed equipment list here."
+    "customNote": "The kit is defined after the site visit — which is why there is no fixed equipment list here.",
+    "payback": {
+      "eyebrow": "Worth it?",
+      "heading": "What this station returns",
+      "tariffLabel": "Your electricity tariff",
+      "tariffUnit": "UAH per kWh",
+      "annualOutput": "Produces a year",
+      "annualSaving": "Saves a year",
+      "payback": "Pays for itself in",
+      "kwhPerYear": "kWh",
+      "years": "{years} years",
+      "disclaimer": "An estimate for {power} kW at four peak sun hours a day and 80% system performance — typical for the Lviv region. It is not a price: what a station costs depends on your roof, mounting and cable runs, which we settle at the free site visit."
+    }
   },
   "Projects": {
     "heading": "Completed projects",
