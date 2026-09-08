@@ -3,19 +3,34 @@ import { getTranslations } from 'next-intl/server';
 import { getAdminLocale } from '@/shared/lib/admin-locale';
 import { AdminNav } from '@/widgets/admin-nav/AdminNav';
 import { Badge } from '@/shared/ui/Badge';
+import {
+  parseAdminProjectFilters,
+  hasActiveProjectFilters,
+} from '@/entities/project/admin-filters';
 import { listProjects } from './actions';
 import { DeleteProjectButton } from './DeleteProjectButton';
+import { ProjectFilters } from './ProjectFilters';
 
 const OBJECT_TYPE_KEY: Record<string, string> = {
   house: 'objectTypeHouse',
   business: 'objectTypeBusiness',
 };
 
-export default async function AdminProjectsPage() {
+export default async function AdminProjectsPage({
+  searchParams,
+}: {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}) {
   const locale = await getAdminLocale();
   const t = await getTranslations({ locale, namespace: 'Admin.projects' });
   const tForm = await getTranslations({ locale, namespace: 'Admin.form' });
-  const projects = await listProjects(locale);
+  const tFilters = await getTranslations({ locale, namespace: 'Admin.filters' });
+
+  // A server component, so the filters are read straight from the URL and the
+  // query runs once on the server — no client-side copy of the list to keep in
+  // sync, and the rendered HTML already reflects the filtered view.
+  const filters = parseAdminProjectFilters(await searchParams);
+  const { projects, count, total } = await listProjects(filters, locale);
 
   const formatDate = (iso: string) =>
     new Intl.DateTimeFormat(locale, { dateStyle: 'medium' }).format(new Date(iso));
@@ -37,8 +52,19 @@ export default async function AdminProjectsPage() {
           </Link>
         </div>
 
+        <div className="mt-8">
+          <ProjectFilters
+            hasActive={hasActiveProjectFilters(filters)}
+            summary={tFilters('showingFiltered', { count, total })}
+          />
+        </div>
+
         {projects.length === 0 ? (
-          <p className="text-muted mt-8 text-sm">{t('empty')}</p>
+          // "No projects yet" and "your filters match nothing" look identical in
+          // an empty table and mean opposite things.
+          <p className="text-muted mt-8 text-sm">
+            {total === 0 ? t('empty') : tFilters('none')}
+          </p>
         ) : (
           <div className="border-border mt-8 overflow-x-auto border-y">
             <table className="w-full text-left text-sm">

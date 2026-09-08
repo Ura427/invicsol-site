@@ -190,7 +190,16 @@ model Lead {
   /// "when" is more useful than "whether" once you're looking back at a list.
   handledAt DateTime?
 
+  /// createdAt backs the default ordering; the rest back the admin inbox's
+  /// filters. Free-text search over name/phone is deliberately NOT indexed —
+  /// it is an ILIKE with a leading wildcard, which a btree cannot serve, and at
+  /// this table's size a sequential scan costs less than the trigram index it
+  /// would otherwise need.
   @@index([createdAt])
+  @@index([source])
+  @@index([contactMethod])
+  @@index([handledAt])
+  @@index([notifiedAt])
 }
 
 /// Exactly one row is expected to ever exist. There is no public signup route

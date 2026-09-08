@@ -4,6 +4,11 @@ import { revalidatePath } from 'next/cache';
 import { db } from '@/shared/lib/db';
 import { requireAdmin } from '@/shared/lib/admin-session';
 import {
+  toPrismaWhere as toProjectWhere,
+  toPrismaOrderBy as toProjectOrderBy,
+  type AdminProjectFilters,
+} from '@/entities/project/admin-filters';
+import {
   validateProjectForm,
   deriveLocationKey,
   type ProjectFormValues,
@@ -66,6 +71,12 @@ export interface ProjectListItem {
   title: string;
 }
 
+export interface ProjectListResult {
+  projects: ProjectListItem[];
+  count: number;
+  total: number;
+}
+
 /**
  * `locale` picks which translation supplies the list title. It used to be pinned
  * to 'uk', which left the English admin listing rows by their Ukrainian names —
@@ -75,29 +86,43 @@ export interface ProjectListItem {
  * translated into the requested language falls back to the other one instead of
  * showing its slug. The slug remains the last resort.
  */
-export async function listProjects(locale: string = 'uk'): Promise<ProjectListItem[]> {
+export async function listProjects(
+  filters: AdminProjectFilters,
+  locale: string = 'uk',
+): Promise<ProjectListResult> {
   await requireAdmin();
 
-  const projects = await db.project.findMany({
-    orderBy: { completedAt: 'desc' },
-    include: { translations: true },
-  });
+  const where = toProjectWhere(filters);
 
-  return projects.map((project) => {
-    const preferred = project.translations.find((row) => row.locale === locale);
-    const fallback = project.translations[0];
+  const [projects, count, total] = await Promise.all([
+    db.project.findMany({
+      where,
+      orderBy: toProjectOrderBy(filters.sort),
+      include: { translations: true },
+    }),
+    db.project.count({ where }),
+    db.project.count(),
+  ]);
 
-    return {
-      id: project.id,
-      slug: project.slug,
-      capacityKw: project.capacityKw,
-      objectType: project.objectType,
-      usage: project.usage,
-      completedAt: project.completedAt.toISOString(),
-      isPlaceholder: project.isPlaceholder,
-      title: preferred?.title || fallback?.title || project.slug,
-    };
-  });
+  return {
+    projects: projects.map((project) => {
+      const preferred = project.translations.find((row) => row.locale === locale);
+      const fallback = project.translations[0];
+
+      return {
+        id: project.id,
+        slug: project.slug,
+        capacityKw: project.capacityKw,
+        objectType: project.objectType,
+        usage: project.usage,
+        completedAt: project.completedAt.toISOString(),
+        isPlaceholder: project.isPlaceholder,
+        title: preferred?.title || fallback?.title || project.slug,
+      };
+    }),
+    count,
+    total,
+  };
 }
 
 export async function getProjectForEdit(id: string): Promise<ProjectFormValues | null> {
