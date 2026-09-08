@@ -3,6 +3,7 @@ import type { NextRequest } from 'next/server';
 import createMiddleware from 'next-intl/middleware';
 import { routing } from './i18n/routing';
 import { auth } from './auth';
+import { isAllowedAdminEmail } from '@/shared/lib/admin-allowlist';
 
 const intlProxy = createMiddleware(routing);
 
@@ -30,11 +31,20 @@ async function handleAdminAuth(request: NextRequest) {
   const isLoginPage = request.nextUrl.pathname === '/admin/login';
   const session = await auth();
 
-  if (!session && !isLoginPage) {
+  // The same allowlist that guards sign-in, re-checked on every request. The
+  // sign-in gate alone would leave one hole: a session minted before an address
+  // was removed from the list stays valid until its JWT expires, because a JWT
+  // session is never re-read from the database. Checking here means removing an
+  // address takes effect on the owner's very next request, not days later.
+  const isPermitted = session !== null && isAllowedAdminEmail(session.user?.email);
+
+  if (!isPermitted) {
+    if (isLoginPage) return NextResponse.next();
+
     return NextResponse.redirect(new URL('/admin/login', request.url));
   }
 
-  if (session && isLoginPage) {
+  if (isLoginPage) {
     return NextResponse.redirect(new URL('/admin', request.url));
   }
 

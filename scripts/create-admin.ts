@@ -14,6 +14,7 @@ import 'dotenv/config';
 import bcrypt from 'bcryptjs';
 import { PrismaClient } from '../src/generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
+import { allowedAdminEmails, isAllowedAdminEmail } from '../src/shared/lib/admin-allowlist';
 
 const MIN_PASSWORD_LENGTH = 12;
 
@@ -25,6 +26,16 @@ async function main() {
     console.error(
       'Set ADMIN_EMAIL and ADMIN_PASSWORD (in .env, or inline before this command) and try again.',
     );
+    process.exit(1);
+  }
+
+  // Refuse up front rather than seeding a row that could never sign in: /admin
+  // is restricted to the allowlist, so an Admin row for any other address is a
+  // dead account whose only effect is to confuse whoever created it.
+  if (!isAllowedAdminEmail(email)) {
+    console.error(`${email} is not permitted to use the admin panel.`);
+    console.error(`Allowed: ${allowedAdminEmails().join(', ') || '(none — ADMIN_ALLOWED_EMAILS is empty)'}`);
+    console.error('Add the address to ADMIN_ALLOWED_EMAILS, or to src/shared/lib/admin-allowlist.ts.');
     process.exit(1);
   }
 
