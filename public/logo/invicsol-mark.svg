@@ -1,42 +1,63 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 64" width="52" height="64" role="img" aria-label="INVICSOL">
   <!--
-    Flat trace of the INVICSOL mark.
+    Vector trace of the supplied flat logo (design-references/logo-source.png).
 
-    The original supplied artwork is a 500x500 raster wrapped in an SVG tag, so
-    it cannot scale, recolour or hold up at nav size. This is a hand-built
-    vector of the same three ideas — pin, half sun, panel array — with the
-    gloss, bevels, metallic gradient and drop shadow removed, because this
-    design system has no gradients or shadows anywhere else.
+    Kept from the original: the nine tapered rays, and the panel array's inverse
+    fill — left plane solid gold with the grid cut out of it, right plane open
+    with the grid drawn on. That asymmetry reads as light falling across the
+    array and is the most distinctive thing in the mark, so it survives rather
+    than being flattened into two matching halves.
 
-    Detail is tuned for ~28px: seven rays and a three-row grid survive that
-    size, finer panel divisions do not.
+    Detail is tuned for >=40px; invicsol-mark-compact.svg handles smaller.
   -->
   <path
     d="M26 63.2C25.4 63.2 24.9 63 24.5 62.6 20.2 58.3 3.5 44.6 3.5 26.5 3.5 14.1 13.6 4 26 4S48.5 14.1 48.5 26.5C48.5 44.6 31.8 58.3 27.5 62.6 27.1 63 26.6 63.2 26 63.2Z"
-    fill="#e8a020"
+    fill="#f0a92a"
   />
   <path
-    d="M26 58.6C21.6 54.1 8 42.2 8 26.5 8 16.6 16.1 8.5 26 8.5S44 16.6 44 26.5C44 42.2 30.4 54.1 26 58.6Z"
-    fill="#0d1e3d"
+    d="M26 60.1C21.4 55.4 6.2 42.7 6.2 26.5 6.2 15.6 15.1 6.7 26 6.7S45.8 15.6 45.8 26.5C45.8 42.7 30.6 55.4 26 60.1Z"
+    fill="#15263f"
   />
 
-  <!-- Half sun -->
-  <path d="M18.4 26.2A7.6 7.6 0 0 1 33.6 26.2Z" fill="#e8a020" />
-  <g stroke="#e8a020" stroke-width="1.7" stroke-linecap="round">
-    <path d="M26 12.6V16.4" />
-    <path d="M18.6 14.6 20.5 17.9" />
-    <path d="M33.4 14.6 31.5 17.9" />
-    <path d="M13.2 20 16.5 21.9" />
-    <path d="M38.8 20 35.5 21.9" />
-    <path d="M11.2 26.2H15" />
-    <path d="M40.8 26.2H37" />
+  <!-- Sun: half disc plus nine tapered rays -->
+  <path d="M17.9 27.4A8.1 8.1 0 0 1 34.1 27.4Z" fill="#f0a92a" />
+  <g fill="#f0a92a">
+    <path d="M11.72 22.00 L17.49 23.09 L16.84 24.88Z" />
+    <path d="M13.94 17.95 L19.12 20.72 L17.96 22.23Z" />
+    <path d="M17.28 14.75 L21.39 18.96 L19.83 20.04Z" />
+    <path d="M21.43 12.70 L24.08 17.95 L22.27 18.52Z" />
+    <path d="M26.00 12.00 L26.95 17.80 L25.05 17.80Z" />
+    <path d="M30.57 12.70 L29.73 18.52 L27.92 17.95Z" />
+    <path d="M34.72 14.75 L32.17 20.04 L30.61 18.96Z" />
+    <path d="M38.06 17.95 L34.04 22.23 L32.88 20.72Z" />
+    <path d="M40.28 22.00 L35.16 24.88 L34.51 23.09Z" />
   </g>
 
-  <!-- Panel array: two planes meeting at a centre ridge -->
-  <g stroke="#e8a020" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round" fill="none">
-    <path d="M9 32.4 26 29.6 43 32.4 26 52.6Z" />
-    <path d="M26 29.6V52.6" />
-    <path d="M11.6 39.2 26 36.8 40.4 39.2" />
-    <path d="M15.6 45.4 26 43.8 36.4 45.4" />
+  <!-- Left plane: solid gold with the grid cut out in navy -->
+  <path d="M7.6 30.8 24.9 27.4V55.4C17.2 49.6 10.1 41.2 7.6 30.8Z" fill="#f0a92a" />
+  <g stroke="#15263f" stroke-width="1.25" stroke-linecap="round" fill="none">
+    <path d="M15.3 29.3 21.4 53.4" />
+    <path d="M9.1 37.4 24.4 34.4" />
+    <path d="M12.6 45 24.6 42.4" />
+  </g>
+
+  <!-- Right plane: open, with the grid drawn on in gold -->
+  <path
+    d="M27.1 27.4 44.4 30.8C41.9 41.2 34.8 49.6 27.1 55.4Z"
+    fill="none"
+    stroke="#f0a92a"
+    stroke-width="1.35"
+    stroke-linejoin="round"
+  />
+  <g stroke="#f0a92a" stroke-width="1.25" stroke-linecap="round" fill="none">
+    <path d="M36.7 29.3 30.6 53.4" />
+    <path d="M27.6 34.4 42.9 37.4" />
+    <path d="M27.4 42.4 39.4 45" />
+  </g>
+
+  <!-- Centre ridge: two gold rules with the navy body showing between them -->
+  <g stroke="#f0a92a" stroke-width="1.25" stroke-linecap="round">
+    <path d="M24.9 27.8V55.2" />
+    <path d="M27.1 27.8V55.2" />
   </g>
 </svg>

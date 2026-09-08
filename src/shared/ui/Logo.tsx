@@ -2,43 +2,65 @@ interface LogoProps {
   /** Rendered height in px. Below 40 the compact variant is used automatically. */
   size?: number;
   /**
-   * 'brand' is navy body on gold pin — the default.
-   * 'mono' inherits `currentColor` for both, for dark backgrounds or anywhere
-   * the mark has to sit inside a single-colour context (footer, print, stamps).
+   * 'brand' is the two-tone mark — the default.
+   * 'mono' inherits `currentColor` for everything, for dark backgrounds or any
+   * single-colour context (footer, print, stamps).
    */
   tone?: 'brand' | 'mono';
   className?: string;
 }
 
 const RATIO = 64 / 52;
+const GOLD = '#f0a92a';
+const NAVY = '#15263f';
+
+/** The nine tapered rays of the full mark, generated on a 200°–340° arc. */
+const RAYS = [
+  'M11.72 22.00 L17.49 23.09 L16.84 24.88Z',
+  'M13.94 17.95 L19.12 20.72 L17.96 22.23Z',
+  'M17.28 14.75 L21.39 18.96 L19.83 20.04Z',
+  'M21.43 12.70 L24.08 17.95 L22.27 18.52Z',
+  'M26.00 12.00 L26.95 17.80 L25.05 17.80Z',
+  'M30.57 12.70 L29.73 18.52 L27.92 17.95Z',
+  'M34.72 14.75 L32.17 20.04 L30.61 18.96Z',
+  'M38.06 17.95 L34.04 22.23 L32.88 20.72Z',
+  'M40.28 22.00 L35.16 24.88 L34.51 23.09Z',
+];
+
+const PIN_OUTER =
+  'M26 63.2C25.4 63.2 24.9 63 24.5 62.6 20.2 58.3 3.5 44.6 3.5 26.5 3.5 14.1 13.6 4 26 4S48.5 14.1 48.5 26.5C48.5 44.6 31.8 58.3 27.5 62.6 27.1 63 26.6 63.2 26 63.2Z';
 
 /**
- * The INVICSOL mark, as a responsive pair rather than one drawing.
+ * The INVICSOL mark, traced to vector from the supplied flat artwork.
  *
- * The detailed version carries seven rays and a three-row panel grid; under
- * roughly 40px those hairlines merge into a smudge, so a compact version takes
- * over with five rays, one grid line, thicker strokes and a filled panel array.
- * Same silhouette either way, so they read as one logo.
+ * Shipped as a responsive pair rather than one drawing. The detailed version
+ * carries nine rays and a six-line panel grid; under roughly 40px those merge
+ * into a smudge, so a compact version takes over with five rays and one grid
+ * line per plane. Both keep the inverse fill — left plane solid, right plane
+ * open — since that light-across-the-array asymmetry is what makes the mark
+ * recognisable, and it shrinks far better than the grid does.
  *
- * Inline rather than an <img> so `mono` can inherit currentColor — an <img>
- * cannot be recoloured by the page, which is exactly what the navy footer needs.
+ * Inline rather than an <img> so `mono` can inherit currentColor; an <img>
+ * cannot be recoloured by the page, which is what the navy footer needs.
  */
 export function Logo({ size = 32, tone = 'brand', className = '' }: LogoProps) {
   const compact = size < 40;
+  const common = {
+    viewBox: '0 0 52 64',
+    width: size,
+    height: Math.round(size * RATIO),
+    className,
+    role: 'img' as const,
+    'aria-label': 'INVICSOL',
+  };
 
-  // Mono is drawn as line art, not as the two-tone mark with its colours
-  // collapsed. Collapsing them paints the sun and panels in the same colour as
-  // the body they sit on, which produces a solid blob — the interior detail has
-  // to be left open so the background shows through instead.
+  // Mono is line art with an open interior, not the two-tone mark with its
+  // colours collapsed. Collapsing them paints the sun and panels in the same
+  // colour as the body behind them and yields a featureless blob.
   if (tone === 'mono') {
     return (
       <svg
-        viewBox="0 0 52 64"
-        width={size}
-        height={Math.round(size * RATIO)}
-        className={className}
-        role="img"
-        aria-label="INVICSOL"
+        {...common}
         fill="none"
         stroke="currentColor"
         strokeLinecap="round"
@@ -46,92 +68,99 @@ export function Logo({ size = 32, tone = 'brand', className = '' }: LogoProps) {
       >
         <path
           d="M26 61.4C21.6 56.9 5.5 43.6 5.5 26.5 5.5 15.2 14.7 6 26 6S46.5 15.2 46.5 26.5C46.5 43.6 30.4 56.9 26 61.4Z"
-          strokeWidth="3.4"
+          strokeWidth="3"
         />
         <path d="M19.4 27.4A6.6 6.6 0 0 1 32.6 27.4Z" fill="currentColor" stroke="none" />
-        <g strokeWidth="2.2">
-          <path d="M26 15.8V18.6" />
-          <path d="M18.4 18.8 20.1 21.2" />
-          <path d="M33.6 18.8 31.9 21.2" />
-          <path d="M14.4 26H17" />
-          <path d="M37.6 26H35" />
-          <path d="M12.6 33.4 26 31.2 39.4 33.4 26 49.4Z" />
-          <path d="M26 32V48.6" />
-          <path d="M15 39.6 26 37.8 37 39.6" />
+        <g strokeWidth="2">
+          <path d="M26 15.8V18.4" />
+          <path d="M18.6 18.8 20.2 21.1" />
+          <path d="M33.4 18.8 31.8 21.1" />
+          <path d="M14.8 26H17.2" />
+          <path d="M37.2 26H34.8" />
+          <path d="M12.4 32.6 25 29.8V52.6" />
+          <path d="M27 29.8 39.6 32.6" />
+          <path d="M27 52.6C33.2 47.6 38 40.8 39.6 32.6" />
+          <path d="M25 52.6C18.8 47.6 14 40.8 12.4 32.6" />
+          <path d="M13.9 38.4 25 36.2" />
+          <path d="M27 36.2 38.1 38.4" />
         </g>
       </svg>
     );
   }
 
-  const pin = '#e8a020';
-  const body = '#0d1e3d';
-  const detail = '#e8a020';
-  const cut = '#0d1e3d';
+  if (compact) {
+    return (
+      <svg {...common}>
+        <path d={PIN_OUTER} fill={GOLD} />
+        <path
+          d="M26 58.6C21.6 54.2 7.8 42.2 7.8 26.5 7.8 16.5 15.9 8.4 26 8.4S44.2 16.5 44.2 26.5C44.2 42.2 30.4 54.2 26 58.6Z"
+          fill={NAVY}
+        />
+        <path d="M18.6 27.6A7.4 7.4 0 0 1 33.4 27.6Z" fill={GOLD} />
+        <g stroke={GOLD} strokeWidth="2.4" strokeLinecap="round">
+          <path d="M26 15.6V18.4" />
+          <path d="M17.9 18.6 19.6 21" />
+          <path d="M34.1 18.6 32.4 21" />
+          <path d="M14.2 25.6H16.8" />
+          <path d="M37.8 25.6H35.2" />
+        </g>
+        <path d="M9.4 31.4 24.7 28.2V53.8C17.6 48.4 11.6 40.6 9.4 31.4Z" fill={GOLD} />
+        <path
+          d="M27.3 28.2 42.6 31.4C40.4 40.6 34.4 48.4 27.3 53.8Z"
+          fill="none"
+          stroke={GOLD}
+          strokeWidth="2"
+          strokeLinejoin="round"
+        />
+        <path d="M28.2 36.4 41 38.6" stroke={GOLD} strokeWidth="2" strokeLinecap="round" />
+        <path d="M11.2 37 24.2 34.8" stroke={NAVY} strokeWidth="2" strokeLinecap="round" />
+        <path d="M24.9 28.4V54" stroke={GOLD} strokeWidth="1.9" strokeLinecap="round" />
+        <path d="M27.1 28.4V54" stroke={GOLD} strokeWidth="1.9" strokeLinecap="round" />
+      </svg>
+    );
+  }
 
   return (
-    <svg
-      viewBox="0 0 52 64"
-      width={size}
-      height={Math.round(size * RATIO)}
-      className={className}
-      role="img"
-      aria-label="INVICSOL"
-    >
+    <svg {...common}>
+      <path d={PIN_OUTER} fill={GOLD} />
       <path
-        d="M26 63.2C25.4 63.2 24.9 63 24.5 62.6 20.2 58.3 3.5 44.6 3.5 26.5 3.5 14.1 13.6 4 26 4S48.5 14.1 48.5 26.5C48.5 44.6 31.8 58.3 27.5 62.6 27.1 63 26.6 63.2 26 63.2Z"
-        fill={pin}
+        d="M26 60.1C21.4 55.4 6.2 42.7 6.2 26.5 6.2 15.6 15.1 6.7 26 6.7S45.8 15.6 45.8 26.5C45.8 42.7 30.6 55.4 26 60.1Z"
+        fill={NAVY}
       />
 
-      {compact ? (
-        <>
-          <path
-            d="M26 57.4C21.4 52.6 9 41.4 9 26.5 9 17.1 16.6 9.5 26 9.5S43 17.1 43 26.5C43 41.4 30.6 52.6 26 57.4Z"
-            fill={body}
-          />
-          <path d="M18.8 27.4A7.2 7.2 0 0 1 33.2 27.4Z" fill={detail} />
-          <g stroke={detail} strokeWidth="2.6" strokeLinecap="round">
-            <path d="M26 15.4V18.6" />
-            <path d="M17.6 18.4 19.4 21" />
-            <path d="M34.4 18.4 32.6 21" />
-            <path d="M13.6 25.6H16.6" />
-            <path d="M38.4 25.6H35.4" />
-          </g>
-          <path d="M11 32.6 26 30.2 41 32.6 26 50.6Z" fill={detail} />
-          <g stroke={cut} strokeWidth="2.2" strokeLinecap="round">
-            <path d="M26 31V49.4" />
-            <path d="M13.6 38.6 26 36.8 38.4 38.6" />
-          </g>
-        </>
-      ) : (
-        <>
-          <path
-            d="M26 58.6C21.6 54.1 8 42.2 8 26.5 8 16.6 16.1 8.5 26 8.5S44 16.6 44 26.5C44 42.2 30.4 54.1 26 58.6Z"
-            fill={body}
-          />
-          <path d="M18.4 26.2A7.6 7.6 0 0 1 33.6 26.2Z" fill={detail} />
-          <g stroke={detail} strokeWidth="1.7" strokeLinecap="round">
-            <path d="M26 12.6V16.4" />
-            <path d="M18.6 14.6 20.5 17.9" />
-            <path d="M33.4 14.6 31.5 17.9" />
-            <path d="M13.2 20 16.5 21.9" />
-            <path d="M38.8 20 35.5 21.9" />
-            <path d="M11.2 26.2H15" />
-            <path d="M40.8 26.2H37" />
-          </g>
-          <g
-            stroke={detail}
-            strokeWidth="1.7"
-            strokeLinejoin="round"
-            strokeLinecap="round"
-            fill="none"
-          >
-            <path d="M9 32.4 26 29.6 43 32.4 26 52.6Z" />
-            <path d="M26 29.6V52.6" />
-            <path d="M11.6 39.2 26 36.8 40.4 39.2" />
-            <path d="M15.6 45.4 26 43.8 36.4 45.4" />
-          </g>
-        </>
-      )}
+      <path d="M17.9 27.4A8.1 8.1 0 0 1 34.1 27.4Z" fill={GOLD} />
+      <g fill={GOLD}>
+        {RAYS.map((d) => (
+          <path key={d} d={d} />
+        ))}
+      </g>
+
+      {/* Left plane: solid gold with the grid cut out in navy */}
+      <path d="M7.6 30.8 24.9 27.4V55.4C17.2 49.6 10.1 41.2 7.6 30.8Z" fill={GOLD} />
+      <g stroke={NAVY} strokeWidth="1.25" strokeLinecap="round" fill="none">
+        <path d="M15.3 29.3 21.4 53.4" />
+        <path d="M9.1 37.4 24.4 34.4" />
+        <path d="M12.6 45 24.6 42.4" />
+      </g>
+
+      {/* Right plane: open, with the grid drawn on in gold */}
+      <path
+        d="M27.1 27.4 44.4 30.8C41.9 41.2 34.8 49.6 27.1 55.4Z"
+        fill="none"
+        stroke={GOLD}
+        strokeWidth="1.35"
+        strokeLinejoin="round"
+      />
+      <g stroke={GOLD} strokeWidth="1.25" strokeLinecap="round" fill="none">
+        <path d="M36.7 29.3 30.6 53.4" />
+        <path d="M27.6 34.4 42.9 37.4" />
+        <path d="M27.4 42.4 39.4 45" />
+      </g>
+
+      <g stroke={GOLD} strokeWidth="1.25" strokeLinecap="round">
+        <path d="M24.9 27.8V55.2" />
+        <path d="M27.1 27.8V55.2" />
+      </g>
     </svg>
   );
 }
