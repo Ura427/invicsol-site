@@ -139,6 +139,14 @@ model ProjectTranslation {
   solution  String
   result    String
 
+  /// Display name of the place, in this locale ("Львів" / "Lviv"). Project.locationKey
+  /// stays the stable identifier; this is what a person actually reads. Added so that
+  /// naming a new location stops requiring an edit to messages/*.json and a redeploy —
+  /// it was the single field in the admin form that a non-developer could not fill in.
+  /// Defaults to empty for rows written before this column existed; readers fall back
+  /// to the message-file lookup, then to the raw key.
+  locationName String @default("")
+
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@unique([projectId, locale])

@@ -266,7 +266,7 @@ interface ProjectSeed {
   completedAt: string;
   coverImage: string;
   images: string[];
-  uk: { title: string; summary: string; challenge: string; solution: string; result: string };
+  uk: { title: string; summary: string; challenge: string; solution: string; result: string; locationName: string };
   en: ProjectSeed['uk'];
 }
 
@@ -287,6 +287,7 @@ const projects: ProjectSeed[] = [
       challenge: 'Складна двоскатна покрівля з мансардними вікнами обмежувала корисну площу.',
       solution: 'Розмістили масив у два ряди з оптимізацією під частково затінені ділянки.',
       result: 'Скорочення рахунку за електрику приблизно на 65%.',
+      locationName: 'Брюховичі',
     },
     en: {
       title: 'Private home, Bryukhovychi — 8 kW',
@@ -294,6 +295,7 @@ const projects: ProjectSeed[] = [
       challenge: 'A complex gabled roof with dormer windows limited usable area.',
       solution: 'Laid the array in two rows, optimized around partially shaded sections.',
       result: 'Roughly a 65% reduction in the electricity bill.',
+      locationName: 'Bryukhovychi',
     },
   },
   {
@@ -312,6 +314,7 @@ const projects: ProjectSeed[] = [
       challenge: 'Плоский дах без можливості пробивання гідроізоляції під кріплення.',
       solution: 'Баластна система кріплення з розрахунком вітрового навантаження.',
       result: 'Покриття близько 40% денного споживання готелю.',
+      locationName: 'Львів',
     },
     en: {
       title: 'Hotel, Lviv — 25 kW',
@@ -319,6 +322,7 @@ const projects: ProjectSeed[] = [
       challenge: 'A flat roof where penetrating the waterproofing for mounts wasn’t an option.',
       solution: 'A ballasted mounting system engineered against wind-load calculations.',
       result: 'Covers roughly 40% of the hotel’s daytime consumption.',
+      locationName: 'Lviv',
     },
   },
   {
@@ -337,6 +341,7 @@ const projects: ProjectSeed[] = [
       challenge: 'Нерівна ділянка та віддалене підключення до вводу.',
       solution: 'Наземна конструкція на гвинтових палях і окрема трифазна лінія до щита.',
       result: 'Стабільний дохід від продажу надлишку електроенергії в мережу.',
+      locationName: 'Городоцький р-н',
     },
     en: {
       title: 'Farm, Horodok district — 40 kW',
@@ -344,6 +349,7 @@ const projects: ProjectSeed[] = [
       challenge: 'Uneven terrain and a long run back to the connection point.',
       solution: 'A ground mount on screw piles with a dedicated 3-phase run to the panel.',
       result: 'Steady income from selling surplus generation to the grid.',
+      locationName: 'Horodok district',
     },
   },
   {
@@ -362,6 +368,7 @@ const projects: ProjectSeed[] = [
       challenge: 'Регулярні відключення впливали на роботу теплового насоса та свердловинного насоса.',
       solution: 'Виділена група резерву для насосів і опалення, батарея 15 кВт·год.',
       result: 'Будинок продовжує опалюватись і мати воду під час відключень.',
+      locationName: 'Сокільники',
     },
     en: {
       title: 'Private home, Sokilnyky — 12 kW',
@@ -369,6 +376,7 @@ const projects: ProjectSeed[] = [
       challenge: 'Regular outages were disrupting the heat pump and well pump.',
       solution: 'A dedicated backup circuit for the pumps and heating, plus a 15kWh battery.',
       result: 'The home keeps heat and water running through outages.',
+      locationName: 'Sokilnyky',
     },
   },
 ];
@@ -466,6 +474,7 @@ async function main() {
           projectId: record.id,
           locale,
           title: t.title,
+          locationName: t.locationName,
           summary: t.summary,
           challenge: t.challenge,
           solution: t.solution,

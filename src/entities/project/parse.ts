@@ -36,6 +36,12 @@ export interface ParsedProject {
 
 export interface ParsedProjectTranslation {
   title: string;
+  /**
+   * Empty for rows written before the column existed. Readers must fall back —
+   * see ProjectDetailContent — rather than rendering a blank where the place
+   * name should be.
+   */
+  locationName: string;
   summary: string;
   challenge: string;
   solution: string;
@@ -69,6 +75,7 @@ export function parseProject(row: ProjectModel): ParsedProject {
 export function parseProjectTranslation(row: ProjectTranslationModel): ParsedProjectTranslation {
   return {
     title: row.title,
+    locationName: row.locationName,
     summary: row.summary,
     challenge: row.challenge,
     solution: row.solution,

@@ -24,14 +24,17 @@ export async function ProjectDetailContent({
 }: ProjectDetailContentProps) {
   const t = await getTranslations({ locale, namespace: 'Projects' });
 
-  // locationKey is a locale-neutral database value ("bryukhovychi"), resolved to a
-  // display name here. Falls back to the raw key rather than throwing, so a location
-  // added later through the admin panel degrades to something readable instead of a
-  // 500 on a page a customer may already have bookmarked.
+  // Three sources, in order of how much they can be trusted to be right.
+  //
+  // The translation row is authoritative: it is what someone typed into the
+  // admin panel for this project, in this language. Before that column existed
+  // the name lived only in messages/*.json keyed by locationKey, so that lookup
+  // stays as the fallback for older rows. The raw key is the last resort — ugly
+  // but readable, and far better than a 500 on a page a customer bookmarked.
   const locationTranslationKey = `locations.${project.locationKey}`;
-  const locationLabel = t.has(locationTranslationKey)
-    ? t(locationTranslationKey)
-    : project.locationKey;
+  const locationLabel =
+    translation.locationName ||
+    (t.has(locationTranslationKey) ? t(locationTranslationKey) : project.locationKey);
 
   return (
     <div>
