@@ -445,7 +445,13 @@
       "saving": "Saving…",
       "errorGeneric": "Could not save. Check the fields and try again.",
       "errorDuplicateAddress": "A project already uses the web address \"{slug}\". Change the name, or set the address by hand.",
-      "errorTitleRequired": "Enter the Ukrainian project name first — the web address is made from it."
+      "errorTitleRequired": "Enter the Ukrainian project name first — the web address is made from it.",
+      "uploadPhoto": "Upload a photo",
+      "uploading": "Uploading…",
+      "uploadError_not_available": "Uploading only works while running the site on your own computer. On the live site the files are read-only.",
+      "uploadError_too_large": "That photo is over 10 MB. Try a smaller one.",
+      "uploadError_wrong_type": "Only JPEG, PNG and WebP photos can be uploaded.",
+      "uploadError_failed": "Could not upload that photo. Try again."
     }
   }
 }

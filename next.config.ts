@@ -5,6 +5,14 @@ import createNextIntlPlugin from 'next-intl/plugin';
 const withNextIntl = createNextIntlPlugin();
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // A server action's request body is capped at 1MB by default, which is
+    // under the size of an ordinary phone photo — the admin's photo upload
+    // would have failed on almost every real picture. Raised only as far as the
+    // upload actually needs; the action itself rejects anything larger with a
+    // message, rather than letting the framework reject it opaquely.
+    serverActions: { bodySizeLimit: '12mb' },
+  },
   images: {
     remotePatterns: [{ protocol: 'https', hostname: 'images.unsplash.com' }],
   },

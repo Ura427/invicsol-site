@@ -23,3 +23,9 @@ prisma/dev.db-journal
 
 # Generated design QA screenshots — regenerable, not source
 design-references/shots/
+
+# Drop-folder for original installation photos. The optimised copies that the
+# site actually serves live in public/projects/ — committing both would put
+# several megabytes of duplicate originals in the history for no benefit. The
+# folder itself stays on disk; it just isn't tracked.
+projects_images/

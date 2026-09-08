@@ -42,7 +42,7 @@ export function Nav() {
           and the links sit centred in a fixed middle column, so a width change
           is absorbed symmetrically inside that column instead of shoving
           everything sideways. */}
-      <nav className="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-6 px-4 py-4 sm:px-6 lg:px-8">
+      <nav className="mx-auto grid max-w-7xl grid-cols-[auto_1fr_auto] items-center gap-4 px-4 py-4 sm:px-6 lg:px-8 xl:gap-6">
         <Link href="/" className="flex items-center gap-2">
           <Logo size={30} />
           {/* Solid, not a bg-clip-text gradient. Gradient type is decorative
@@ -51,7 +51,11 @@ export function Nav() {
           <span className="text-navy-800 text-xl font-medium tracking-[-0.03em]">INVICSOL</span>
         </Link>
 
-        <ul className="hidden items-center justify-center gap-8 lg:flex">
+        {/* gap-5 until xl: 1024px is the tightest desktop width and Ukrainian
+            is the longer label set — at gap-8 the nav ran 12px past its own
+            container there, pushing the language switcher off the right edge.
+            The roomier spacing returns at xl, where there is width to spend. */}
+        <ul className="hidden items-center justify-center gap-5 lg:flex xl:gap-8">
           {NAV_LINKS.map((link) => {
             const isActive = pathname === link.href;
             return (
@@ -75,13 +79,27 @@ export function Nav() {
             squeezing the centre column and dragging the nav links 45px sideways
             on every language switch. Applied from xl only: at lg (1024px) reserving it overflowed the
             viewport. 31rem clears the longer (Ukrainian) pair
-            measured at 1440px, so the column width stops depending on locale. */}
+            measured at 1440px, so the column width stops depending on locale.
+
+            Fixing the column was not enough on its own. With justify-end
+            everything is pinned to the right edge, so the LEFTMOST item absorbs
+            every width change to its right — and that item was the language
+            switcher itself, which measured a 46px jump between locales. The
+            control you click moved out from under the cursor as a direct result
+            of clicking it.
+
+            So the switcher is now anchored on the right, past the buttons, and
+            the two buttons are the ones that absorb the difference. A control
+            that changes the page's language cannot be a control that moves when
+            the language changes. */}
         <div className="hidden items-center justify-end gap-3 lg:flex xl:min-w-[31rem]">
-          <LocaleSwitcher />
           <CallbackModal />
           <Button href="/contact" variant="gold">
             {t('contactCta')}
           </Button>
+          <span className="border-border ml-1 border-l pl-3">
+            <LocaleSwitcher />
+          </span>
         </div>
 
         <button

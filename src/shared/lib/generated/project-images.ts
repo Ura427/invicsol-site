@@ -6,6 +6,12 @@
 export const PROJECT_IMAGES: readonly string[] = [
   '/projects/bryukhovychi-house-8kw.jpg',
   '/projects/horodok-farm-40kw.jpg',
+  '/projects/installation-1.jpg',
+  '/projects/installation-2.jpg',
+  '/projects/installation-3.jpg',
+  '/projects/installation-4.jpg',
+  '/projects/installation-5.jpg',
+  '/projects/installation-6.jpg',
   '/projects/lviv-hotel-25kw.jpg',
   '/projects/sokilnyky-house-12kw.jpg',
   '/placeholders/project-placeholder.svg',
