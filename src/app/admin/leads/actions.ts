@@ -1,22 +1,8 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { auth } from '@/auth';
 import { db } from '@/shared/lib/db';
-
-/**
- * The proxy (src/proxy.ts) already blocks an unauthenticated request from
- * reaching any /admin page — but per Next's own guidance, a Server Function
- * is reachable directly and must check for itself rather than trust the
- * proxy alone. Cheap, and it's the difference between defense-in-depth and a
- * single point of failure.
- */
-async function requireAdmin(): Promise<void> {
-  const session = await auth();
-  if (!session) {
-    throw new Error('Unauthorized');
-  }
-}
+import { requireAdmin } from '@/shared/lib/admin-session';
 
 export interface LeadListItem {
   id: string;

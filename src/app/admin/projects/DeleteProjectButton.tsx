@@ -1,13 +1,15 @@
 'use client';
 
 import { useTransition } from 'react';
+import { useTranslations } from 'next-intl';
 import { deleteProject } from './actions';
 
 export function DeleteProjectButton({ id, title }: { id: string; title: string }) {
+  const t = useTranslations('Admin.projects');
   const [isPending, startTransition] = useTransition();
 
   function handleClick() {
-    if (!window.confirm(`Delete "${title}"? This cannot be undone.`)) return;
+    if (!window.confirm(t('confirmDelete', { title }))) return;
     startTransition(() => {
       void deleteProject(id);
     });
@@ -18,9 +20,9 @@ export function DeleteProjectButton({ id, title }: { id: string; title: string }
       type="button"
       onClick={handleClick}
       disabled={isPending}
-      className="text-sm font-medium text-red-600 hover:text-red-800 disabled:opacity-50"
+      className="text-sm font-medium text-red-700 transition-colors hover:text-red-900 disabled:opacity-50"
     >
-      {isPending ? 'Deleting…' : 'Delete'}
+      {isPending ? t('deleting') : t('delete')}
     </button>
   );
 }

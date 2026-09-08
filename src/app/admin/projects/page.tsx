@@ -1,79 +1,96 @@
 import Link from 'next/link';
+import { getTranslations } from 'next-intl/server';
+import { getAdminLocale } from '@/shared/lib/admin-locale';
 import { AdminNav } from '@/widgets/admin-nav/AdminNav';
+import { Badge } from '@/shared/ui/Badge';
 import { listProjects } from './actions';
 import { DeleteProjectButton } from './DeleteProjectButton';
 
+const OBJECT_TYPE_KEY: Record<string, string> = {
+  house: 'objectTypeHouse',
+  business: 'objectTypeBusiness',
+};
+
 export default async function AdminProjectsPage() {
-  const projects = await listProjects();
+  const locale = await getAdminLocale();
+  const t = await getTranslations({ locale, namespace: 'Admin.projects' });
+  const tForm = await getTranslations({ locale, namespace: 'Admin.form' });
+  const projects = await listProjects(locale);
+
+  const formatDate = (iso: string) =>
+    new Intl.DateTimeFormat(locale, { dateStyle: 'medium' }).format(new Date(iso));
 
   return (
     <>
       <AdminNav />
-      <div className="mx-auto max-w-5xl px-4 py-8">
-        <div className="flex items-center justify-between">
+      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+        <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
-            <h1 className="text-xl font-bold text-gray-900">Projects</h1>
-            <p className="mt-1 text-sm text-gray-500">
-              What shows in the public gallery at /projects.
-            </p>
+            <h1 className="text-navy-800 text-3xl">{t('heading')}</h1>
+            <p className="text-muted mt-2 max-w-[58ch] text-sm leading-relaxed">{t('subtitle')}</p>
           </div>
           <Link
             href="/admin/projects/new"
-            className="rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white"
+            className="bg-navy-800 hover:bg-navy-700 inline-flex items-center rounded-full px-6 py-3 text-sm font-medium tracking-[-0.01em] text-white transition-colors"
           >
-            New project
+            {t('new')}
           </Link>
         </div>
 
-        <div className="mt-6 overflow-x-auto rounded-xl border border-gray-200 bg-white">
-          <table className="w-full text-left text-sm">
-            <thead className="border-b border-gray-200 bg-gray-50 text-xs tracking-wide text-gray-500 uppercase">
-              <tr>
-                <th className="px-4 py-3">Title</th>
-                <th className="px-4 py-3">Capacity</th>
-                <th className="px-4 py-3">Type</th>
-                <th className="px-4 py-3">Completed</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3" />
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-100">
-              {projects.map((project) => (
-                <tr key={project.id}>
-                  <td className="px-4 py-3 font-medium text-gray-900">{project.title}</td>
-                  <td className="px-4 py-3 text-gray-500">{project.capacityKw} kW</td>
-                  <td className="px-4 py-3 text-gray-500">{project.objectType}</td>
-                  <td className="px-4 py-3 text-gray-500">
-                    {new Intl.DateTimeFormat('en-GB', { dateStyle: 'medium' }).format(
-                      new Date(project.completedAt),
-                    )}
-                  </td>
-                  <td className="px-4 py-3">
-                    {project.isPlaceholder ? (
-                      <span className="text-amber-600">Placeholder</span>
-                    ) : (
-                      <span className="text-green-700">Real</span>
-                    )}
-                  </td>
-                  <td className="px-4 py-3 text-right">
-                    <div className="flex justify-end gap-4">
-                      <Link
-                        href={`/admin/projects/${project.id}/edit`}
-                        className="text-sm font-medium text-gray-700 hover:text-gray-900"
-                      >
-                        Edit
-                      </Link>
-                      <DeleteProjectButton id={project.id} title={project.title} />
-                    </div>
-                  </td>
+        {projects.length === 0 ? (
+          <p className="text-muted mt-8 text-sm">{t('empty')}</p>
+        ) : (
+          <div className="border-border mt-8 overflow-x-auto border-y">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-border text-muted border-b text-xs tracking-[0.14em] uppercase">
+                  <th className="py-3 pr-4 font-medium">{t('colTitle')}</th>
+                  <th className="py-3 pr-4 font-medium">{t('colCapacity')}</th>
+                  <th className="py-3 pr-4 font-medium">{t('colType')}</th>
+                  <th className="py-3 pr-4 font-medium">{t('colCompleted')}</th>
+                  <th className="py-3 pr-4 font-medium">{t('colStatus')}</th>
+                  <th className="py-3 font-medium" />
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          {projects.length === 0 ? (
-            <p className="px-4 py-6 text-sm text-gray-500">No projects yet.</p>
-          ) : null}
-        </div>
+              </thead>
+              <tbody className="divide-border divide-y">
+                {projects.map((project) => (
+                  <tr key={project.id}>
+                    <td className="text-navy-800 py-3 pr-4 font-medium">{project.title}</td>
+                    <td className="text-muted py-3 pr-4 whitespace-nowrap">
+                      {project.capacityKw} kW
+                    </td>
+                    <td className="text-muted py-3 pr-4">
+                      {OBJECT_TYPE_KEY[project.objectType]
+                        ? tForm(OBJECT_TYPE_KEY[project.objectType]!)
+                        : project.objectType}
+                    </td>
+                    <td className="text-muted py-3 pr-4 whitespace-nowrap">
+                      {formatDate(project.completedAt)}
+                    </td>
+                    <td className="py-3 pr-4">
+                      {project.isPlaceholder ? (
+                        <Badge tone="warning">{t('statusPlaceholder')}</Badge>
+                      ) : (
+                        <Badge tone="positive">{t('statusReal')}</Badge>
+                      )}
+                    </td>
+                    <td className="py-3">
+                      <div className="flex justify-end gap-4 whitespace-nowrap">
+                        <Link
+                          href={`/admin/projects/${project.id}/edit`}
+                          className="text-navy-800 hover:text-gold-700 text-sm font-medium transition-colors"
+                        >
+                          {t('edit')}
+                        </Link>
+                        <DeleteProjectButton id={project.id} title={project.title} />
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </>
   );

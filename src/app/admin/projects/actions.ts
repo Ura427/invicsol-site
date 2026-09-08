@@ -1,16 +1,9 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { auth } from '@/auth';
 import { db } from '@/shared/lib/db';
+import { requireAdmin } from '@/shared/lib/admin-session';
 import type { ObjectType, UsageType, MountType } from '@/entities/project/parse';
-
-async function requireAdmin(): Promise<void> {
-  const session = await auth();
-  if (!session) {
-    throw new Error('Unauthorized');
-  }
-}
 
 export interface ProjectListItem {
   id: string;
@@ -23,24 +16,38 @@ export interface ProjectListItem {
   title: string;
 }
 
-export async function listProjects(): Promise<ProjectListItem[]> {
+/**
+ * `locale` picks which translation supplies the list title. It used to be pinned
+ * to 'uk', which left the English admin listing rows by their Ukrainian names —
+ * the one thing on the page that ignored the language switch.
+ *
+ * Both translations are fetched rather than one, so a project that has yet to be
+ * translated into the requested language falls back to the other one instead of
+ * showing its slug. The slug remains the last resort.
+ */
+export async function listProjects(locale: string = 'uk'): Promise<ProjectListItem[]> {
   await requireAdmin();
 
   const projects = await db.project.findMany({
     orderBy: { completedAt: 'desc' },
-    include: { translations: { where: { locale: 'uk' } } },
+    include: { translations: true },
   });
 
-  return projects.map((project) => ({
-    id: project.id,
-    slug: project.slug,
-    capacityKw: project.capacityKw,
-    objectType: project.objectType,
-    usage: project.usage,
-    completedAt: project.completedAt.toISOString(),
-    isPlaceholder: project.isPlaceholder,
-    title: project.translations[0]?.title ?? project.slug,
-  }));
+  return projects.map((project) => {
+    const preferred = project.translations.find((row) => row.locale === locale);
+    const fallback = project.translations[0];
+
+    return {
+      id: project.id,
+      slug: project.slug,
+      capacityKw: project.capacityKw,
+      objectType: project.objectType,
+      usage: project.usage,
+      completedAt: project.completedAt.toISOString(),
+      isPlaceholder: project.isPlaceholder,
+      title: preferred?.title || fallback?.title || project.slug,
+    };
+  });
 }
 
 export interface ProjectFormValues {

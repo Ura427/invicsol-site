@@ -2,10 +2,14 @@
 
 import { useState, type FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { signIn } from 'next-auth/react';
+import { TextField } from '@/shared/ui/TextField';
+import { Button } from '@/shared/ui/Button';
 
 export function LoginForm() {
   const router = useRouter();
+  const t = useTranslations('Admin.login');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,8 +27,10 @@ export function LoginForm() {
 
     setIsSubmitting(false);
 
+    // One message for both a wrong address and a wrong password, on purpose:
+    // saying which half was wrong tells an attacker which addresses exist.
     if (!result || result.error) {
-      setError('Invalid email or password.');
+      setError(t('invalid'));
       return;
     }
 
@@ -33,42 +39,33 @@ export function LoginForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-sm space-y-4">
-      <label className="block text-sm">
-        <span className="font-medium text-gray-700">Email</span>
-        <input
-          type="email"
-          name="email"
-          required
-          autoComplete="email"
-          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
-        />
-      </label>
-
-      <label className="block text-sm">
-        <span className="font-medium text-gray-700">Password</span>
-        <input
-          type="password"
-          name="password"
-          required
-          autoComplete="current-password"
-          className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2"
-        />
-      </label>
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <TextField
+        id="admin-email"
+        name="email"
+        type="email"
+        label={t('email')}
+        required
+        autoComplete="email"
+      />
+      <TextField
+        id="admin-password"
+        name="password"
+        type="password"
+        label={t('password')}
+        required
+        autoComplete="current-password"
+      />
 
       {error ? (
-        <p className="text-sm text-red-600" role="alert" aria-live="polite">
+        <p className="text-sm text-red-700" role="alert" aria-live="polite">
           {error}
         </p>
       ) : null}
 
-      <button
-        type="submit"
-        disabled={isSubmitting}
-        className="w-full rounded-lg bg-gray-900 px-4 py-2 font-semibold text-white disabled:opacity-60"
-      >
-        {isSubmitting ? 'Signing in…' : 'Sign in'}
-      </button>
+      <Button type="submit" disabled={isSubmitting} className="w-full">
+        {isSubmitting ? t('submitting') : t('submit')}
+      </Button>
     </form>
   );
 }
