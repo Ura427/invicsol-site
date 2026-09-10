@@ -29,3 +29,6 @@ design-references/shots/
 # several megabytes of duplicate originals in the history for no benefit. The
 # folder itself stays on disk; it just isn't tracked.
 projects_images/
+
+# Local agent worktrees are alternate checkouts, never project source.
+.worktrees/
