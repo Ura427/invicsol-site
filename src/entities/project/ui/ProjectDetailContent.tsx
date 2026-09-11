@@ -48,26 +48,26 @@ export async function ProjectDetailContent({
         <p className="text-muted mt-3">{translation.summary}</p>
       </div>
 
-      <div className="mt-8 grid grid-cols-3 gap-4 text-center">
-        <div className="border-border rounded-xl border p-4">
-          <p className="text-muted text-xs">{t('capacityLabel')}</p>
-          <p className="text-navy-800 mt-1 font-semibold">
-            {project.capacityKw} {t('kwUnit')}
-          </p>
-        </div>
-        <div className="border-border rounded-xl border p-4">
-          <p className="text-muted text-xs">{t('locationLabel')}</p>
-          <p className="text-navy-800 mt-1 font-semibold">{locationLabel}</p>
-        </div>
-        <div className="border-border rounded-xl border p-4">
-          <p className="text-muted text-xs">{t('completedLabel')}</p>
-          <p className="text-navy-800 mt-1 font-semibold">
-            {new Intl.DateTimeFormat(locale, { year: 'numeric', month: 'long' }).format(
-              project.completedAt,
-            )}
-          </p>
-        </div>
-      </div>
+      {/* Three figures on one rule, the station pages' device — not three
+          bordered boxes, which was the one card grid left on the site. */}
+      <dl className="border-border divide-border mt-8 grid grid-cols-3 divide-x border-y">
+        {[
+          { label: t('capacityLabel'), value: `${project.capacityKw} ${t('kwUnit')}` },
+          { label: t('locationLabel'), value: locationLabel },
+          {
+            label: t('completedLabel'),
+            value: new Intl.DateTimeFormat(locale, {
+              year: 'numeric',
+              month: 'long',
+            }).format(project.completedAt),
+          },
+        ].map((fact) => (
+          <div key={fact.label} className="py-4 pr-3 not-first:pl-4">
+            <dt className="text-muted text-xs">{fact.label}</dt>
+            <dd className="text-navy-800 mt-1 text-lg leading-snug">{fact.value}</dd>
+          </div>
+        ))}
+      </dl>
 
       {images.length > 0 ? (
         <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-[var(--radius-image)] bg-surface">
