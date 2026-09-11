@@ -348,7 +348,10 @@ export default async function StationDetailPage({
             <div className="mt-14 grid gap-x-16 gap-y-10 sm:grid-cols-2">
               {process.map((step, index) => (
                 <div key={step.id} className="border-border flex gap-5 border-t pt-6">
-                  <span className="font-display text-gold-600/40 text-3xl font-light tracking-[-0.03em]">
+                  <span
+                    className="font-display text-gold-700 text-3xl font-light tracking-[-0.03em]"
+                    aria-hidden
+                  >
                     {String(index + 1).padStart(2, '0')}
                   </span>
                   <div>

@@ -6,6 +6,12 @@ import type { ParsedStation, ParsedStationTranslation } from '@/entities/station
 interface StationCardProps {
   station: ParsedStation;
   translation: ParsedStationTranslation;
+  /**
+   * Five cards never tile in two or three columns; the last one sits alone.
+   * `wide` lets the grid give it the rest of the row, laid out sideways so
+   * the photo does not double in height with the width.
+   */
+  wide?: boolean;
 }
 
 /**
@@ -14,7 +20,7 @@ interface StationCardProps {
  * item vs. a filterable case study), and forcing them into one component would
  * couple their markup for no real reuse benefit.
  */
-export function StationCard({ station, translation }: StationCardProps) {
+export function StationCard({ station, translation, wide = false }: StationCardProps) {
   const t = useTranslations('Stations');
   const locale = useLocale();
   const isCustom = station.accent === 'gold';
@@ -24,9 +30,13 @@ export function StationCard({ station, translation }: StationCardProps) {
       href={`/stations/${station.slug}`}
       className={`group flex h-full flex-col overflow-hidden rounded-[var(--radius-lg)] transition-transform duration-300 hover:-translate-y-0.5 ${
         isCustom ? 'bg-navy-800 text-white' : 'bg-elevated'
-      }`}
+      } ${wide ? 'sm:flex-row xl:flex-col' : ''}`}
     >
-      <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-surface">
+      <div
+        className={`relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-surface ${
+          wide ? 'sm:aspect-auto sm:w-2/5 xl:aspect-[16/10] xl:w-full' : ''
+        }`}
+      >
         <Image
           src={station.imagePath}
           alt=""
@@ -54,8 +64,15 @@ export function StationCard({ station, translation }: StationCardProps) {
         </h3>
 
         {station.powerKw !== null ? (
-          <p className={`mt-1 text-3xl font-light tracking-[-0.03em] ${isCustom ? "text-gold-400" : "text-gold-600"}`}>
-            {station.powerKw} <span className="text-base font-medium">{t('kwUnit')}</span>
+          <p
+            className={`mt-1 text-3xl font-light tracking-[-0.03em] ${isCustom ? 'text-gold-400' : 'text-gold-600'}`}
+          >
+            {station.powerKw}{' '}
+            <span
+              className={`text-base font-medium ${isCustom ? 'text-gold-400' : 'text-gold-700'}`}
+            >
+              {t('kwUnit')}
+            </span>
           </p>
         ) : null}
 

@@ -44,12 +44,14 @@ export default async function PrivacyPage({
     <article className="mx-auto max-w-3xl px-4 py-24 sm:px-6 lg:px-8">
       <p className="text-muted text-sm">{t('privacyUpdated', { date })}</p>
       <h1 className="text-navy-800 mt-3 text-4xl">{t('privacyTitle')}</h1>
-      <p className="text-navy-800 mt-6 leading-relaxed">{t('privacyIntro', { domain, email })}</p>
+      <p className="text-navy-800 mt-6 leading-relaxed">
+        {t('privacyIntro', { domain, email })}
+      </p>
 
       {sections.map((section, index) => (
         <section key={section.title} className="border-border mt-12 border-t pt-8">
           <h2 className="text-navy-800 flex gap-4 text-2xl">
-            <span className="text-gold-600/60 font-light tabular-nums">
+            <span className="text-gold-700 font-light tabular-nums" aria-hidden>
               {String(index + 1).padStart(2, '0')}
             </span>
             {section.title}

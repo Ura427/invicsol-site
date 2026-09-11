@@ -36,8 +36,11 @@ export async function StationGrid() {
         {stations.map((station) => {
           const translation = translations.get(station.id);
           if (!translation) return null;
+          const isLast = station.accent === 'gold';
           return (
-            <StationCard key={station.id} station={station} translation={translation} />
+            <div key={station.id} className={isLast ? 'sm:col-span-2 xl:col-span-1' : ''}>
+              <StationCard station={station} translation={translation} wide={isLast} />
+            </div>
           );
         })}
       </div>

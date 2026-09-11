@@ -76,7 +76,7 @@ export default async function AboutPage({
                 {initialFrom(member.name)}
               </div>
               <div>
-                <h3 className="text-navy-800 text-xl">{member.name}</h3>
+                <h2 className="text-navy-800 text-xl">{member.name}</h2>
                 <p className="text-gold-700 mt-1 text-sm">{member.role}</p>
               </div>
               <p className="text-muted max-w-[52ch] leading-relaxed">{member.bio}</p>
@@ -92,7 +92,7 @@ export default async function AboutPage({
         <div className="flex flex-wrap items-baseline gap-x-8 gap-y-4">
           {warranty.map((item) => (
             <p key={item.id} className="text-navy-800">
-              <span className="text-gold-600 text-3xl font-light tracking-[-0.03em]">
+              <span className="text-gold-700 text-3xl font-light tracking-[-0.03em]">
                 {item.years}
               </span>{' '}
               <span className="text-muted text-sm">

@@ -11,7 +11,11 @@ interface ProjectCardProps {
   priority?: boolean;
 }
 
-export function ProjectCard({ project, translation, priority = false }: ProjectCardProps) {
+export function ProjectCard({
+  project,
+  translation,
+  priority = false,
+}: ProjectCardProps) {
   const t = useTranslations('Projects');
 
   return (
@@ -37,7 +41,7 @@ export function ProjectCard({ project, translation, priority = false }: ProjectC
       </div>
 
       <div className="p-5">
-        <h3 className="text-navy-800 text-lg">{translation.title}</h3>
+        <h2 className="text-navy-800 text-lg">{translation.title}</h2>
         <p className="text-muted mt-1 text-sm">{translation.summary}</p>
         <p className="text-gold-700 mt-3 text-sm font-semibold">
           {project.capacityKw} {t('kwUnit')}
