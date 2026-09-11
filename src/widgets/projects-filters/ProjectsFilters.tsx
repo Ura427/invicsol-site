@@ -34,13 +34,15 @@ export function ProjectsFilters() {
   const hasAnyFilter = Boolean(typeValue || usageValue || capacityValue);
 
   return (
-    <div className="flex flex-wrap items-end gap-4">
-      <label className="flex flex-col gap-1 text-sm">
+    <div className="grid grid-cols-3 items-end gap-2 sm:flex sm:flex-wrap sm:gap-4">
+      <label className="flex min-w-0 flex-col gap-1 text-sm">
         <span className="text-muted font-medium">{t('filterType')}</span>
         <select
-          className="border-border rounded-lg border px-3 py-2 text-sm"
+          className="border-border bg-elevated w-full rounded-lg border px-3 py-2.5 text-base sm:text-sm"
           value={typeValue ?? ''}
-          onChange={(e) => updateParam('type', (e.target.value || null) as ObjectType | null)}
+          onChange={(e) =>
+            updateParam('type', (e.target.value || null) as ObjectType | null)
+          }
         >
           <option value="">{t('typeAll')}</option>
           <option value="house">{t('typeHouse')}</option>
@@ -48,12 +50,14 @@ export function ProjectsFilters() {
         </select>
       </label>
 
-      <label className="flex flex-col gap-1 text-sm">
+      <label className="flex min-w-0 flex-col gap-1 text-sm">
         <span className="text-muted font-medium">{t('filterUsage')}</span>
         <select
-          className="border-border rounded-lg border px-3 py-2 text-sm"
+          className="border-border bg-elevated w-full rounded-lg border px-3 py-2.5 text-base sm:text-sm"
           value={usageValue ?? ''}
-          onChange={(e) => updateParam('usage', (e.target.value || null) as UsageType | null)}
+          onChange={(e) =>
+            updateParam('usage', (e.target.value || null) as UsageType | null)
+          }
         >
           <option value="">{t('usageAll')}</option>
           <option value="self">{t('usageSelf')}</option>
@@ -62,12 +66,14 @@ export function ProjectsFilters() {
         </select>
       </label>
 
-      <label className="flex flex-col gap-1 text-sm">
+      <label className="flex min-w-0 flex-col gap-1 text-sm">
         <span className="text-muted font-medium">{t('filterCapacity')}</span>
         <select
-          className="border-border rounded-lg border px-3 py-2 text-sm"
+          className="border-border bg-elevated w-full rounded-lg border px-3 py-2.5 text-base sm:text-sm"
           value={capacityValue ?? ''}
-          onChange={(e) => updateParam('kw', (e.target.value || null) as CapacityBand | null)}
+          onChange={(e) =>
+            updateParam('kw', (e.target.value || null) as CapacityBand | null)
+          }
         >
           <option value="">{t('capacityAll')}</option>
           <option value="0-10">{t('capacityLow')}</option>

@@ -81,3 +81,19 @@ test('a station page has no horizontal overflow on a phone', async ({ page }) =>
   );
   expect(overflow).toBe(0);
 });
+
+test('a phone gets a sticky price bar once the hero CTA scrolls away; desktop does not', async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await page.goto('/uk/stations/15kw');
+  const bar = page.locator('div.fixed.bottom-0');
+  await page.evaluate(() => window.scrollTo(0, 2500));
+  await expect(bar).toHaveAttribute('aria-hidden', 'false');
+  await expect(bar).toContainText('271 000');
+  await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
+  await expect(bar).toHaveAttribute('aria-hidden', 'true');
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await expect(bar).toBeHidden();
+});

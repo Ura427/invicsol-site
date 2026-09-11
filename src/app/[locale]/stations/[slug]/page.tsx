@@ -20,6 +20,7 @@ import { StationReviews, type ReviewView } from '@/entities/station/ui/StationRe
 import { Stars } from '@/entities/review/ui/Stars';
 import { Button } from '@/shared/ui/Button';
 import { SITE } from '@/shared/lib/site';
+import { StickyStationBar } from '@/entities/station/ui/StickyStationBar';
 
 export const dynamicParams = false;
 
@@ -240,7 +241,7 @@ export default async function StationDetailPage({
             ) : null}
 
             {/* Action. */}
-            <div className="pt-7">
+            <div id="station-cta" className="pt-7">
               <Button href="/contact" variant="gold">
                 {isCustom ? t('customCta') : t('cta')}
               </Button>
@@ -395,6 +396,20 @@ export default async function StationDetailPage({
           </div>
         </section>
       )}
+
+      <StickyStationBar
+        watchId="station-cta"
+        ctaLabel={isCustom ? t('customCta') : t('cta')}
+        priceLabel={
+          station.pricing
+            ? `${t('from')} ${new Intl.NumberFormat(locale, {
+                style: 'currency',
+                currency: 'UAH',
+                maximumFractionDigits: 0,
+              }).format(station.pricing.equipmentUah)}`
+            : t('priceOnRequest')
+        }
+      />
 
       {!isCustom ? (
         <StationReviews stationId={station.id} reviews={reviewViews} summary={summary} />
