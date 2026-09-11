@@ -13,6 +13,16 @@ const nextConfig: NextConfig = {
     // message, rather than letting the framework reject it opaquely.
     serverActions: { bodySizeLimit: '12mb' },
   },
+  // /services and /stations used to be pages that repeated two homepage
+  // sections verbatim; the menu now jumps to those sections and the old
+  // addresses follow. The station detail pages (/stations/15kw) are not
+  // matched — the sources are exact, not prefixes.
+  redirects: async () => [
+    { source: '/:locale(uk|en)/services', destination: '/:locale/#services', permanent: true },
+    { source: '/:locale(uk|en)/stations', destination: '/:locale/#stations', permanent: true },
+    { source: '/services', destination: '/#services', permanent: true },
+    { source: '/stations', destination: '/#stations', permanent: true },
+  ],
   images: {
     remotePatterns: [{ protocol: 'https', hostname: 'images.unsplash.com' }],
   },

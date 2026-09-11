@@ -29,7 +29,13 @@ test('the equipment carousel lists the kit and can be stepped through', async ({
   const carousel = page.getByRole('region', { name: /Комплектація/ });
   await expect(carousel).toBeVisible();
   await expect(carousel.getByRole('group')).toHaveCount(3);
-  await page.getByRole('button', { name: /Наступне/ }).click();
+  // A click that lands before hydration is lost, so retry until the slide moves.
+  await expect(async () => {
+    await page.getByRole('button', { name: /Наступне/ }).click();
+    await expect(page.getByRole('tab', { selected: true })).not.toHaveAccessibleName(/панелей/, {
+      timeout: 1000,
+    });
+  }).toPass();
   await expect(page.getByRole('tab', { selected: true })).toHaveAccessibleName(/інвертор/i);
 });
 
@@ -45,14 +51,23 @@ test('the review form validates locally before anything is sent', async ({ page 
   page.on('request', (request) => {
     if (request.method() === 'POST') submitted = true;
   });
-  await page.getByRole('button', { name: /Надіслати відгук/ }).click();
-  // .first(): Next's route announcer is also role="alert".
-  await expect(page.getByRole('alert').first()).toContainText(/ім’я/);
+  const form = page.locator('form:has(input[name="authorName"])');
+  // A click before hydration does nothing (noValidate), so retry until the
+  // form has answered.
+  await expect(async () => {
+    await form.getByRole('button', { name: /Надіслати відгук/ }).click();
+    await expect(form.getByText(/Оберіть оцінку/)).toBeVisible({ timeout: 1000 });
+  }).toPass();
+  // Each problem is named next to its own field, not as one line at the bottom.
+  await expect(form.getByRole('textbox', { name: /ім’я/ })).toHaveAccessibleDescription(/ім’я/);
+  await expect(form.getByRole('textbox', { name: /Ваш відгук/ })).toHaveAccessibleDescription(
+    /Напишіть/,
+  );
   expect(submitted).toBe(false);
 });
 
 test('the tier badge is gone from the catalogue and the type is shown instead', async ({ page }) => {
-  await page.goto('/uk/stations');
+  await page.goto('/uk/#stations');
   await expect(page.locator('body')).not.toContainText(/Розширена|Стартова|Популярна/);
   await expect(page.getByText('Гібридна', { exact: true }).first()).toBeVisible();
 });

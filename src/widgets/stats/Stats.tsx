@@ -17,8 +17,12 @@ export function Stats() {
   return (
     <section className="bg-navy-800 py-24 text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-12 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,2fr)] lg:items-end lg:gap-20">
-          <SectionHeading eyebrow={t('eyebrow')} title={t('heading')} align="left" tone="light" />
+        <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:items-start lg:gap-20">
+          {/* Top-aligned with the figures, inset by the cells' own padding, so the
+              eyebrow and the first row of numbers share a line. */}
+          <div className="lg:pt-7">
+            <SectionHeading eyebrow={t('eyebrow')} title={t('heading')} align="left" tone="light" />
+          </div>
 
           <div className="grid gap-px bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
             {stats.map((stat) => (

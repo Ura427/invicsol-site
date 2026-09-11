@@ -1,7 +1,6 @@
 import { useTranslations, useLocale } from 'next-intl';
 import { getContent } from '@/shared/lib/content';
 import { SectionHeading } from '@/shared/ui/SectionHeading';
-import { Button } from '@/shared/ui/Button';
 import { ICONS } from '@/shared/ui/icons';
 
 /**
@@ -21,7 +20,7 @@ export function ServicesTeaser() {
   const { services } = getContent(locale);
 
   return (
-    <section className="bg-surface py-24">
+    <section id="services" className="bg-surface scroll-mt-24 py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeading eyebrow={t('eyebrow')} title={t('heading')} description={t('teaser')} />
 
@@ -38,12 +37,6 @@ export function ServicesTeaser() {
               </div>
             );
           })}
-        </div>
-
-        <div className="mt-12">
-          <Button href="/services" variant="outline">
-            {t('viewAll')}
-          </Button>
         </div>
       </div>
     </section>

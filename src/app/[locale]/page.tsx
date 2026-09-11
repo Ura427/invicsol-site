@@ -12,6 +12,7 @@ import { Quote } from '@/widgets/quote';
 import { Testimonials } from '@/widgets/testimonials';
 import { Faq } from '@/widgets/faq';
 import { ContactForm } from '@/widgets/contact-form';
+import { ScrollToHash } from '@/shared/ui/ScrollToHash';
 
 export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
@@ -22,6 +23,7 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <ScrollToHash />
       <Hero />
       <WhyUs />
       <ServicesTeaser />

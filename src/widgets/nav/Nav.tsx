@@ -11,8 +11,10 @@ import { CallbackModal } from '@/widgets/callback-modal';
 import { useScrollShadow } from './useScrollShadow';
 
 const NAV_LINKS = [
-  { href: '/services', key: 'services' },
-  { href: '/stations', key: 'stations' },
+  // Jump-links: the services grid and the station catalogue live on the
+  // homepage, and the pages that used to duplicate them redirect there.
+  { href: '/#services', key: 'services' },
+  { href: '/#stations', key: 'stations' },
   { href: '/projects', key: 'projects' },
   { href: '/about', key: 'about' },
   { href: '/calculator', key: 'calculator' },

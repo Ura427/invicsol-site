@@ -12,30 +12,72 @@ export async function generateMetadata({
   return { title: t('privacyTitle'), description: t('privacyDescription') };
 }
 
-export default async function PrivacyPage({ params }: { params: Promise<{ locale: string }> }) {
+interface PolicySection {
+  title: string;
+  paragraphs: string[];
+  items?: string[];
+  after?: string;
+}
+
+const LAST_UPDATED = '2026-09-11';
+
+export default async function PrivacyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('Legal');
+  const sections = t.raw('privacySections') as PolicySection[];
+  const email = SITE.email;
+  const domain = new URL(SITE.url).host;
+  const date = new Intl.DateTimeFormat(locale, { dateStyle: 'long' }).format(
+    new Date(`${LAST_UPDATED}T00:00:00Z`),
+  );
+  // Plain interpolation, not ICU: the section bodies are raw strings so that
+  // the message file can hold arrays, and ICU is not run over `t.raw`.
+  const fill = (text: string) =>
+    text.replace('{email}', email).replace('{domain}', domain);
 
   return (
-    <div className="mx-auto max-w-3xl px-4 py-24 sm:px-6 lg:px-8">
-      <h1 className="text-navy-800 text-3xl">{t('privacyTitle')}</h1>
-      <div className="text-muted mt-6 space-y-4 text-sm leading-relaxed">
-        <p>{t('privacyDescription')}</p>
-        <p>
-          {SITE.name} collects the name and phone number submitted through the calculator, contact
-          form, and callback request in order to respond to your inquiry. Data is stored only for
-          this purpose and is never sold or shared with third parties outside of the messaging
-          services (Telegram, Viber) you choose to contact us through.
-        </p>
-        <p>
-          You may request that your submitted data be deleted by contacting us at{' '}
-          <a href={`mailto:${SITE.email}`} className="text-navy-800 underline">
-            {SITE.email}
-          </a>
-          .
-        </p>
-      </div>
-    </div>
+    <article className="mx-auto max-w-3xl px-4 py-24 sm:px-6 lg:px-8">
+      <p className="text-muted text-sm">{t('privacyUpdated', { date })}</p>
+      <h1 className="text-navy-800 mt-3 text-4xl">{t('privacyTitle')}</h1>
+      <p className="text-navy-800 mt-6 leading-relaxed">{t('privacyIntro', { domain, email })}</p>
+
+      {sections.map((section, index) => (
+        <section key={section.title} className="border-border mt-12 border-t pt-8">
+          <h2 className="text-navy-800 flex gap-4 text-2xl">
+            <span className="text-gold-600/60 font-light tabular-nums">
+              {String(index + 1).padStart(2, '0')}
+            </span>
+            {section.title}
+          </h2>
+          <div className="text-navy-800 mt-4 space-y-4 leading-relaxed">
+            {section.paragraphs.map((paragraph) => (
+              <p key={paragraph}>{fill(paragraph)}</p>
+            ))}
+            {section.items ? (
+              <ul className="list-disc space-y-2 pl-6">
+                {section.items.map((item) => (
+                  <li key={item}>{fill(item)}</li>
+                ))}
+              </ul>
+            ) : null}
+            {section.after ? <p>{fill(section.after)}</p> : null}
+          </div>
+        </section>
+      ))}
+
+      <p className="text-muted border-border mt-12 border-t pt-8 text-sm">
+        <a
+          href={`mailto:${email}`}
+          className="text-navy-800 underline underline-offset-4"
+        >
+          {email}
+        </a>
+      </p>
+    </article>
   );
 }

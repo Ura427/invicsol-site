@@ -6,8 +6,6 @@ import { db } from '@/shared/lib/db';
 
 const STATIC_PATHS = [
   '',
-  '/services',
-  '/stations',
   '/projects',
   '/about',
   '/contact',

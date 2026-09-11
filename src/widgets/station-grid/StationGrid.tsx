@@ -3,13 +3,7 @@ import { getAllStations, getStationTranslations } from '@/entities/station/queri
 import { StationCard } from '@/entities/station/ui/StationCard';
 import { SectionHeading } from '@/shared/ui/SectionHeading';
 
-interface StationGridProps {
-  /** Homepage embeds the grid directly under the "money section" heading; the
-   * /stations page reuses this same component with its own page-level heading. */
-  showHeading?: boolean;
-}
-
-export async function StationGrid({ showHeading = true }: StationGridProps) {
+export async function StationGrid() {
   const locale = await getLocale();
   const t = await getTranslations('Stations');
   const stations = await getAllStations();
@@ -19,8 +13,8 @@ export async function StationGrid({ showHeading = true }: StationGridProps) {
   );
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-      {showHeading ? <SectionHeading title={t('heading')} description={t('teaser')} /> : null}
+    <section id="stations" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-24 sm:px-6 lg:px-8">
+      <SectionHeading title={t('heading')} description={t('teaser')} />
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {stations.map((station) => {
           const translation = translations.get(station.id);

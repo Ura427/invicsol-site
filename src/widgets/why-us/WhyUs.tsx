@@ -3,7 +3,6 @@ import { useTranslations, useLocale } from 'next-intl';
 import { getContent } from '@/shared/lib/content';
 import { SectionHeading } from '@/shared/ui/SectionHeading';
 import { ICONS } from '@/shared/ui/icons';
-import { RevealCard } from './RevealCard';
 
 /**
  * A split composition — photograph on one side, the four points as ruled rows
@@ -20,7 +19,7 @@ export function WhyUs() {
   return (
     <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
       <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-20">
-        <div className="lg:sticky lg:top-28">
+        <div>
           <SectionHeading eyebrow={t('eyebrow')} title={t('heading')} align="left" />
           <div className="relative mt-10 aspect-[4/3] overflow-hidden rounded-[var(--radius-image)]">
             <Image
@@ -34,18 +33,16 @@ export function WhyUs() {
         </div>
 
         <div className="border-border divide-border divide-y border-t">
-          {why.map((card, index) => {
+          {why.map((card) => {
             const Icon = ICONS[card.icon];
             return (
-              <RevealCard key={card.id} delayMs={index * 80}>
-                <div className="flex gap-6 py-8">
-                  <Icon className="text-gold-700 mt-1 h-5 w-5 shrink-0" aria-hidden />
-                  <div>
-                    <h3 className="text-navy-800 text-xl">{card.title}</h3>
-                    <p className="text-muted mt-3 max-w-[52ch] leading-relaxed">{card.text}</p>
-                  </div>
+              <div key={card.id} className="flex gap-6 py-8">
+                <Icon className="text-gold-700 mt-1 h-5 w-5 shrink-0" aria-hidden />
+                <div>
+                  <h3 className="text-navy-800 text-xl">{card.title}</h3>
+                  <p className="text-muted mt-3 max-w-[52ch] leading-relaxed">{card.text}</p>
                 </div>
-              </RevealCard>
+              </div>
             );
           })}
         </div>

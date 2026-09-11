@@ -26,7 +26,7 @@ describe('Hero', () => {
     );
     expect(screen.getByRole('link', { name: messages.Hero.ctaSecondary })).toHaveAttribute(
       'href',
-      '/stations',
+      '/#stations',
     );
   });
 });

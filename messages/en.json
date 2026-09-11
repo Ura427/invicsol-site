@@ -16,7 +16,12 @@
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
     "skipToContent": "Skip to main content",
-    "articles": "Blog"
+    "articles": "Blog",
+    "financing": "Financing",
+    "warranty": "Warranty",
+    "greenTariff": "Green tariff",
+    "backupPower": "Backup power",
+    "useful": "Useful"
   },
   "Hero": {
     "titlePrefix": "Solar stations that ",
@@ -33,10 +38,7 @@
   "Services": {
     "eyebrow": "Solutions",
     "heading": "Services",
-    "teaser": "From a grid-tied station to full outage backup — we size the right solution for your property.",
-    "viewAll": "All services",
-    "pageTitle": "Services",
-    "pageDescription": "The full range of solar work: from grid-tied stations to commercial installations."
+    "teaser": "From a grid-tied station to full outage backup — we size the right solution for your property."
   },
   "Stats": {
     "eyebrow": "Track record",
@@ -56,9 +58,6 @@
     "eyebrow": "Catalogue",
     "heading": "Station catalogue",
     "teaser": "Five ready-made configurations — from a small private home to a commercial property.",
-    "viewAll": "All stations",
-    "pageTitle": "Stations",
-    "pageDescription": "Ready-made solar station configurations at 5, 10, 15, and 30 kW, plus a custom configuration for your property.",
     "customTitle": "Custom configuration",
     "customText": "Doesn't fit the standard lineup? We'll size a station for your consumption and budget.",
     "customCta": "Discuss your project",
@@ -127,7 +126,11 @@
     "reviewsFormSubmit": "Send review",
     "reviewsFormSubmitting": "Sending…",
     "reviewsFormThanks": "Thank you. Your review will appear once we have checked it.",
-    "reviewsFormErrorInvalid": "Add your name and a few sentences of review.",
+    "reviewsFormErrorInvalid": "Check the highlighted fields.",
+    "reviewsFormErrorNameEmpty": "Enter your name.",
+    "reviewsFormErrorNameLong": "Name is too long — {max} characters max.",
+    "reviewsFormErrorRatingMissing": "Pick a rating from 1 to 5 stars.",
+    "reviewsFormErrorTextLong": "Review is too long — {max} characters max.",
     "reviewsFormErrorRateLimited": "Too many attempts — please try again in a minute.",
     "reviewsFormErrorGeneric": "Could not send. Please try again.",
     "reviewsStar": "{count, plural, one {# star} other {# stars}}",
@@ -137,7 +140,28 @@
     "next": "Next",
     "fitHeading": "Is it for you?",
     "kitHeading": "What is in the kit",
-    "expandable": "Expandable"
+    "expandable": "Expandable",
+    "customCalcPower": "Approximate station power",
+    "customCalcHint": "Not sure of the power? Send an enquiry — we size it from your consumption.",
+    "customFacts": [
+      {
+        "value": "0 ₴",
+        "label": "site visit and survey"
+      },
+      {
+        "value": "25 years",
+        "label": "panel warranty"
+      },
+      {
+        "value": "380+",
+        "label": "stations installed"
+      }
+    ],
+    "customEstimatorEyebrow": "Rough estimate",
+    "customEstimatorHeading": "What a station of your size gives",
+    "customWizardHeading": "Size a station for your property",
+    "customWizardText": "Seven short steps about the property and its consumption — and we come back with an honest quote, not a guessed figure.",
+    "reviewsFormErrorTextEmpty": "Write your review."
   },
   "Projects": {
     "heading": "Completed projects",
@@ -286,11 +310,14 @@
     "teamHeading": "Team",
     "warrantyHeading": "Warranty",
     "brandsHeading": "Equipment we work with",
-    "placeholderBadge": "Sample team"
+    "placeholderBadge": "Sample team",
+    "warrantyText": "Warranty terms for panels, inverter and installation are on their own page.",
+    "warrantyLink": "Warranty terms"
   },
   "Warranty": {
     "pageTitle": "Warranty",
-    "pageDescription": "Warranty terms for panels, inverters, and installation work at INVICSOL."
+    "pageDescription": "Warranty terms for panels, inverters, and installation work at INVICSOL.",
+    "years": "{count, plural, one {year} other {years}}"
   },
   "Financing": {
     "pageTitle": "Financing",
@@ -367,8 +394,74 @@
     "retry": "Try again"
   },
   "Legal": {
-    "privacyTitle": "Privacy policy",
-    "privacyDescription": "How INVICSOL handles website visitors' personal data."
+    "privacyTitle": "Privacy Policy",
+    "privacyDescription": "What personal data the INVICSOL website collects, why, for how long, and what rights a visitor has.",
+    "privacyUpdated": "Version of {date}",
+    "privacyIntro": "This document explains how INVICSOL (“we”) handles the personal data of visitors to {domain}. Processing follows the Law of Ukraine “On Personal Data Protection”. By submitting any form on this site you confirm that you have read this policy.",
+    "privacySections": [
+      {
+        "title": "Who is responsible for your data",
+        "paragraphs": [
+          "The data controller is INVICSOL, Lviv, Ukraine. For anything concerning your data, write to {email} — we reply within 10 working days."
+        ]
+      },
+      {
+        "title": "What data we collect",
+        "paragraphs": [
+          "We collect only what you enter into the site's forms yourself, plus the minimum of technical data needed for the site to run."
+        ],
+        "items": [
+          "Form data: name, phone number, message text, and the chosen station or property parameters if you used the calculator.",
+          "Reviews: the name, rating and text you leave on a station page. They are published after moderation.",
+          "Technical data: the IP address in server logs — used only for spam protection and kept for a short time.",
+          "A cookie holding your chosen site language. We use no advertising or tracking cookies."
+        ]
+      },
+      {
+        "title": "Why we need it",
+        "paragraphs": [
+          "To answer your enquiry, prepare a quote, call you back at a convenient time and, if you asked, reach you via Telegram or Viber. The legal basis is the consent you give by submitting the form. The data is not used for mailings and is not passed to advertising networks."
+        ]
+      },
+      {
+        "title": "Analytics",
+        "paragraphs": [
+          "To understand traffic we may use Plausible Analytics — a cookie-free service that collects no personal data and cannot identify an individual visitor."
+        ]
+      },
+      {
+        "title": "Who we share it with",
+        "paragraphs": [
+          "Data is stored on the servers of our hosting and database provider, which processes it solely on our instructions. If you choose to contact us through a messenger, the message passes through that service (Telegram, Viber) under its own terms. We never sell personal data and never pass it to third parties for their own purposes, except where the law expressly requires."
+        ]
+      },
+      {
+        "title": "How long we keep it",
+        "paragraphs": [
+          "Enquiry data is kept while your enquiry is being handled and for no longer than 3 years after it is closed, then deleted. On request we delete it sooner."
+        ]
+      },
+      {
+        "title": "Your rights",
+        "paragraphs": [
+          "Under Ukrainian law you have the right to:"
+        ],
+        "items": [
+          "know which of your data we process and receive a copy of it;",
+          "have inaccurate data corrected;",
+          "have data deleted when there is no lawful ground to keep it;",
+          "withdraw consent at any time;",
+          "lodge a complaint with the Ukrainian Parliament Commissioner for Human Rights."
+        ],
+        "after": "To exercise any of these rights, write to {email}."
+      },
+      {
+        "title": "Changes to this policy",
+        "paragraphs": [
+          "We may update this document. The date of the current version is shown at the top of the page; material changes are flagged separately."
+        ]
+      }
+    ]
   },
   "Forms": {
     "requiredNote": "* — required fields",
@@ -564,7 +657,8 @@
       "statusPending": "Pending",
       "statusApproved": "Approved",
       "statusRejected": "Rejected",
-      "writtenIn": "written in {locale}"
+      "writtenIn": "written in {locale}",
+      "error": "The action failed. Reload the page and try again."
     }
   }
 }
