@@ -55,15 +55,16 @@ model Station {
   /// Null means "not stated". Never claim stock for equipment that is not
   /// actually held or reliably sourceable.
   inStock            Boolean?
-  ratingValue        Float?
-  ratingCount        Int?
   /// LAUNCH BLOCKER. True while ANY commercial field above holds a demo value.
-  /// While set, the UI renders a visible placeholder badge beside the price and
-  /// rating, so fabricated figures cannot ship silently as real ones. Flip to
-  /// false per station only when every value above is genuine.
+  /// While set, the UI renders a visible placeholder badge beside the price, so
+  /// fabricated figures cannot ship silently as real ones. Flip to false per
+  /// station only when every value above is genuine. (There is deliberately no
+  /// rating column any more: the rating is computed from approved Reviews, so
+  /// it cannot be a demo value.)
   commercialIsPlaceholder Boolean @default(true)
 
   translations StationTranslation[]
+  reviews      Review[]
 
   @@index([sortOrder])
 }
@@ -74,13 +75,13 @@ model StationTranslation {
   /// "uk" | "en"
   locale    String
 
-  badge String
   title String
   intro String
 
-  /// String arrays, stored as native Postgres jsonb — validated (never trusted
-  /// blindly) in entities/station/parse.ts. SQLite forced these into
-  /// JSON-in-a-string columns; Postgres doesn't need that workaround.
+  /// JSON arrays, stored as native Postgres jsonb — validated (never trusted
+  /// blindly) in entities/station/parse.ts. kitMain is an array of
+  /// { label, image } objects (the equipment carousel is built from it); the
+  /// rest are plain string arrays.
   suitableFor Json
   outcomes    Json
   kitMain     Json
@@ -162,6 +163,30 @@ model ProjectImage {
   project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
 
   @@index([projectId, sortOrder])
+}
+
+/// A customer's review of one catalogue station. Public form on the station
+/// page, moderated in the admin: nothing is shown until an operator approves it,
+/// because an unmoderated public form on a real company's site is a spam magnet.
+/// Rating and count on the station page are computed from the approved rows here
+/// — there is no stored aggregate to drift out of sync.
+model Review {
+  id         String   @id @default(cuid())
+  stationId  String
+  authorName String
+  /// 1–5, validated in entities/review/parse.ts
+  rating     Int
+  text       String
+  /// "uk" | "en" — the language it was written in, so the list can say so.
+  locale     String
+  /// "pending" | "approved" | "rejected"
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+
+  station Station @relation(fields: [stationId], references: [id], onDelete: Cascade)
+
+  @@index([stationId, status])
+  @@index([status, createdAt])
 }
 
 model Lead {

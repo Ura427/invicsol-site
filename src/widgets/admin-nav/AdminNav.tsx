@@ -10,6 +10,7 @@ import { AdminLocaleSwitcher } from './AdminLocaleSwitcher';
 const LINKS = [
   { href: '/admin/leads', key: 'leads' },
   { href: '/admin/projects', key: 'projects' },
+  { href: '/admin/reviews', key: 'reviews' },
 ] as const;
 
 /**

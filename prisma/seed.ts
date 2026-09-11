@@ -36,7 +36,7 @@ interface StationSeed {
   /**
    * DEMO COMMERCIAL DATA — every figure below is invented so the product page
    * layout can be judged. Each station carries commercialIsPlaceholder: true,
-   * which renders a visible badge beside the price and rating, so none of this
+   * which renders a visible badge beside the price, so none of this
    * can reach a visitor presented as fact. Replace with real numbers and flip
    * the flag per station before launch.
    */
@@ -44,15 +44,19 @@ interface StationSeed {
   priceInstallMinUah: number | null;
   priceInstallMaxUah: number | null;
   inStock: boolean | null;
-  ratingValue: number | null;
-  ratingCount: number | null;
   uk: {
-    badge: string;
     title: string;
     intro: string;
     suitableFor: string[];
     outcomes: string[];
-    kitMain: string[];
+    /**
+     * Each line of the bill of materials with the photo the equipment carousel
+     * shows for it. The photos under public/equipment/ are stock — a generic
+     * panel, inverter and battery — not the actual Jinko/Deye/Pylontech units.
+     * Replace the files with real product shots when you have them; the paths
+     * stay the same.
+     */
+    kitMain: { label: string; image: string | null }[];
     kitExtra: string[];
     benefits: string[];
     specPurpose: string;
@@ -73,29 +77,31 @@ const stations: StationSeed[] = [
     priceInstallMinUah: 22000,
     priceInstallMaxUah: 34000,
     inStock: true,
-    ratingValue: 4.8,
-    ratingCount: 12,
     uk: {
-      badge: 'Стартова',
-      title: 'Станція 5 кВт',
+      title: 'Мережева станція 5 кВт',
       intro:
-        'Мережева станція для невеликого приватного будинку з денним споживанням до 400 кВт·год на місяць.',
+        'Для невеликого приватного будинку з денним споживанням до 400 кВт·год на місяць.',
       suitableFor: ['Будинок 80–120 м²', 'Родина з 2–4 осіб', 'Денне споживання'],
       outcomes: ['Скорочення рахунку за електрику на 50–70%'],
-      kitMain: ['10 панелей Longi 500 Вт', 'Мережевий інвертор Huawei 5 кВт'],
+      kitMain: [
+        { label: '10 панелей Longi 500 Вт', image: '/equipment/panel-detail.jpg' },
+        { label: 'Мережевий інвертор Huawei 5 кВт', image: '/equipment/inverter.jpg' },
+      ],
       kitExtra: ['Кріплення під дах', 'Захист від дугового пробою'],
       benefits: ['Швидка окупність', 'Мінімум обслуговування', 'Просте розширення'],
       specPurpose: 'Самоспоживання вдень',
       specScalability: 'До 8 кВт без заміни інвертора',
     },
     en: {
-      badge: 'Starter',
-      title: '5 kW Station',
+      title: '5 kW Grid-Tied Station',
       intro:
-        'A grid-tied station for a small private home with daytime consumption up to 400 kWh/month.',
+        'For a small private home with daytime consumption up to 400 kWh/month.',
       suitableFor: ['80–120 m² home', 'Family of 2–4', 'Daytime consumption'],
       outcomes: ['50–70% lower electricity bill'],
-      kitMain: ['10x Longi 500W panels', 'Huawei 5kW grid-tied inverter'],
+      kitMain: [
+        { label: '10x Longi 500W panels', image: '/equipment/panel-detail.jpg' },
+        { label: 'Huawei 5kW grid-tied inverter', image: '/equipment/inverter.jpg' },
+      ],
       kitExtra: ['Roof mounting kit', 'Arc-fault protection'],
       benefits: ['Fast payback', 'Minimal maintenance', 'Easy to expand'],
       specPurpose: 'Daytime self-consumption',
@@ -113,27 +119,31 @@ const stations: StationSeed[] = [
     priceInstallMinUah: 28000,
     priceInstallMaxUah: 45000,
     inStock: true,
-    ratingValue: 4.9,
-    ratingCount: 21,
     uk: {
-      badge: 'Популярна',
-      title: 'Станція 10 кВт',
-      intro: 'Гібридна станція з накопичувачем для будинку середнього розміру з резервом на випадок відключень.',
+      title: 'Гібридна станція 10 кВт',
+      intro: 'З накопичувачем — для будинку середнього розміру, якому потрібен резерв на випадок відключень.',
       suitableFor: ['Будинок 150–220 м²', 'Часті відключення в районі', 'Бажання резерву'],
       outcomes: ['Резерв критичних споживачів на 6–10 годин'],
-      kitMain: ['18 панелей Jinko 555 Вт', 'Гібридний інвертор Deye 10 кВт', 'Батарея Pylontech 10 кВт·год'],
+      kitMain: [
+        { label: '18 панелей Jinko 555 Вт', image: '/equipment/panel-detail.jpg' },
+        { label: 'Гібридний інвертор Deye 10 кВт', image: '/equipment/inverter.jpg' },
+        { label: 'Батарея Pylontech 10 кВт·год', image: '/equipment/battery.jpg' },
+      ],
       kitExtra: ['Виділена група резерву', 'Моніторинг через застосунок'],
       benefits: ['Працює під час блекауту', 'Гнучке керування пріоритетами', 'Розширюваний накопичувач'],
       specPurpose: 'Самоспоживання + резерв',
       specScalability: 'До 15 кВт та додаткової батареї',
     },
     en: {
-      badge: 'Most popular',
-      title: '10 kW Station',
-      intro: 'A hybrid station with storage for a mid-size home that wants backup during outages.',
+      title: '10 kW Hybrid Station',
+      intro: 'With storage, for a mid-size home that wants backup during outages.',
       suitableFor: ['150–220 m² home', 'Frequent local outages', 'Wants backup power'],
       outcomes: ['6–10 hours of critical-load backup'],
-      kitMain: ['18x Jinko 555W panels', 'Deye 10kW hybrid inverter', 'Pylontech 10kWh battery'],
+      kitMain: [
+        { label: '18x Jinko 555W panels', image: '/equipment/panel-detail.jpg' },
+        { label: 'Deye 10kW hybrid inverter', image: '/equipment/inverter.jpg' },
+        { label: 'Pylontech 10kWh battery', image: '/equipment/battery.jpg' },
+      ],
       kitExtra: ['Dedicated backup circuit', 'App-based monitoring'],
       benefits: ['Works through blackouts', 'Flexible load priorities', 'Expandable storage'],
       specPurpose: 'Self-consumption + backup',
@@ -151,27 +161,31 @@ const stations: StationSeed[] = [
     priceInstallMinUah: 34000,
     priceInstallMaxUah: 56000,
     inStock: false,
-    ratingValue: 4.7,
-    ratingCount: 8,
     uk: {
-      badge: 'Розширена',
-      title: 'Станція 15 кВт',
-      intro: 'Гібридна станція для великого будинку або невеликого комерційного об’єкта з високим споживанням.',
+      title: 'Гібридна станція 15 кВт',
+      intro: 'Для великого будинку або невеликого комерційного об’єкта з високим споживанням.',
       suitableFor: ['Будинок 220–350 м²', 'Опалення тепловим насосом', 'Високе споживання'],
       outcomes: ['Покриття до 90% річного споживання'],
-      kitMain: ['27 панелей Jinko 555 Вт', 'Гібридний інвертор Deye 15 кВт', 'Батарея Pylontech 15 кВт·год'],
+      kitMain: [
+        { label: '27 панелей Jinko 555 Вт', image: '/equipment/panel-detail.jpg' },
+        { label: 'Гібридний інвертор Deye 15 кВт', image: '/equipment/inverter.jpg' },
+        { label: 'Батарея Pylontech 15 кВт·год', image: '/equipment/battery.jpg' },
+      ],
       kitExtra: ['Триетапна схема резерву', 'Інтеграція з тепловим насосом'],
       benefits: ['Покриває опалення та резерв', 'Модульна батарея', 'Трифазне підключення'],
       specPurpose: 'Самоспоживання + резерв',
       specScalability: 'До 30 кВт при переході на комерційну лінійку',
     },
     en: {
-      badge: 'Extended',
-      title: '15 kW Station',
-      intro: 'A hybrid station for a large home or small commercial property with high consumption.',
+      title: '15 kW Hybrid Station',
+      intro: 'For a large home or small commercial property with high consumption.',
       suitableFor: ['220–350 m² home', 'Heat-pump heating', 'High consumption'],
       outcomes: ['Covers up to 90% of annual consumption'],
-      kitMain: ['27x Jinko 555W panels', 'Deye 15kW hybrid inverter', 'Pylontech 15kWh battery'],
+      kitMain: [
+        { label: '27x Jinko 555W panels', image: '/equipment/panel-detail.jpg' },
+        { label: 'Deye 15kW hybrid inverter', image: '/equipment/inverter.jpg' },
+        { label: 'Pylontech 15kWh battery', image: '/equipment/battery.jpg' },
+      ],
       kitExtra: ['Three-stage backup circuit', 'Heat-pump integration'],
       benefits: ['Covers heating plus backup', 'Modular battery', '3-phase connection'],
       specPurpose: 'Self-consumption + backup',
@@ -189,27 +203,31 @@ const stations: StationSeed[] = [
     priceInstallMinUah: 52000,
     priceInstallMaxUah: 88000,
     inStock: false,
-    ratingValue: 5,
-    ratingCount: 5,
     uk: {
-      badge: 'Комерційна',
-      title: 'Станція 30 кВт',
-      intro: 'Мережева або гібридна станція для комерційного об’єкта: виробництва, складу чи готелю.',
+      title: 'Мережева станція 30 кВт',
+      intro: 'Для комерційного об’єкта: виробництва, складу чи готелю. Доступна і в гібридному виконанні.',
       suitableFor: ['Виробництво чи склад', 'Готель або заклад харчування', 'Стабільне денне навантаження'],
       outcomes: ['Скорочення операційних витрат на електрику'],
-      kitMain: ['54 панелі Longi 555 Вт', 'Три інвертори Huawei 10 кВт', 'Трифазна схема підключення'],
+      kitMain: [
+        { label: '54 панелі Longi 555 Вт', image: '/equipment/panel-detail.jpg' },
+        { label: 'Три інвертори Huawei 10 кВт', image: '/equipment/inverter.jpg' },
+        { label: 'Трифазна схема підключення', image: null },
+      ],
       kitExtra: ['Дистанційний моніторинг для кількох об’єктів', 'Опційно — накопичувач 30 кВт·год'],
       benefits: ['Розрахунок під профіль навантаження', 'Пакет документів під зелений тариф', 'Гарантійний супровід сервісом'],
       specPurpose: 'Комерційне самоспоживання',
       specScalability: 'Масштабується до 100+ кВт кількома чергами',
     },
     en: {
-      badge: 'Commercial',
-      title: '30 kW Station',
-      intro: 'A grid-tied or hybrid station for a commercial property: a factory, warehouse, or hotel.',
+      title: '30 kW Grid-Tied Station',
+      intro: 'For a commercial property: a factory, warehouse, or hotel. Also available as a hybrid.',
       suitableFor: ['Factory or warehouse', 'Hotel or food-service venue', 'Steady daytime load'],
       outcomes: ['Lower operating electricity costs'],
-      kitMain: ['54x Longi 555W panels', '3x Huawei 10kW inverters', '3-phase connection'],
+      kitMain: [
+        { label: '54x Longi 555W panels', image: '/equipment/panel-detail.jpg' },
+        { label: '3x Huawei 10kW inverters', image: '/equipment/inverter.jpg' },
+        { label: '3-phase connection', image: null },
+      ],
       kitExtra: ['Remote monitoring across multiple sites', 'Optional 30kWh battery'],
       benefits: ['Sized against your load profile', 'Green-tariff documentation package', 'Service-backed warranty'],
       specPurpose: 'Commercial self-consumption',
@@ -227,27 +245,27 @@ const stations: StationSeed[] = [
     priceInstallMinUah: null,
     priceInstallMaxUah: null,
     inStock: null,
-    ratingValue: null,
-    ratingCount: null,
     uk: {
-      badge: 'Індивідуально',
       title: 'Індивідуальна конфігурація',
       intro: 'Ваш об’єкт не вписується у стандартну лінійку? Розрахуємо станцію під ваше споживання, дах і бюджет.',
       suitableFor: ['Нестандартний дах чи ділянка', 'Складний профіль споживання', 'Комбінація кількох цілей'],
       outcomes: ['Рішення, підібране саме під ваш об’єкт'],
-      kitMain: ['Обладнання підбирається під проєкт'],
+      kitMain: [
+        { label: 'Обладнання підбирається під проєкт', image: null },
+      ],
       kitExtra: ['Виїзд інженера включено'],
       benefits: ['Повна гнучкість конфігурації', 'Прозорий розрахунок після виїзду'],
       specPurpose: 'Визначається за результатами виїзду',
       specScalability: 'Без обмежень стандартної лінійки',
     },
     en: {
-      badge: 'Custom',
       title: 'Custom Configuration',
       intro: 'Your property doesn’t fit the standard lineup? We’ll size a station for your consumption, roof, and budget.',
       suitableFor: ['Non-standard roof or plot', 'Complex consumption profile', 'Combining several goals'],
       outcomes: ['A solution sized specifically for your property'],
-      kitMain: ['Equipment selected per project'],
+      kitMain: [
+        { label: 'Equipment selected per project', image: null },
+      ],
       kitExtra: ['Engineer site visit included'],
       benefits: ['Full configuration flexibility', 'Transparent quote after the visit'],
       specPurpose: 'Determined after the site visit',
@@ -397,8 +415,6 @@ async function main() {
       priceInstallMinUah: station.priceInstallMinUah,
       priceInstallMaxUah: station.priceInstallMaxUah,
       inStock: station.inStock,
-      ratingValue: station.ratingValue,
-      ratingCount: station.ratingCount,
       commercialIsPlaceholder: true,
     };
     const mayRefreshCommercials = !existing || existing.commercialIsPlaceholder;
@@ -427,23 +443,24 @@ async function main() {
 
     for (const locale of ['uk', 'en'] as const) {
       const t = station[locale];
+      // Station copy has no admin UI, so this file is its only source of truth
+      // and must overwrite on re-run — the opposite of project translations,
+      // which are admin-editable and are deliberately left alone.
+      const copy = {
+        title: t.title,
+        intro: t.intro,
+        suitableFor: t.suitableFor,
+        outcomes: t.outcomes,
+        kitMain: t.kitMain,
+        kitExtra: t.kitExtra,
+        benefits: t.benefits,
+        specPurpose: t.specPurpose,
+        specScalability: t.specScalability,
+      };
       await prisma.stationTranslation.upsert({
         where: { stationId_locale: { stationId: record.id, locale } },
-        update: {},
-        create: {
-          stationId: record.id,
-          locale,
-          badge: t.badge,
-          title: t.title,
-          intro: t.intro,
-          suitableFor: t.suitableFor,
-          outcomes: t.outcomes,
-          kitMain: t.kitMain,
-          kitExtra: t.kitExtra,
-          benefits: t.benefits,
-          specPurpose: t.specPurpose,
-          specScalability: t.specScalability,
-        },
+        update: copy,
+        create: { stationId: record.id, locale, ...copy },
       });
     }
   }

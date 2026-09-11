@@ -73,4 +73,8 @@ test('a station detail page emits valid Product JSON-LD', async ({ page }) => {
   const jsonLdText = await page.locator('script[type="application/ld+json"]').last().textContent();
   const jsonLd = JSON.parse(jsonLdText ?? '{}');
   expect(jsonLd['@type']).toBe('Product');
+  // The rating is computed from approved reviews. With none, no aggregateRating
+  // may be emitted — a Product rated with no reviews behind it is what search
+  // engines penalise, and this page used to carry a fabricated 4.7.
+  expect(jsonLd).not.toHaveProperty('aggregateRating');
 });

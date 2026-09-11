@@ -107,7 +107,37 @@
       "kwhPerYear": "кВт·год",
       "years": "{years} років",
       "disclaimer": "Розрахунок для {power} кВт за чотирьох пікових сонячних годин на добу та ККД системи 80% — типово для Львівщини. Це не ціна: вартість станції залежить від даху, кріплення та довжини трас, які визначаються під час безкоштовного виїзду."
-    }
+    },
+    "reviewsHeading": "Відгуки",
+    "reviewsEmpty": "Ще немає відгуків",
+    "reviewsEmptyBody": "Розкажіть першим, як ця станція працює у вас.",
+    "reviewsCount": "{count, plural, one {# відгук} few {# відгуки} other {# відгуків}}",
+    "reviewsBasedOn": "на основі {count, plural, one {# відгуку} few {# відгуків} other {# відгуків}}",
+    "reviewsFilterAll": "Усі",
+    "reviewsSort": "Сортувати",
+    "reviewsSortNewest": "Нові",
+    "reviewsSortHighest": "Найвищі",
+    "reviewsSortLowest": "Найнижчі",
+    "reviewsNoneMatch": "Немає відгуків з такою оцінкою.",
+    "reviewsFormHeading": "Залишити відгук",
+    "reviewsFormName": "Ваше ім’я",
+    "reviewsFormRating": "Ваша оцінка",
+    "reviewsFormText": "Ваш відгук",
+    "reviewsFormTextHint": "Що встановили, як пройшло, що змінилося для вас.",
+    "reviewsFormSubmit": "Надіслати відгук",
+    "reviewsFormSubmitting": "Надсилаємо…",
+    "reviewsFormThanks": "Дякуємо. Відгук з’явиться після перевірки.",
+    "reviewsFormErrorInvalid": "Вкажіть ім’я та напишіть кілька речень.",
+    "reviewsFormErrorRateLimited": "Забагато спроб — спробуйте за хвилину.",
+    "reviewsFormErrorGeneric": "Не вдалося надіслати. Спробуйте ще раз.",
+    "reviewsStar": "{count, plural, one {# зірка} few {# зірки} other {# зірок}}",
+    "reviewsWrittenIn": "{locale}",
+    "illustrativePhoto": "Ілюстративне фото — не саме ця модель",
+    "previous": "Попереднє",
+    "next": "Наступне",
+    "fitHeading": "Чи підійде вам",
+    "kitHeading": "Що в комплекті",
+    "expandable": "Розширення"
   },
   "Projects": {
     "heading": "Реалізовані проєкти",
@@ -351,7 +381,8 @@
       "leads": "Заявки",
       "projects": "Проєкти",
       "signOut": "Вийти",
-      "language": "Мова"
+      "language": "Мова",
+      "reviews": "Відгуки"
     },
     "login": {
       "heading": "INVICSOL Адмінка",
@@ -502,7 +533,38 @@
       "projectStatusDemo": "Лише демо",
       "showingAll": "{count} з {total}",
       "showingFiltered": "Показано {count} з {total}",
-      "none": "За цими фільтрами нічого немає."
+      "none": "За цими фільтрами нічого немає.",
+      "reviewStatusAll": "Будь-який статус",
+      "reviewStatusPending": "На розгляді",
+      "reviewStatusApproved": "Схвалені",
+      "reviewStatusRejected": "Відхилені",
+      "rating": "Оцінка",
+      "ratingAll": "Будь-яка оцінка",
+      "ratingStars": "{count, plural, one {# зірка} few {# зірки} other {# зірок}}",
+      "station": "Станція",
+      "stationAll": "Будь-яка станція",
+      "sortHighest": "Спочатку найвищі",
+      "sortLowest": "Спочатку найнижчі",
+      "searchReviews": "Пошук за автором або текстом"
+    },
+    "reviews": {
+      "heading": "Відгуки",
+      "subtitle": "Відгуки клієнтів зі сторінок станцій. На сайті нічого не показується, поки ви не схвалите.",
+      "empty": "Відгуків ще немає.",
+      "colStation": "Станція",
+      "colAuthor": "Автор",
+      "colRating": "Оцінка",
+      "colText": "Відгук",
+      "colWhen": "Коли",
+      "approve": "Схвалити",
+      "reject": "Відхилити",
+      "restore": "Повернути на розгляд",
+      "delete": "Видалити",
+      "confirmDelete": "Видалити цей відгук назавжди? Це не можна скасувати.",
+      "statusPending": "На розгляді",
+      "statusApproved": "Схвалено",
+      "statusRejected": "Відхилено",
+      "writtenIn": "написано {locale}"
     }
   }
 }

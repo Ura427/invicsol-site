@@ -107,7 +107,37 @@
       "kwhPerYear": "kWh",
       "years": "{years} years",
       "disclaimer": "An estimate for {power} kW at four peak sun hours a day and 80% system performance — typical for the Lviv region. It is not a price: what a station costs depends on your roof, mounting and cable runs, which we settle at the free site visit."
-    }
+    },
+    "reviewsHeading": "Reviews",
+    "reviewsEmpty": "No reviews yet",
+    "reviewsEmptyBody": "Be the first to tell others how this station works for you.",
+    "reviewsCount": "{count, plural, one {# review} other {# reviews}}",
+    "reviewsBasedOn": "based on {count, plural, one {# review} other {# reviews}}",
+    "reviewsFilterAll": "All",
+    "reviewsSort": "Sort",
+    "reviewsSortNewest": "Newest",
+    "reviewsSortHighest": "Highest",
+    "reviewsSortLowest": "Lowest",
+    "reviewsNoneMatch": "No reviews with that rating.",
+    "reviewsFormHeading": "Leave a review",
+    "reviewsFormName": "Your name",
+    "reviewsFormRating": "Your rating",
+    "reviewsFormText": "Your review",
+    "reviewsFormTextHint": "What was installed, how it went, what changed for you.",
+    "reviewsFormSubmit": "Send review",
+    "reviewsFormSubmitting": "Sending…",
+    "reviewsFormThanks": "Thank you. Your review will appear once we have checked it.",
+    "reviewsFormErrorInvalid": "Add your name and a few sentences of review.",
+    "reviewsFormErrorRateLimited": "Too many attempts — please try again in a minute.",
+    "reviewsFormErrorGeneric": "Could not send. Please try again.",
+    "reviewsStar": "{count, plural, one {# star} other {# stars}}",
+    "reviewsWrittenIn": "in {locale}",
+    "illustrativePhoto": "Illustrative photo — not the listed model",
+    "previous": "Previous",
+    "next": "Next",
+    "fitHeading": "Is it for you?",
+    "kitHeading": "What is in the kit",
+    "expandable": "Expandable"
   },
   "Projects": {
     "heading": "Completed projects",
@@ -351,7 +381,8 @@
       "leads": "Leads",
       "projects": "Projects",
       "signOut": "Sign out",
-      "language": "Language"
+      "language": "Language",
+      "reviews": "Reviews"
     },
     "login": {
       "heading": "INVICSOL Admin",
@@ -502,7 +533,38 @@
       "projectStatusDemo": "Demo only",
       "showingAll": "{count} of {total}",
       "showingFiltered": "Showing {count} of {total}",
-      "none": "Nothing matches these filters."
+      "none": "Nothing matches these filters.",
+      "reviewStatusAll": "Any status",
+      "reviewStatusPending": "Pending",
+      "reviewStatusApproved": "Approved",
+      "reviewStatusRejected": "Rejected",
+      "rating": "Rating",
+      "ratingAll": "Any rating",
+      "ratingStars": "{count, plural, one {# star} other {# stars}}",
+      "station": "Station",
+      "stationAll": "Any station",
+      "sortHighest": "Highest rated",
+      "sortLowest": "Lowest rated",
+      "searchReviews": "Search by author or text"
+    },
+    "reviews": {
+      "heading": "Reviews",
+      "subtitle": "Customer reviews left on station pages. Nothing is shown publicly until you approve it.",
+      "empty": "No reviews yet.",
+      "colStation": "Station",
+      "colAuthor": "Author",
+      "colRating": "Rating",
+      "colText": "Review",
+      "colWhen": "When",
+      "approve": "Approve",
+      "reject": "Reject",
+      "restore": "Back to pending",
+      "delete": "Delete",
+      "confirmDelete": "Delete this review permanently? This cannot be undone.",
+      "statusPending": "Pending",
+      "statusApproved": "Approved",
+      "statusRejected": "Rejected",
+      "writtenIn": "written in {locale}"
     }
   }
 }

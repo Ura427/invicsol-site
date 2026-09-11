@@ -1,6 +1,13 @@
 import { ImageResponse } from 'next/og';
 import { getStationBySlug } from '@/entities/station/queries';
 
+// next-intl is unavailable in the OG image runtime, so the three labels live
+// here. Keep in step with Stations.systemTypes in messages/*.json.
+const SYSTEM_TYPE_LABEL: Record<string, Record<string, string>> = {
+  uk: { 'grid-tied': 'Мережева', hybrid: 'Гібридна', custom: 'За проєктом' },
+  en: { 'grid-tied': 'Grid-tied', hybrid: 'Hybrid', custom: 'Custom-designed' },
+};
+
 export const alt = 'INVICSOL station';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
@@ -23,7 +30,8 @@ export default async function Image({
   const data = await getStationBySlug(slug, locale);
 
   const title = data?.translation.title ?? 'INVICSOL';
-  const badge = data?.translation.badge ?? '';
+    // Upper label on the card: the system type. It was the invented tier badge.
+  const badge = data ? SYSTEM_TYPE_LABEL[locale]?.[data.station.systemType] ?? '' : '';
   const powerKw = data?.station.powerKw;
 
   return new ImageResponse(

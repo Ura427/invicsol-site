@@ -28,18 +28,27 @@ export interface ParsedStation {
     installMaxUah: number | null;
   } | null;
   inStock: boolean | null;
-  rating: { value: number; count: number } | null;
-  /** True while any commercial value above is a demo figure, not a real one. */
+  /**
+   * True while any commercial value above is a demo figure, not a real one.
+   * The rating is not here on purpose: it is computed from approved reviews
+   * (entities/review/queries.ts) and so can never be a demo value.
+   */
   commercialIsPlaceholder: boolean;
 }
 
+/** One line of the bill of materials, with the photo the carousel shows for it. */
+export interface KitItem {
+  label: string;
+  /** Path under public/, or null when there is no photo for this item. */
+  image: string | null;
+}
+
 export interface ParsedStationTranslation {
-  badge: string;
   title: string;
   intro: string;
   suitableFor: readonly string[];
   outcomes: readonly string[];
-  kitMain: readonly string[];
+  kitMain: readonly KitItem[];
   kitExtra: readonly string[];
   benefits: readonly string[];
   specPurpose: string;
@@ -56,6 +65,32 @@ function isSystemType(value: string): value is SystemType {
 
 function isAccent(value: string): value is StationAccent {
   return value === 'default' || value === 'gold';
+}
+
+/**
+ * The main kit was a plain string array; it is now objects carrying a photo so
+ * the equipment carousel can be built from it. Both shapes are accepted, with a
+ * bare string mapped to `image: null`, so a row seeded before the change and a
+ * row seeded after it both parse — the migration window must not 500 a page.
+ */
+function parseKitItems(value: unknown, field: string): readonly KitItem[] {
+  if (!Array.isArray(value)) {
+    throw new Error(`Station translation field "${field}" is not a JSON array`);
+  }
+  return value.map((item, index) => {
+    if (typeof item === 'string') return { label: item, image: null };
+    if (
+      typeof item === 'object' &&
+      item !== null &&
+      typeof (item as { label?: unknown }).label === 'string' &&
+      ((item as { image?: unknown }).image === null ||
+        typeof (item as { image?: unknown }).image === 'string')
+    ) {
+      const { label, image } = item as { label: string; image: string | null };
+      return { label, image };
+    }
+    throw new Error(`Station translation field "${field}"[${index}] is not a kit item`);
+  });
 }
 
 function parseStringArray(value: unknown, field: string): readonly string[] {
@@ -94,13 +129,6 @@ export function parseStation(row: StationModel): ParsedStation {
         }
       : null;
 
-  // Both halves of a rating are required: a score with no count is unverifiable
-  // and a count with no score says nothing.
-  const rating =
-    row.ratingValue !== null && row.ratingCount !== null && row.ratingCount > 0
-      ? { value: row.ratingValue, count: row.ratingCount }
-      : null;
-
   return {
     id: row.id,
     slug: row.slug,
@@ -112,19 +140,17 @@ export function parseStation(row: StationModel): ParsedStation {
     isPlaceholder: row.isPlaceholder,
     pricing,
     inStock: row.inStock,
-    rating,
     commercialIsPlaceholder: row.commercialIsPlaceholder,
   };
 }
 
 export function parseStationTranslation(row: StationTranslationModel): ParsedStationTranslation {
   return {
-    badge: row.badge,
     title: row.title,
     intro: row.intro,
     suitableFor: parseStringArray(row.suitableFor, 'suitableFor'),
     outcomes: parseStringArray(row.outcomes, 'outcomes'),
-    kitMain: parseStringArray(row.kitMain, 'kitMain'),
+    kitMain: parseKitItems(row.kitMain, 'kitMain'),
     kitExtra: parseStringArray(row.kitExtra, 'kitExtra'),
     benefits: parseStringArray(row.benefits, 'benefits'),
     specPurpose: row.specPurpose,

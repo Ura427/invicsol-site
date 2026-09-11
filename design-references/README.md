@@ -47,3 +47,22 @@ and `typeScale` are the literal tokens.
 None of these should be adopted wholesale — the plan is to react to them (what's right,
 what's wrong) rather than pick one outright, then feed the reaction plus the current
 site's screenshots into an actual design pass.
+
+## Equipment photography (`public/equipment/`)
+
+All three are stock, sourced from Pexels (free for commercial use, no attribution
+required, https://www.pexels.com/license/). They are illustrative — a generic panel,
+inverter and battery rack — **not** photographs of the Jinko/Deye/Pylontech units the
+kit lists name. The station page tags the carousel as illustrative while the station's
+`commercialIsPlaceholder` flag is set; replace the files with real product shots and
+clear the flag per station, and the tag goes.
+
+| File | Source | Note |
+|---|---|---|
+| `panel-detail.jpg` | Pexels, macro of a panel surface (see commit `eee84a2`) | — |
+| `inverter.jpg` | Pexels photo 37929911, top crop | Wall-mounted hybrid inverter with DC breakers |
+| `battery.jpg` | Pexels photo 37929911, bottom crop | The battery rack under that same inverter |
+
+Every other candidate on the first two result pages ("solar inverter", "home battery
+storage") had a technician in a shirt branded with another installer's name and could
+not be used on this site at all.

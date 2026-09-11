@@ -37,12 +37,16 @@ export function StationCard({ station, translation }: StationCardProps) {
       </div>
 
       <div className="p-6">
+        {/* The system type, not a marketing tier. The tier labels this used to
+            show (Стартова, Популярна, Розширена…) were invented and the owner
+            had to ask what one meant; grid-tied vs hybrid is the distinction a
+            shopper actually decides on. */}
         <span
           className={`inline-block rounded-full px-3 py-1 text-xs font-semibold ${
             isCustom ? 'bg-gold-500 text-navy-900' : 'bg-gold-500/10 text-gold-700'
           }`}
         >
-          {translation.badge}
+          {t(`systemTypes.${station.systemType}`)}
         </span>
 
         <h3 className={`mt-4 text-xl ${isCustom ? 'text-white' : 'text-navy-800'}`}>

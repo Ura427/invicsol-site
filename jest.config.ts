@@ -14,6 +14,10 @@ const config: Config = {
   // globals — incompatible with Jest's, and meant to run against a live
   // server via `npm run test:e2e`, not the unit test suite.
   testPathIgnorePatterns: ['<rootDir>/.next/', '<rootDir>/node_modules/', '<rootDir>/e2e/'],
+  // .worktrees/ holds alternate checkouts of this same repo (see .gitignore).
+  // Left to itself Jest's module map crawls them, finds a second package.json
+  // with the same name, warns about the collision and takes ten times longer.
+  modulePathIgnorePatterns: ['<rootDir>/.worktrees/'],
 };
 
 export default createJestConfig(config);
