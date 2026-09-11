@@ -5,9 +5,9 @@ export type Rating = 1 | 2 | 3 | 4 | 5;
 
 export const REVIEW_STATUSES: readonly ReviewStatus[] = ['pending', 'approved', 'rejected'];
 
-/** Length caps applied on the write path. A review is a paragraph, not an essay. */
+/** Length caps applied on the write path. A review is a paragraph, not an essay;
+ * how short it may be is the reviewer's call — one word is a review. */
 export const AUTHOR_NAME_MAX = 60;
-export const REVIEW_TEXT_MIN = 10;
 export const REVIEW_TEXT_MAX = 1200;
 
 export interface ParsedReview {
@@ -67,6 +67,34 @@ export type ReviewSubmissionError = 'spam' | 'rate_limited' | 'invalid';
 
 export type ReviewSubmissionResult = { ok: true } | { ok: false; error: ReviewSubmissionError };
 
+export type ReviewFieldError = 'name_empty' | 'name_long' | 'rating_missing' | 'text_empty' | 'text_long';
+
+export interface ReviewFieldErrors {
+  authorName?: ReviewFieldError;
+  rating?: ReviewFieldError;
+  text?: ReviewFieldError;
+}
+
+/**
+ * Every problem with a submission, keyed by field, so the form can say what is
+ * wrong next to the field that is wrong. An empty object means it is valid.
+ */
+export function reviewFieldErrors(submission: ReviewSubmission): ReviewFieldErrors {
+  const errors: ReviewFieldErrors = {};
+  const authorName = submission.authorName.trim();
+  const text = submission.text.trim();
+
+  if (authorName.length === 0) errors.authorName = 'name_empty';
+  else if (authorName.length > AUTHOR_NAME_MAX) errors.authorName = 'name_long';
+
+  if (!isRating(submission.rating)) errors.rating = 'rating_missing';
+
+  if (text.length === 0) errors.text = 'text_empty';
+  else if (text.length > REVIEW_TEXT_MAX) errors.text = 'text_long';
+
+  return errors;
+}
+
 /**
  * What the public form is allowed to write. Pure so the form can run it for
  * instant feedback and the action can run it as the actual gate.
@@ -74,12 +102,11 @@ export type ReviewSubmissionResult = { ok: true } | { ok: false; error: ReviewSu
 export function validateReviewSubmission(
   submission: ReviewSubmission,
 ): { authorName: string; rating: Rating; text: string } | null {
-  const authorName = submission.authorName.trim();
-  const text = submission.text.trim();
-
-  if (authorName.length === 0 || authorName.length > AUTHOR_NAME_MAX) return null;
-  if (text.length < REVIEW_TEXT_MIN || text.length > REVIEW_TEXT_MAX) return null;
+  if (Object.keys(reviewFieldErrors(submission)).length > 0) return null;
   if (!isRating(submission.rating)) return null;
-
-  return { authorName, rating: submission.rating, text };
+  return {
+    authorName: submission.authorName.trim(),
+    rating: submission.rating,
+    text: submission.text.trim(),
+  };
 }

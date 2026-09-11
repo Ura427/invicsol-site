@@ -1,4 +1,10 @@
-import { parseReview, validateReviewSubmission, REVIEW_TEXT_MIN, AUTHOR_NAME_MAX } from '../parse';
+import {
+  parseReview,
+  validateReviewSubmission,
+  reviewFieldErrors,
+  REVIEW_TEXT_MAX,
+  AUTHOR_NAME_MAX,
+} from '../parse';
 import { summarize } from '../queries';
 
 const row = {
@@ -49,11 +55,27 @@ describe('validateReviewSubmission', () => {
   it.each([
     ['blank name', { ...good, authorName: '   ' }],
     ['name too long', { ...good, authorName: 'x'.repeat(AUTHOR_NAME_MAX + 1) }],
-    ['text too short', { ...good, text: 'x'.repeat(REVIEW_TEXT_MIN - 1) }],
+    ['blank text', { ...good, text: '   ' }],
     ['rating 0', { ...good, rating: 0 }],
     ['fractional rating', { ...good, rating: 4.5 }],
   ])('rejects %s', (_label, submission) => {
     expect(validateReviewSubmission(submission)).toBeNull();
+  });
+
+  it('names every wrong field at once, so the form can mark each one', () => {
+    expect(reviewFieldErrors({ ...good, authorName: '', rating: 0, text: '' })).toEqual({
+      authorName: 'name_empty',
+      rating: 'rating_missing',
+      text: 'text_empty',
+    });
+    expect(
+      reviewFieldErrors({
+        ...good,
+        authorName: 'x'.repeat(AUTHOR_NAME_MAX + 1),
+        text: 'x'.repeat(REVIEW_TEXT_MAX + 1),
+      }),
+    ).toEqual({ authorName: 'name_long', text: 'text_long' });
+    expect(reviewFieldErrors(good)).toEqual({});
   });
 });
 

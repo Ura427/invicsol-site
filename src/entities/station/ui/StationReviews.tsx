@@ -6,10 +6,12 @@ import { Star } from 'lucide-react';
 import { Stars } from '@/entities/review/ui/Stars';
 import { submitReview } from '@/entities/review/actions';
 import {
-  validateReviewSubmission,
+  reviewFieldErrors,
   AUTHOR_NAME_MAX,
   REVIEW_TEXT_MAX,
   type Rating,
+  type ReviewFieldError,
+  type ReviewFieldErrors,
 } from '@/entities/review/parse';
 import type { RatingSummary } from '@/entities/review/queries';
 import { TextField } from '@/shared/ui/TextField';
@@ -208,10 +210,29 @@ function ReviewForm({ stationId, className = '' }: { stationId: string; classNam
   const [hovered, setHovered] = useState<Rating | null>(null);
   const [state, setState] = useState<'idle' | 'submitting' | 'done'>('idle');
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<ReviewFieldErrors>({});
+
+  const fieldMessage = (code: ReviewFieldError | undefined) => {
+    switch (code) {
+      case 'name_empty':
+        return t('reviewsFormErrorNameEmpty');
+      case 'name_long':
+        return t('reviewsFormErrorNameLong', { max: AUTHOR_NAME_MAX });
+      case 'rating_missing':
+        return t('reviewsFormErrorRatingMissing');
+      case 'text_empty':
+        return t('reviewsFormErrorTextEmpty');
+      case 'text_long':
+        return t('reviewsFormErrorTextLong', { max: REVIEW_TEXT_MAX });
+      default:
+        return null;
+    }
+  };
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError(null);
+    setFieldErrors({});
 
     const form = new FormData(event.currentTarget);
     const submission = {
@@ -224,9 +245,11 @@ function ReviewForm({ stationId, className = '' }: { stationId: string; classNam
     };
 
     // Same check the server runs, so the user hears about a short review from
-    // the form and not from a round trip.
-    if (validateReviewSubmission(submission) === null) {
-      setError(t('reviewsFormErrorInvalid'));
+    // the form and not from a round trip — and next to the field, not as one
+    // line at the bottom that doesn't say which field.
+    const problems = reviewFieldErrors(submission);
+    if (Object.keys(problems).length > 0) {
+      setFieldErrors(problems);
       return;
     }
 
@@ -274,12 +297,17 @@ function ReviewForm({ stationId, className = '' }: { stationId: string; classNam
         required
         maxLength={AUTHOR_NAME_MAX}
         autoComplete="name"
+        error={fieldMessage(fieldErrors.authorName)}
       />
 
       {/* Five radio buttons, visually stars. A fieldset with real radios is what
           keeps this keyboard-operable and announced correctly; the icons are
           just the label. */}
-      <fieldset className="text-base sm:text-sm">
+      <fieldset
+        className="text-base sm:text-sm"
+        aria-invalid={fieldErrors.rating ? true : undefined}
+        aria-describedby={fieldErrors.rating ? `${groupId}-rating-error` : undefined}
+      >
         <legend className="text-muted font-medium">
           {t('reviewsFormRating')}
           <span className="text-gold-700 ml-1" aria-hidden>
@@ -311,6 +339,11 @@ function ReviewForm({ stationId, className = '' }: { stationId: string; classNam
             </label>
           ))}
         </div>
+        {fieldErrors.rating ? (
+          <p id={`${groupId}-rating-error`} className="mt-1.5 text-xs text-red-700">
+            {fieldMessage(fieldErrors.rating)}
+          </p>
+        ) : null}
       </fieldset>
 
       <Textarea
@@ -321,6 +354,7 @@ function ReviewForm({ stationId, className = '' }: { stationId: string; classNam
         required
         rows={4}
         maxLength={REVIEW_TEXT_MAX}
+        error={fieldMessage(fieldErrors.text)}
       />
 
       {/* Honeypot — off-screen, never labelled for a person, skipped by the tab

@@ -22,11 +22,11 @@ export function StationCard({ station, translation }: StationCardProps) {
   return (
     <Link
       href={`/stations/${station.slug}`}
-      className={`group block h-full overflow-hidden rounded-[var(--radius-lg)] transition-transform duration-300 hover:-translate-y-0.5 ${
+      className={`group flex h-full flex-col overflow-hidden rounded-[var(--radius-lg)] transition-transform duration-300 hover:-translate-y-0.5 ${
         isCustom ? 'bg-navy-800 text-white' : 'bg-elevated'
       }`}
     >
-      <div className="relative aspect-[16/10] w-full overflow-hidden bg-surface">
+      <div className="relative aspect-[16/10] w-full shrink-0 overflow-hidden bg-surface">
         <Image
           src={station.imagePath}
           alt=""
@@ -36,7 +36,7 @@ export function StationCard({ station, translation }: StationCardProps) {
         />
       </div>
 
-      <div className="p-6">
+      <div className="flex flex-1 flex-col p-6">
         {/* The system type, not a marketing tier. The tier labels this used to
             show (Стартова, Популярна, Розширена…) were invented and the owner
             had to ask what one meant; grid-tied vs hybrid is the distinction a
@@ -59,7 +59,9 @@ export function StationCard({ station, translation }: StationCardProps) {
           </p>
         ) : null}
 
-        <p className={`mt-3 text-sm ${isCustom ? 'text-white/70' : 'text-muted'}`}>
+        {/* Grows to fill, so the rule, price and link below sit on the same
+            line across the row regardless of how long each intro runs. */}
+        <p className={`mt-3 flex-1 text-sm ${isCustom ? 'text-white/70' : 'text-muted'}`}>
           {translation.intro}
         </p>
 
@@ -68,23 +70,30 @@ export function StationCard({ station, translation }: StationCardProps) {
             the detail page — a card is too small to carry the caveat that has
             to travel with it, and the number without the caveat is the
             misleading half. */}
-        {station.pricing ? (
-          <p
-            className={`mt-5 border-t pt-4 text-xl ${
-              isCustom ? 'border-white/15 text-white' : 'border-border text-navy-800'
-            }`}
-          >
-            {t('from')}{' '}
-            {new Intl.NumberFormat(locale, {
-              style: 'currency',
-              currency: 'UAH',
-              maximumFractionDigits: 0,
-            }).format(station.pricing.equipmentUah)}
-          </p>
-        ) : null}
+        <p
+          className={`mt-5 border-t pt-4 text-xl ${
+            isCustom ? 'border-white/15 text-white' : 'border-border text-navy-800'
+          }`}
+        >
+          {station.pricing ? (
+            <>
+              {t('from')}{' '}
+              {new Intl.NumberFormat(locale, {
+                style: 'currency',
+                currency: 'UAH',
+                maximumFractionDigits: 0,
+              }).format(station.pricing.equipmentUah)}
+            </>
+          ) : (
+            t('priceOnRequest')
+          )}
+        </p>
 
+        {/* Two lines reserved: the standard label wraps at five columns and
+            the custom one does not, and the rule above would otherwise sit a
+            line higher on that one card. */}
         <span
-          className={`mt-6 inline-block text-sm font-semibold underline-offset-4 group-hover:underline ${
+          className={`mt-6 block min-h-10 text-sm font-semibold underline-offset-4 group-hover:underline ${
             isCustom ? 'text-gold-400' : 'text-navy-800'
           }`}
         >
