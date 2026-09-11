@@ -653,7 +653,10 @@
       "stationAll": "Будь-яка станція",
       "sortHighest": "Спочатку найвищі",
       "sortLowest": "Спочатку найнижчі",
-      "searchReviews": "Пошук за автором або текстом"
+      "searchReviews": "Пошук за автором або текстом",
+      "filtersButton": "Фільтри",
+      "filtersDone": "Готово",
+      "filtersTitle": "Фільтри та сортування"
     },
     "reviews": {
       "heading": "Відгуки",

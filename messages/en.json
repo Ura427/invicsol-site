@@ -653,7 +653,10 @@
       "stationAll": "Any station",
       "sortHighest": "Highest rated",
       "sortLowest": "Lowest rated",
-      "searchReviews": "Search by author or text"
+      "searchReviews": "Search by author or text",
+      "filtersButton": "Filters",
+      "filtersDone": "Done",
+      "filtersTitle": "Filters and sort"
     },
     "reviews": {
       "heading": "Reviews",

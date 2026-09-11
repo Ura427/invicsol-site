@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { signOut } from 'next-auth/react';
 import { Logo } from '@/shared/ui/Logo';
+import { LogOut } from 'lucide-react';
 import { AdminLocaleSwitcher } from './AdminLocaleSwitcher';
 
 const LINKS = [
@@ -25,11 +26,16 @@ export function AdminNav() {
 
   return (
     <header className="border-border bg-paper sticky top-0 z-40 border-b">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-4 py-4 sm:px-6">
-        <div className="flex items-center gap-6 md:gap-8">
+      {/* On a phone the row wraps: mark and account controls on top, the
+          three section links as a strip underneath. One row of all of it
+          ran 130px past the viewport. */}
+      <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-x-6 gap-y-3 px-4 py-3 sm:py-4 sm:px-6">
+        <div className="contents sm:flex sm:items-center sm:gap-6 md:gap-8">
           <Link href="/admin/leads" className="flex items-center gap-2">
             <Logo size={26} />
-            <span className="text-navy-800 text-lg font-medium tracking-[-0.03em]">INVICSOL</span>
+            <span className="text-navy-800 text-lg font-medium tracking-[-0.03em]">
+              INVICSOL
+            </span>
             {/* The wordmark is the site's; this label is what says you are behind
                 it. Set as the eyebrow device used across the public site rather
                 than as a second, competing piece of branding. */}
@@ -38,7 +44,7 @@ export function AdminNav() {
             </span>
           </Link>
 
-          <nav className="flex gap-5 md:gap-6">
+          <nav className="order-last flex w-full gap-5 sm:order-none sm:w-auto md:gap-6">
             {LINKS.map((link) => {
               const isActive = pathname.startsWith(link.href);
               return (
@@ -47,7 +53,9 @@ export function AdminNav() {
                   href={link.href}
                   aria-current={isActive ? 'page' : undefined}
                   className={`relative py-1 text-sm font-medium transition-colors after:absolute after:-bottom-0.5 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform hover:after:scale-x-100 ${
-                    isActive ? 'text-gold-700 after:scale-x-100' : 'text-navy-800 hover:text-gold-700'
+                    isActive
+                      ? 'text-gold-700 after:scale-x-100'
+                      : 'text-navy-800 hover:text-gold-700'
                   }`}
                 >
                   {t(link.key)}
@@ -62,9 +70,11 @@ export function AdminNav() {
           <button
             type="button"
             onClick={() => signOut({ callbackUrl: '/admin/login' })}
-            className="text-muted hover:text-navy-800 text-sm font-medium transition-colors"
+            aria-label={t('signOut')}
+            className="text-muted hover:text-navy-800 flex h-11 w-11 items-center justify-center text-sm font-medium transition-colors sm:h-auto sm:w-auto"
           >
-            {t('signOut')}
+            <LogOut className="h-5 w-5 sm:hidden" aria-hidden />
+            <span className="hidden sm:inline">{t('signOut')}</span>
           </button>
         </div>
       </div>

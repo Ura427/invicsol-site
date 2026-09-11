@@ -22,10 +22,10 @@ export function ModerationButtons({ id, status }: { id: string; status: ReviewSt
       }
     });
 
-  const link = 'text-sm font-medium transition-colors disabled:opacity-50';
+  const link = 'py-2 text-sm font-medium transition-colors disabled:opacity-50 lg:py-0';
 
   return (
-    <div className="flex flex-wrap justify-end gap-x-4 gap-y-1 whitespace-nowrap">
+    <div className="flex flex-wrap gap-x-5 gap-y-1 whitespace-nowrap lg:justify-end">
       {status !== 'approved' ? (
         <button
           type="button"

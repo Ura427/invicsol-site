@@ -44,11 +44,7 @@ export function LeadsInboxClient() {
       minute: '2-digit',
     }).format(new Date(iso));
 
-  const {
-    data,
-    isLoading,
-    isError,
-  } = useQuery({
+  const { data, isLoading, isError } = useQuery({
     // The filters are part of the key, so each filtered view caches separately
     // and going back to a previous one is instant rather than a refetch.
     queryKey: ['leads', filters],
@@ -59,7 +55,8 @@ export function LeadsInboxClient() {
   });
 
   const mutation = useMutation({
-    mutationFn: ({ id, handled }: { id: string; handled: boolean }) => setLeadHandled(id, handled),
+    mutationFn: ({ id, handled }: { id: string; handled: boolean }) =>
+      setLeadHandled(id, handled),
     // Optimistic update: the whole point of a leads inbox is that ticking a
     // box feels instant. Roll back to the previous list on failure rather
     // than silently leaving the UI wrong.
@@ -186,69 +183,122 @@ export function LeadsInboxClient() {
         // Hairline rules over a bordered, shadowed card — the same device the
         // public site uses for its ruled grids. A table is already a grid of
         // rules; wrapping it in a second container edge was one border too many.
-        <div className="border-border overflow-x-auto border-y">
-          <table className="w-full text-left text-sm">
-            <thead>
-              <tr className="border-border text-muted border-b text-xs tracking-[0.14em] uppercase">
-                <th className="py-3 pr-4 font-medium">{t('colWhen')}</th>
-                <th className="py-3 pr-4 font-medium">{t('colName')}</th>
-                <th className="py-3 pr-4 font-medium">{t('colPhone')}</th>
-                <th className="py-3 pr-4 font-medium">{t('colVia')}</th>
-                <th className="py-3 pr-4 font-medium">{t('colSource')}</th>
-                <th className="py-3 pr-4 font-medium">{t('colNotified')}</th>
-                <th className="py-3 font-medium">{t('colHandled')}</th>
-              </tr>
-            </thead>
-            <tbody className="divide-border divide-y">
-              {data.leads.map((lead) => (
-                <tr key={lead.id} className={lead.handledAt ? 'text-muted' : undefined}>
-                  <td className="text-muted py-3 pr-4 whitespace-nowrap">
-                    {formatDate(lead.createdAt)}
-                  </td>
-                  <td className="text-navy-800 py-3 pr-4 font-medium">{lead.name}</td>
-                  <td className="py-3 pr-4">
+        <>
+          {/* Phones: one card per lead with the same fields and the same
+              checkbox. The seven-column table needs 700px. */}
+          <ul className="border-border divide-border divide-y border-y lg:hidden">
+            {data.leads.map((lead) => (
+              <li
+                key={lead.id}
+                className={`space-y-2 py-4 ${lead.handledAt ? 'text-muted' : ''}`}
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0">
+                    <p className="text-navy-800 font-medium">{lead.name}</p>
                     <a
                       href={`tel:${lead.phone}`}
-                      className="text-navy-800 underline underline-offset-2"
+                      className="text-navy-800 text-sm underline underline-offset-2"
                     >
                       {lead.phone}
                     </a>
-                  </td>
-                  <td className="text-muted py-3 pr-4">
-                    {METHOD_KEY[lead.contactMethod]
-                      ? t(METHOD_KEY[lead.contactMethod]!)
-                      : lead.contactMethod}
-                  </td>
-                  <td className="text-muted py-3 pr-4">
-                    {SOURCE_KEY[lead.source] ? t(SOURCE_KEY[lead.source]!) : lead.source}
-                  </td>
-                  <td className="py-3 pr-4">
-                    {lead.notifiedAt ? (
-                      <Badge tone="positive">{tCommon('yes')}</Badge>
-                    ) : (
-                      <Badge tone="warning">{tCommon('no')}</Badge>
-                    )}
-                  </td>
-                  <td className="py-3">
-                    <label className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        checked={Boolean(lead.handledAt)}
-                        onChange={(event) =>
-                          mutation.mutate({ id: lead.id, handled: event.target.checked })
-                        }
-                        className="accent-gold-600 h-4 w-4"
-                      />
-                      <span className="text-muted">
-                        {lead.handledAt ? t('handled') : t('notHandled')}
-                      </span>
-                    </label>
-                  </td>
+                  </div>
+                  <Badge tone={lead.notifiedAt ? 'positive' : 'warning'}>
+                    Telegram: {lead.notifiedAt ? tCommon('yes') : tCommon('no')}
+                  </Badge>
+                </div>
+                <p className="text-muted text-sm">
+                  {formatDate(lead.createdAt)} ·{' '}
+                  {SOURCE_KEY[lead.source] ? t(SOURCE_KEY[lead.source]!) : lead.source} ·{' '}
+                  {METHOD_KEY[lead.contactMethod]
+                    ? t(METHOD_KEY[lead.contactMethod]!)
+                    : lead.contactMethod}
+                </p>
+                <label className="flex min-h-11 items-center gap-2.5 text-sm">
+                  <input
+                    type="checkbox"
+                    checked={Boolean(lead.handledAt)}
+                    onChange={(event) =>
+                      mutation.mutate({ id: lead.id, handled: event.target.checked })
+                    }
+                    className="accent-gold-600 h-5 w-5"
+                  />
+                  <span className="text-muted">
+                    {lead.handledAt ? t('handled') : t('notHandled')}
+                  </span>
+                </label>
+              </li>
+            ))}
+          </ul>
+
+          <div className="border-border hidden overflow-x-auto border-y lg:block">
+            <table className="w-full text-left text-sm">
+              <thead>
+                <tr className="border-border text-muted border-b text-xs tracking-[0.14em] uppercase">
+                  <th className="py-3 pr-4 font-medium">{t('colWhen')}</th>
+                  <th className="py-3 pr-4 font-medium">{t('colName')}</th>
+                  <th className="py-3 pr-4 font-medium">{t('colPhone')}</th>
+                  <th className="py-3 pr-4 font-medium">{t('colVia')}</th>
+                  <th className="py-3 pr-4 font-medium">{t('colSource')}</th>
+                  <th className="py-3 pr-4 font-medium">{t('colNotified')}</th>
+                  <th className="py-3 font-medium">{t('colHandled')}</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody className="divide-border divide-y">
+                {data.leads.map((lead) => (
+                  <tr key={lead.id} className={lead.handledAt ? 'text-muted' : undefined}>
+                    <td className="text-muted py-3 pr-4 whitespace-nowrap">
+                      {formatDate(lead.createdAt)}
+                    </td>
+                    <td className="text-navy-800 py-3 pr-4 font-medium">{lead.name}</td>
+                    <td className="py-3 pr-4">
+                      <a
+                        href={`tel:${lead.phone}`}
+                        className="text-navy-800 underline underline-offset-2"
+                      >
+                        {lead.phone}
+                      </a>
+                    </td>
+                    <td className="text-muted py-3 pr-4">
+                      {METHOD_KEY[lead.contactMethod]
+                        ? t(METHOD_KEY[lead.contactMethod]!)
+                        : lead.contactMethod}
+                    </td>
+                    <td className="text-muted py-3 pr-4">
+                      {SOURCE_KEY[lead.source]
+                        ? t(SOURCE_KEY[lead.source]!)
+                        : lead.source}
+                    </td>
+                    <td className="py-3 pr-4">
+                      {lead.notifiedAt ? (
+                        <Badge tone="positive">{tCommon('yes')}</Badge>
+                      ) : (
+                        <Badge tone="warning">{tCommon('no')}</Badge>
+                      )}
+                    </td>
+                    <td className="py-3">
+                      <label className="flex items-center gap-2">
+                        <input
+                          type="checkbox"
+                          checked={Boolean(lead.handledAt)}
+                          onChange={(event) =>
+                            mutation.mutate({
+                              id: lead.id,
+                              handled: event.target.checked,
+                            })
+                          }
+                          className="accent-gold-600 h-4 w-4"
+                        />
+                        <span className="text-muted">
+                          {lead.handledAt ? t('handled') : t('notHandled')}
+                        </span>
+                      </label>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   );
