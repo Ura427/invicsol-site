@@ -5,6 +5,8 @@ interface SectionHeadingProps {
   align?: 'left' | 'center';
   /** 'light' flips text colors for use on a dark (navy) background. */
   tone?: 'default' | 'light';
+  /** `h1` when this is the page's own title, which every secondary page uses it for. */
+  as?: 'h1' | 'h2';
 }
 
 export function SectionHeading({
@@ -13,6 +15,7 @@ export function SectionHeading({
   description,
   align = 'center',
   tone = 'default',
+  as: Heading = 'h2',
 }: SectionHeadingProps) {
   const alignClass = align === 'center' ? 'text-center mx-auto' : 'text-left';
   const titleClass = tone === 'light' ? 'text-white' : 'text-navy-800';
@@ -35,7 +38,7 @@ export function SectionHeading({
       ) : null}
       {/* Weight and tracking come from the global h1,h2,h3 rule (light + tight).
           Deliberately not re-bolded here — see globals.css. */}
-      <h2 className={`${titleClass} text-[2rem] sm:text-[2.75rem]`}>{title}</h2>
+      <Heading className={`${titleClass} text-[2rem] sm:text-[2.75rem]`}>{title}</Heading>
       {description ? (
         <p className={`${descriptionClass} mt-5 text-base leading-relaxed sm:text-lg`}>
           {description}

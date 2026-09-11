@@ -14,7 +14,11 @@ export async function generateMetadata({
   return { title: t('pageTitle'), description: t('pageDescription') };
 }
 
-export default async function WarrantyPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function WarrantyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('Warranty');
@@ -22,11 +26,16 @@ export default async function WarrantyPage({ params }: { params: Promise<{ local
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-24 sm:px-6 lg:px-8">
-      <SectionHeading title={t('pageTitle')} description={t('pageDescription')} />
+      <SectionHeading as="h1" title={t('pageTitle')} description={t('pageDescription')} />
       <div className="mt-12 grid gap-6 sm:grid-cols-3">
         {warranty.map((item) => (
           <Card key={item.id}>
-            <p className="text-gold-600 text-4xl font-light tracking-[-0.03em]">{item.years}</p>
+            <p className="text-gold-600 text-4xl font-light tracking-[-0.03em]">
+              {item.years}{' '}
+              <span className="text-navy-800 text-base font-medium tracking-normal">
+                {t('years', { count: item.years })}
+              </span>
+            </p>
             <h2 className="text-navy-800 mt-2">{item.title}</h2>
             <p className="text-muted mt-2 text-sm">{item.text}</p>
           </Card>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useTransition } from 'react';
+import { useState, useTransition } from 'react';
 import { useTranslations } from 'next-intl';
 import { setReviewStatus, deleteReview } from './actions';
 import type { ReviewStatus } from '@/entities/review/parse';
@@ -8,8 +8,19 @@ import type { ReviewStatus } from '@/entities/review/parse';
 export function ModerationButtons({ id, status }: { id: string; status: ReviewStatus }) {
   const t = useTranslations('Admin.reviews');
   const [isPending, startTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
 
-  const act = (fn: () => Promise<void>) => startTransition(() => void fn());
+  // A failed action (an expired session, a lost connection) used to vanish
+  // into a discarded promise: the click did nothing and said nothing.
+  const act = (fn: () => Promise<void>) =>
+    startTransition(async () => {
+      setError(null);
+      try {
+        await fn();
+      } catch {
+        setError(t('error'));
+      }
+    });
 
   const link = 'text-sm font-medium transition-colors disabled:opacity-50';
 
@@ -56,6 +67,14 @@ export function ModerationButtons({ id, status }: { id: string; status: ReviewSt
       >
         {t('delete')}
       </button>
+      {error ? (
+        <p
+          className="w-full text-right text-xs whitespace-normal text-red-700"
+          role="alert"
+        >
+          {error}
+        </p>
+      ) : null}
     </div>
   );
 }

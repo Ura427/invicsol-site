@@ -23,7 +23,7 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-      <SectionHeading title={t('heading')} align="left" />
+      <SectionHeading as="h1" title={t('heading')} align="left" />
 
       <div className="mt-10 grid gap-10 lg:grid-cols-2">
         <div className="space-y-6">

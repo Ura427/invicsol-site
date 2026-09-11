@@ -14,8 +14,13 @@ export async function ProjectsGrid({ filters }: { filters: ProjectFilters }) {
 
   return (
     <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {results.map(({ project, translation }) => (
-        <ProjectCard key={project.id} project={project} translation={translation} />
+      {results.map(({ project, translation }, index) => (
+        <ProjectCard
+          key={project.id}
+          project={project}
+          translation={translation}
+          priority={index < 3}
+        />
       ))}
     </div>
   );

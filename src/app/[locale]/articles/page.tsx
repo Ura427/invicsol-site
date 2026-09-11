@@ -26,7 +26,7 @@ export default async function ArticlesPage({
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-24 sm:px-6 lg:px-8">
-      <SectionHeading
+      <SectionHeading as="h1"
         title={t('heading')}
         description={t('pageDescription')}
         align="left"

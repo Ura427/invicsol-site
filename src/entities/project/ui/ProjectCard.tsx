@@ -7,9 +7,11 @@ import { PlaceholderBadge } from '@/shared/ui/PlaceholderBadge';
 interface ProjectCardProps {
   project: ParsedProject;
   translation: ParsedProjectTranslation;
+  /** For the first row of a grid, which is the page's largest paint. */
+  priority?: boolean;
 }
 
-export function ProjectCard({ project, translation }: ProjectCardProps) {
+export function ProjectCard({ project, translation, priority = false }: ProjectCardProps) {
   const t = useTranslations('Projects');
 
   return (
@@ -26,6 +28,7 @@ export function ProjectCard({ project, translation }: ProjectCardProps) {
           // scanning the gallery needs to know which installation this card shows.
           alt={translation.title}
           fill
+          priority={priority}
           // Card is full width on mobile, half at sm, a third at lg — telling the
           // browser this stops it downloading a 3 MB original for a 400px slot.
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

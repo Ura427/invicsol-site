@@ -30,7 +30,7 @@ export default async function ProjectsPage({ params, searchParams }: ProjectsPag
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-      <SectionHeading title={t('pageTitle')} description={t('pageDescription')} align="left" />
+      <SectionHeading as="h1" title={t('pageTitle')} description={t('pageDescription')} align="left" />
 
       <div className="mt-8">
         <ProjectsFilters />

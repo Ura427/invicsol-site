@@ -28,7 +28,7 @@ export default async function FinancingPage({
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-24 sm:px-6 lg:px-8">
-      <SectionHeading title={t('heading')} description={t('intro')} align="left" />
+      <SectionHeading as="h1" title={t('heading')} description={t('intro')} align="left" />
       <div className="mt-10 grid gap-6 sm:grid-cols-3">
         {financing.map((option) => {
           const Icon = ICONS[option.icon];
