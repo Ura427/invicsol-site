@@ -2,6 +2,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import { getContent } from '@/shared/lib/content';
 import { SectionHeading } from '@/shared/ui/SectionHeading';
 import { ICONS } from '@/shared/ui/icons';
+import { ChevronDown } from 'lucide-react';
 
 /**
  * A hairline-ruled grid rather than six filled cards: the rules do the
@@ -28,7 +29,31 @@ export function ServicesTeaser() {
           description={t('teaser')}
         />
 
-        <div className="bg-border border-border mt-14 grid gap-px border-y sm:grid-cols-2 lg:grid-cols-3">
+        {/* On a phone the six services are an accordion: title rows, tap to
+            read. Native <details>, so it is keyboard-operable and needs no
+            script; the first is open so the pattern is obvious. */}
+        <div className="border-border divide-border mt-8 divide-y border-y sm:hidden">
+          {services.map((service, index) => {
+            const Icon = ICONS[service.icon];
+            return (
+              <details key={service.id} className="group" open={index === 0}>
+                <summary className="text-navy-800 flex min-h-14 cursor-pointer list-none items-center gap-4 py-3.5 [&::-webkit-details-marker]:hidden">
+                  <Icon className="text-gold-700 h-5 w-5 shrink-0" aria-hidden />
+                  <span className="flex-1 text-base">{service.title}</span>
+                  <ChevronDown
+                    className="text-muted h-4 w-4 shrink-0 transition-transform group-open:rotate-180"
+                    aria-hidden
+                  />
+                </summary>
+                <p className="text-muted pb-5 pl-9 text-sm leading-relaxed">
+                  {service.text}
+                </p>
+              </details>
+            );
+          })}
+        </div>
+
+        <div className="bg-border border-border mt-14 hidden gap-px border-y sm:grid sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => {
             const Icon = ICONS[service.icon];
             return (

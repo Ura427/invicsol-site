@@ -21,7 +21,9 @@ export function WhyUs() {
       <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-20">
         <div>
           <SectionHeading eyebrow={t('eyebrow')} title={t('heading')} align="left" />
-          <div className="relative mt-6 sm:mt-10 aspect-[4/3] overflow-hidden rounded-[var(--radius-image)]">
+          {/* The hero directly above already carries a photograph; on a phone a
+              second one is 300px between the heading and the points. */}
+          <div className="relative mt-6 hidden aspect-[4/3] overflow-hidden rounded-[var(--radius-image)] sm:mt-10 sm:block">
             <Image
               src="/projects/sokilnyky-house-12kw.jpg"
               alt=""

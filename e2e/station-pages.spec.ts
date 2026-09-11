@@ -69,7 +69,8 @@ test('the review form validates locally before anything is sent', async ({ page 
 test('the tier badge is gone from the catalogue and the type is shown instead', async ({ page }) => {
   await page.goto('/uk/#stations');
   await expect(page.locator('body')).not.toContainText(/Розширена|Стартова|Популярна/);
-  await expect(page.getByText('Гібридна', { exact: true }).first()).toBeVisible();
+  // Both the phone rows and the desktop cards are in the DOM; assert on whichever shows.
+  await expect(page.getByText('Гібридна', { exact: true }).locator('visible=true').first()).toBeVisible();
 });
 
 test('a station page has no horizontal overflow on a phone', async ({ page }) => {

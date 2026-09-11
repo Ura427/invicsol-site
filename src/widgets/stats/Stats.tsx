@@ -29,13 +29,13 @@ export function Stats() {
             />
           </div>
 
-          <div className="grid gap-px bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-px bg-white/15 lg:grid-cols-4">
             {stats.map((stat) => (
               // Padded on every side: the 1px gaps render as rules against the
               // parent, and without a bottom/left inset the figures sit flush
               // against those rules.
-              <div key={stat.id} className="bg-navy-800 px-6 py-7">
-                <p className="text-gold-400 text-5xl font-light tracking-[-0.03em]">
+              <div key={stat.id} className="bg-navy-800 px-4 py-5 sm:px-6 sm:py-7">
+                <p className="text-gold-400 text-4xl font-light tracking-[-0.03em] sm:text-5xl">
                   {stat.value}
                 </p>
                 <p className="mt-3 text-sm leading-snug text-white/70">{stat.label}</p>
