@@ -23,7 +23,10 @@ export function StickyStationBar({
   ctaLabel,
   watchId,
 }: StickyStationBarProps) {
-  const [heroVisible, setHeroVisible] = useState(true);
+  // "Passed", not "not visible": on load the hero CTA is usually below the
+  // fold, and a bar that appears before the button has even been seen is
+  // noise over the hero. It shows once the CTA has scrolled above the top.
+  const [heroPassed, setHeroPassed] = useState(false);
   const [footerVisible, setFooterVisible] = useState(false);
 
   useEffect(() => {
@@ -32,7 +35,8 @@ export function StickyStationBar({
     if (!hero || !footer) return;
     const observer = new IntersectionObserver((entries) => {
       for (const entry of entries) {
-        if (entry.target === hero) setHeroVisible(entry.isIntersecting);
+        if (entry.target === hero)
+          setHeroPassed(!entry.isIntersecting && entry.boundingClientRect.top < 0);
         if (entry.target === footer) setFooterVisible(entry.isIntersecting);
       }
     });
@@ -41,7 +45,7 @@ export function StickyStationBar({
     return () => observer.disconnect();
   }, [watchId]);
 
-  const shown = !heroVisible && !footerVisible;
+  const shown = heroPassed && !footerVisible;
 
   return (
     <div
@@ -52,7 +56,9 @@ export function StickyStationBar({
       style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
     >
       <div className="flex items-center justify-between gap-4 px-4 py-3">
-        <p className="text-navy-800 min-w-0 text-base font-medium">{priceLabel}</p>
+        <p className="text-navy-800 min-w-0 truncate text-base font-medium">
+          {priceLabel}
+        </p>
         <Button
           href="/contact"
           variant="gold"

@@ -64,6 +64,7 @@ export default async function StationDetailPage({
   setRequestLocale(locale);
   const t = await getTranslations('Stations');
   const tCalc = await getTranslations('Calculator');
+  const tNav = await getTranslations('Nav');
 
   const data = await getStationBySlug(slug, locale);
   if (!data) notFound();
@@ -222,11 +223,11 @@ export default async function StationDetailPage({
                     </li>
                   ))}
                 </ul>
-                <dl className="bg-border mt-7 grid gap-px sm:grid-cols-3">
+                <dl className="bg-border mt-7 grid grid-cols-3 gap-px">
                   {customFacts.map((fact) => (
                     <div
                       key={fact.label}
-                      className="bg-paper py-4 pr-4 sm:not-first:pl-5"
+                      className="bg-paper py-4 pr-3 not-first:pl-4 sm:not-first:pl-5"
                     >
                       <dd className="text-navy-800 text-2xl font-light tracking-[-0.03em]">
                         {fact.value}
@@ -278,7 +279,7 @@ export default async function StationDetailPage({
       {isCustom ? (
         <section className="py-16 md:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <div className="bg-surface rounded-[var(--radius-lg)] px-6 py-10 sm:px-10 md:py-14">
+            <div className="bg-surface mx-auto max-w-3xl rounded-[var(--radius-lg)] px-6 py-10 sm:px-10 md:py-14">
               <div className="mx-auto max-w-2xl text-center">
                 <Label>{tCalc('heading')}</Label>
                 <h2 className="text-navy-800 mt-5 text-[2rem] sm:text-[2.5rem]">
@@ -399,7 +400,7 @@ export default async function StationDetailPage({
 
       <StickyStationBar
         watchId="station-cta"
-        ctaLabel={isCustom ? t('customCta') : t('cta')}
+        ctaLabel={isCustom ? t('customCta') : tNav('contactCta')}
         priceLabel={
           station.pricing
             ? `${t('from')} ${new Intl.NumberFormat(locale, {

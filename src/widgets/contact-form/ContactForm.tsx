@@ -136,7 +136,7 @@ export function ContactForm() {
           <textarea
             name="message"
             rows={3}
-            className="border-border mt-1 w-full rounded-lg border px-3 py-2"
+            className="border-border bg-elevated mt-1 w-full rounded-lg border px-3 py-2 text-base sm:text-sm"
           />
         </label>
 

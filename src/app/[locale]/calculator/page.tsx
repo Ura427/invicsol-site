@@ -30,7 +30,7 @@ export default async function CalculatorPage({
       <SectionHeading as="h1" title={t('pageTitle')} description={t('pageDescription')} />
       {/* Same beige card as on the bespoke station page: the option cards
           are white, and white needs the tint under it to read as a card. */}
-      <div className="bg-surface mt-12 rounded-[var(--radius-lg)] px-6 py-10 sm:px-10 md:py-14">
+      <div className="bg-surface mx-auto mt-12 max-w-3xl rounded-[var(--radius-lg)] px-6 py-10 sm:px-10 md:py-14">
         <CalculatorWizard references={references} />
       </div>
     </div>
