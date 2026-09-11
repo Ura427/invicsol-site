@@ -12,6 +12,8 @@ import { getContent } from '@/shared/lib/content';
 import { StationPrice } from '@/entities/station/ui/StationPrice';
 import { PaybackCalculator } from '@/entities/station/ui/PaybackCalculator';
 import { EquipmentCarousel } from '@/entities/station/ui/EquipmentCarousel';
+import { PowerPaybackCalculator } from '@/entities/station/ui/PowerPaybackCalculator';
+import { CalculatorWizard } from '@/widgets/calculator';
 import { StationReviews, type ReviewView } from '@/entities/station/ui/StationReviews';
 import { Stars } from '@/entities/review/ui/Stars';
 import { Button } from '@/shared/ui/Button';
@@ -58,6 +60,7 @@ export default async function StationDetailPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('Stations');
+  const tCalc = await getTranslations('Calculator');
 
   const data = await getStationBySlug(slug, locale);
   if (!data) notFound();
@@ -66,6 +69,9 @@ export default async function StationDetailPage({
   // fixed kit, no price. It shares the shell but not the middle.
   const isCustom = station.systemType === 'custom';
   const { process } = getContent(locale);
+  const customFacts = isCustom
+    ? (t.raw('customFacts') as { value: string; label: string }[])
+    : [];
 
   // Reviews are read at render time and baked into the static page; approving
   // one in the admin re-renders it. The rating on this page is *only* ever
@@ -93,7 +99,8 @@ export default async function StationDetailPage({
     summary,
   });
 
-  const hasCarousel = !isCustom && translation.kitMain.some((item) => item.image !== null);
+  const hasCarousel =
+    !isCustom && translation.kitMain.some((item) => item.image !== null);
 
   return (
     <div>
@@ -133,12 +140,17 @@ export default async function StationDetailPage({
                 it is gone. */}
             <div className="pb-7">
               <h1 className="text-navy-800 text-4xl sm:text-5xl">{translation.title}</h1>
-              <p className="text-muted mt-4 max-w-[52ch] leading-relaxed">{translation.intro}</p>
+              <p className="text-muted mt-4 max-w-[52ch] leading-relaxed">
+                {translation.intro}
+              </p>
 
               {!isCustom ? (
                 <div className="mt-5 flex flex-wrap items-center gap-x-5 gap-y-2 text-sm">
                   {summary ? (
-                    <a href="#reviews" className="text-navy-800 flex items-center gap-2 hover:underline">
+                    <a
+                      href="#reviews"
+                      className="text-navy-800 flex items-center gap-2 hover:underline"
+                    >
                       <Stars
                         value={summary.average}
                         label={t('reviewsStar', { count: Math.round(summary.average) })}
@@ -150,7 +162,10 @@ export default async function StationDetailPage({
                     </a>
                   ) : (
                     // An absence, not a score. "0.0" reads as the lowest mark.
-                    <a href="#reviews" className="text-muted hover:text-navy-800 transition-colors">
+                    <a
+                      href="#reviews"
+                      className="text-muted hover:text-navy-800 transition-colors"
+                    >
                       {t('reviewsEmpty')}
                     </a>
                   )}
@@ -165,8 +180,12 @@ export default async function StationDetailPage({
               {!isCustom ? (
                 // The one spec the title does not already say.
                 <p className="text-muted mt-4 text-sm">
-                  <span className="text-xs tracking-[0.08em] uppercase">{t('expandable')}</span>
-                  <span className="text-navy-800 ml-2">{translation.specScalability}</span>
+                  <span className="text-xs tracking-[0.08em] uppercase">
+                    {t('expandable')}
+                  </span>
+                  <span className="text-navy-800 ml-2">
+                    {translation.specScalability}
+                  </span>
                 </p>
               ) : null}
             </div>
@@ -183,6 +202,40 @@ export default async function StationDetailPage({
               </div>
             ) : null}
 
+            {isCustom ? (
+              /* Who this is for, then three facts that are true of every
+                 INVICSOL job. The bespoke page has no price or kit to put
+                 here; without these the column was a title and a button. */
+              <div className="py-7">
+                <ul className="space-y-3">
+                  {translation.suitableFor.slice(0, 3).map((item) => (
+                    <li key={item} className="text-navy-800 flex gap-3">
+                      <Check
+                        className="text-gold-700 mt-1.5 h-4 w-4 shrink-0"
+                        aria-hidden
+                      />
+                      <span className="leading-relaxed">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+                <dl className="bg-border mt-7 grid gap-px sm:grid-cols-3">
+                  {customFacts.map((fact) => (
+                    <div
+                      key={fact.label}
+                      className="bg-paper py-4 pr-4 sm:not-first:pl-5"
+                    >
+                      <dd className="text-navy-800 text-2xl font-light tracking-[-0.03em]">
+                        {fact.value}
+                      </dd>
+                      <dt className="text-muted mt-1 text-xs leading-snug">
+                        {fact.label}
+                      </dt>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+            ) : null}
+
             {/* Action. */}
             <div className="pt-7">
               <Button href="/contact" variant="gold">
@@ -196,41 +249,79 @@ export default async function StationDetailPage({
       {/* Economics, full width. Beside the photo it was three cramped figures
           under a tariff box; here they get the room the numbers deserve, and
           the photo column no longer has half a screen of nothing under it. */}
-      {isCustom || station.powerKw === null ? null : (
+      {isCustom ? (
+        <section className="bg-navy-800 mt-14 py-16 md:mt-16 md:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <PowerPaybackCalculator />
+          </div>
+        </section>
+      ) : station.powerKw !== null ? (
         <div className="mx-auto max-w-6xl px-4 pt-14 sm:px-6 md:pt-16 lg:px-8">
           <div className="border-border border-t pt-10">
             <PaybackCalculator powerKw={station.powerKw} />
           </div>
         </div>
-      )}
+      ) : null}
 
-      {/* Fit — who it suits and what it changes, one band. */}
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="grid gap-10 py-14 md:py-16 lg:grid-cols-2 lg:gap-20">
-          <div>
-            <Label>{t('suitableFor')}</Label>
-            <ul className="mt-6 space-y-4">
-              {translation.suitableFor.slice(0, 3).map((item) => (
-                <li key={item} className="text-navy-800 flex gap-3">
-                  <Check className="text-gold-700 mt-1.5 h-4 w-4 shrink-0" aria-hidden />
-                  <span className="leading-relaxed">{item}</span>
-                </li>
-              ))}
-            </ul>
+      {/* The payback figure above is an estimate from one number. The wizard
+          is how the bespoke station actually gets sized — the same seven steps
+          as /calculator, ending in the enquiry, so a visitor who has already
+          moved the slider does not have to go looking for it. */}
+      {isCustom ? (
+        <section className="py-16 md:py-20">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+            <div className="bg-surface rounded-[var(--radius-lg)] px-6 py-10 sm:px-10 md:py-14">
+              <div className="mx-auto max-w-2xl text-center">
+                <Label>{tCalc('heading')}</Label>
+                <h2 className="text-navy-800 mt-5 text-[2rem] sm:text-[2.5rem]">
+                  {t('customWizardHeading')}
+                </h2>
+                <p className="text-muted mt-4 leading-relaxed">{t('customWizardText')}</p>
+              </div>
+              <div className="mt-10">
+                <CalculatorWizard />
+              </div>
+            </div>
           </div>
-          <div>
-            <Label>{t('outcomes')}</Label>
-            <ul className="mt-6 space-y-4">
-              {translation.outcomes.slice(0, 3).map((item) => (
-                <li key={item} className="text-navy-800 flex gap-3">
-                  <Check className="text-gold-700 mt-1.5 h-4 w-4 shrink-0" aria-hidden />
-                  <span className="leading-relaxed">{item}</span>
-                </li>
-              ))}
-            </ul>
+        </section>
+      ) : null}
+
+      {/* Fit — who it suits and what it changes, one band. The bespoke page
+          carries its fit list in the hero instead. */}
+      {isCustom ? null : (
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="grid gap-10 py-14 md:py-16 lg:grid-cols-2 lg:gap-20">
+            <div>
+              <Label>{t('suitableFor')}</Label>
+              <ul className="mt-6 space-y-4">
+                {translation.suitableFor.slice(0, 3).map((item) => (
+                  <li key={item} className="text-navy-800 flex gap-3">
+                    <Check
+                      className="text-gold-700 mt-1.5 h-4 w-4 shrink-0"
+                      aria-hidden
+                    />
+                    <span className="leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <Label>{t('outcomes')}</Label>
+              <ul className="mt-6 space-y-4">
+                {translation.outcomes.slice(0, 3).map((item) => (
+                  <li key={item} className="text-navy-800 flex gap-3">
+                    <Check
+                      className="text-gold-700 mt-1.5 h-4 w-4 shrink-0"
+                      aria-hidden
+                    />
+                    <span className="leading-relaxed">{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
-      </div>
+      )}
 
       {isCustom ? (
         /* The bespoke page answers a different question. A standard station
@@ -302,16 +393,18 @@ export default async function StationDetailPage({
         <StationReviews stationId={station.id} reviews={reviewViews} summary={summary} />
       ) : null}
 
-      <section className="bg-navy-800 py-16 text-white md:py-20">
-        <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
-          {/* Not the station title again — repeating the h1 verbatim at the
+      {isCustom ? null : (
+        <section className="bg-navy-800 py-16 text-white md:py-20">
+          <div className="mx-auto flex max-w-6xl flex-col gap-8 px-4 sm:px-6 lg:flex-row lg:items-center lg:justify-between lg:px-8">
+            {/* Not the station title again — repeating the h1 verbatim at the
               foot of the page tells the reader nothing they have not read. */}
-          <h2 className="max-w-xl text-3xl sm:text-4xl">{t('ctaHeading')}</h2>
-          <Button href="/contact" variant="gold">
-            {t('cta')}
-          </Button>
-        </div>
-      </section>
+            <h2 className="max-w-xl text-3xl sm:text-4xl">{t('ctaHeading')}</h2>
+            <Button href="/contact" variant="gold">
+              {t('cta')}
+            </Button>
+          </div>
+        </section>
+      )}
     </div>
   );
 }
