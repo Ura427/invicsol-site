@@ -87,24 +87,47 @@ export function StationCard({ station, translation, wide = false }: StationCardP
             the detail page — a card is too small to carry the caveat that has
             to travel with it, and the number without the caveat is the
             misleading half. */}
-        <p
-          className={`mt-5 border-t pt-4 text-xl ${
-            isCustom ? 'border-white/15 text-white' : 'border-border text-navy-800'
+        {/* The price is the one number a shopper compares across the row, so
+            it gets the weight: a small label on its own line, then the figure
+            large, never wrapped. Inter's digits are proportional — «118 000»
+            with two narrow 1s fits a line that «468 000» does not. */}
+        <div
+          className={`mt-5 border-t pt-4 ${
+            isCustom ? 'border-white/15' : 'border-border'
           }`}
         >
           {station.pricing ? (
             <>
-              {t('from')}{' '}
-              {new Intl.NumberFormat(locale, {
-                style: 'currency',
-                currency: 'UAH',
-                maximumFractionDigits: 0,
-              }).format(station.pricing.equipmentUah)}
+              <p
+                className={`text-xs font-medium tracking-[0.08em] uppercase ${
+                  isCustom ? 'text-white/60' : 'text-muted'
+                }`}
+              >
+                {t('priceEquipment')} · {t('from')}
+              </p>
+              <p
+                className={`mt-1 text-2xl font-medium tracking-[-0.02em] whitespace-nowrap ${
+                  isCustom ? 'text-white' : 'text-navy-800'
+                }`}
+              >
+                {new Intl.NumberFormat(locale, {
+                  style: 'currency',
+                  currency: 'UAH',
+                  maximumFractionDigits: 0,
+                }).format(station.pricing.equipmentUah)}
+              </p>
             </>
           ) : (
-            t('priceOnRequest')
+            <>
+              <p className="text-xs font-medium tracking-[0.08em] text-white/60 uppercase">
+                {t('priceEquipment')}
+              </p>
+              <p className="mt-1 text-lg leading-8 font-medium tracking-[-0.01em] whitespace-nowrap text-white">
+                {t('priceOnRequest')}
+              </p>
+            </>
           )}
-        </p>
+        </div>
 
         {/* Two lines reserved: the standard label wraps at five columns and
             the custom one does not, and the rule above would otherwise sit a
