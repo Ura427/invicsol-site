@@ -23,6 +23,7 @@ export function ContactForm() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (isSubmitting) return;
     setError(null);
 
     const formData = new FormData(event.currentTarget);
@@ -39,17 +40,23 @@ export function ContactForm() {
 
     setIsSubmitting(true);
 
-    const result = await submitLead({
-      source: 'contact',
-      name,
-      phone,
-      contactMethod: (formData.get('contactMethod') as ContactMethod) ?? 'phone',
-      locale,
-      website: String(formData.get('website') ?? ''),
-      extra: { message: String(formData.get('message') ?? '') },
-    });
-
-    setIsSubmitting(false);
+    let result: Awaited<ReturnType<typeof submitLead>>;
+    try {
+      result = await submitLead({
+        source: 'contact',
+        name,
+        phone,
+        contactMethod: (formData.get('contactMethod') as ContactMethod) ?? 'phone',
+        locale,
+        website: String(formData.get('website') ?? ''),
+        extra: { message: String(formData.get('message') ?? '') },
+      });
+    } catch {
+      setError(t('error'));
+      return;
+    } finally {
+      setIsSubmitting(false);
+    }
 
     if (!result.ok) {
       // The server validates the phone too; surface that on the field rather
@@ -67,14 +74,20 @@ export function ContactForm() {
   }
 
   return (
-    <section className="mx-auto max-w-xl px-4 py-24 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-xl px-4 py-14 sm:py-20 lg:py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('heading')} description={t('text')} />
 
       <form noValidate onSubmit={handleSubmit} className="mt-8 space-y-4">
         {/* Honeypot — hidden from real visitors via CSS, filled in by naive bots. */}
         <div className="absolute -left-[9999px]" aria-hidden="true">
           <label htmlFor="website">Website</label>
-          <input type="text" id="website" name="website" tabIndex={-1} autoComplete="off" />
+          <input
+            type="text"
+            id="website"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+          />
         </div>
 
         <p className="text-muted text-xs">{tf('requiredNote')}</p>
@@ -105,13 +118,15 @@ export function ContactForm() {
           <legend className="text-muted font-medium">{t('contactMethod')}</legend>
           <div className="mt-1 flex gap-4">
             <label className="flex items-center gap-2">
-              <input type="radio" name="contactMethod" value="phone" defaultChecked /> {t('methodPhone')}
+              <input type="radio" name="contactMethod" value="phone" defaultChecked />{' '}
+              {t('methodPhone')}
             </label>
             <label className="flex items-center gap-2">
               <input type="radio" name="contactMethod" value="viber" /> {t('methodViber')}
             </label>
             <label className="flex items-center gap-2">
-              <input type="radio" name="contactMethod" value="telegram" /> {t('methodTelegram')}
+              <input type="radio" name="contactMethod" value="telegram" />{' '}
+              {t('methodTelegram')}
             </label>
           </div>
         </fieldset>

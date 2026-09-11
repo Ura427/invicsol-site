@@ -27,6 +27,37 @@ function renderModal() {
 }
 
 describe('CallbackModal', () => {
+  it.each(['rejection', 'rate_limited'])(
+    'shows retry feedback after %s and keeps the entered number',
+    async (failure) => {
+      if (failure === 'rejection')
+        submitLeadMock.mockRejectedValueOnce(new Error('Offline'));
+      else submitLeadMock.mockResolvedValueOnce({ ok: false, error: 'rate_limited' });
+      const user = userEvent.setup();
+      renderModal();
+      await user.click(
+        screen.getByRole('button', { name: messages.CallbackModal.trigger }),
+      );
+      await user.type(
+        screen.getByLabelText(new RegExp(messages.CallbackModal.nameLabel)),
+        'Тарас',
+      );
+      await user.type(
+        screen.getByLabelText(new RegExp(messages.CallbackModal.phoneLabel)),
+        '+380671112233',
+      );
+      await user.click(
+        screen.getByRole('button', { name: messages.CallbackModal.submit }),
+      );
+      expect(await screen.findByRole('alert')).not.toBeEmptyDOMElement();
+      expect(
+        screen.getByRole('button', { name: messages.CallbackModal.submit }),
+      ).toBeEnabled();
+      expect(
+        screen.getByLabelText(new RegExp(messages.CallbackModal.phoneLabel)),
+      ).toHaveValue('+380671112233');
+    },
+  );
   beforeEach(() => {
     submitLeadMock.mockReset();
   });
@@ -37,7 +68,9 @@ describe('CallbackModal', () => {
 
     expect(screen.getByRole('dialog', { hidden: true })).not.toHaveAttribute('open');
 
-    await user.click(screen.getByRole('button', { name: messages.CallbackModal.trigger }));
+    await user.click(
+      screen.getByRole('button', { name: messages.CallbackModal.trigger }),
+    );
 
     expect(screen.getByRole('dialog')).toHaveAttribute('open');
   });
@@ -46,7 +79,9 @@ describe('CallbackModal', () => {
     const user = userEvent.setup();
     renderModal();
 
-    await user.click(screen.getByRole('button', { name: messages.CallbackModal.trigger }));
+    await user.click(
+      screen.getByRole('button', { name: messages.CallbackModal.trigger }),
+    );
     await user.click(screen.getByRole('button', { name: messages.CallbackModal.close }));
 
     expect(screen.getByRole('dialog', { hidden: true })).not.toHaveAttribute('open');
@@ -57,9 +92,17 @@ describe('CallbackModal', () => {
     const user = userEvent.setup();
     renderModal();
 
-    await user.click(screen.getByRole('button', { name: messages.CallbackModal.trigger }));
-    await user.type(screen.getByLabelText(new RegExp(messages.CallbackModal.nameLabel)), 'Тарас');
-    await user.type(screen.getByLabelText(new RegExp(messages.CallbackModal.phoneLabel)), '+380671112233');
+    await user.click(
+      screen.getByRole('button', { name: messages.CallbackModal.trigger }),
+    );
+    await user.type(
+      screen.getByLabelText(new RegExp(messages.CallbackModal.nameLabel)),
+      'Тарас',
+    );
+    await user.type(
+      screen.getByLabelText(new RegExp(messages.CallbackModal.phoneLabel)),
+      '+380671112233',
+    );
     await user.click(screen.getByRole('button', { name: messages.CallbackModal.submit }));
 
     expect(submitLeadMock).toHaveBeenCalledWith(
@@ -78,11 +121,21 @@ describe('CallbackModal', () => {
     const user = userEvent.setup();
     renderModal();
 
-    await user.click(screen.getByRole('button', { name: messages.CallbackModal.trigger }));
-    await user.type(screen.getByLabelText(new RegExp(messages.CallbackModal.nameLabel)), 'Тарас');
-    await user.type(screen.getByLabelText(new RegExp(messages.CallbackModal.phoneLabel)), '+380671112233');
+    await user.click(
+      screen.getByRole('button', { name: messages.CallbackModal.trigger }),
+    );
+    await user.type(
+      screen.getByLabelText(new RegExp(messages.CallbackModal.nameLabel)),
+      'Тарас',
+    );
+    await user.type(
+      screen.getByLabelText(new RegExp(messages.CallbackModal.phoneLabel)),
+      '+380671112233',
+    );
     await user.click(screen.getByRole('button', { name: messages.CallbackModal.submit }));
 
-    expect(await screen.findByRole('status')).toHaveTextContent(messages.CallbackModal.text);
+    expect(await screen.findByRole('status')).toHaveTextContent(
+      messages.CallbackModal.text,
+    );
   });
 });

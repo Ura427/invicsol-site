@@ -1,30 +1,42 @@
 'use client';
 
 import { useLocale } from 'next-intl';
+import { Suspense, useSyncExternalStore } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Link, usePathname } from '@/i18n/navigation';
 import { routing, type AppLocale } from '@/i18n/routing';
 
 const LABELS: Record<AppLocale, string> = { uk: 'UA', en: 'EN' };
 
-/**
- * Manual locale switcher.
- *
- * Until now the locale was chosen once by next-intl's Accept-Language
- * negotiation and there was no way to override it — an English-speaking visitor
- * landing on the Ukrainian site, or a Ukrainian visitor whose browser reports
- * en-US, had no route back.
- *
- * It links to the *same* page in the other locale rather than to the home page,
- * because dumping someone on the front page is a good way to lose them halfway
- * through reading a station spec.
- *
- * `usePathname` from the locale-aware navigation returns the resolved path with
- * the locale prefix stripped — `/stations/10kw`, not `/uk/stations/10kw` and
- * not a `[slug]` template — so it can be handed straight to `<Link locale>`,
- * which rebuilds the prefix for the target locale. (Routing here has no
- * `pathnames` map, so there are no typed route templates to resolve.)
- */
+// The router tracks query changes; the browser tracks fragment navigation.
+function subscribeToHash(callback: () => void) {
+  window.addEventListener('hashchange', callback);
+  window.addEventListener('popstate', callback);
+  return () => {
+    window.removeEventListener('hashchange', callback);
+    window.removeEventListener('popstate', callback);
+  };
+}
+
+function CurrentLocaleLinks() {
+  const search = useSearchParams()?.toString() ?? '';
+  const hash = useSyncExternalStore(
+    subscribeToHash,
+    () => window.location.hash,
+    () => '',
+  );
+  return <LocaleLinks suffix={`${search ? `?${search}` : ''}${hash}`} />;
+}
+
 export function LocaleSwitcher() {
+  return (
+    <Suspense fallback={<LocaleLinks suffix="" />}>
+      <CurrentLocaleLinks />
+    </Suspense>
+  );
+}
+
+function LocaleLinks({ suffix }: { suffix: string }) {
   const activeLocale = useLocale();
   const pathname = usePathname();
 
@@ -40,7 +52,7 @@ export function LocaleSwitcher() {
               </span>
             ) : null}
             <Link
-              href={pathname}
+              href={`${pathname}${suffix}`}
               locale={locale}
               hrefLang={locale}
               aria-current={isActive ? 'true' : undefined}

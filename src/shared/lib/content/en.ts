@@ -4,28 +4,28 @@ import type { SiteContent } from './types';
 export const en = {
   why: [
     {
-      id: 'turnkey',
+      id: 'design',
       icon: 'Wrench',
-      title: 'Full turnkey cycle',
-      text: 'From the site visit and design through installation, commissioning, and grid-operator paperwork. One contract, one point of contact, no subcontractors for you to chase down.',
+      title: 'Sized for your load and roof',
+      text: 'We check when your property uses electricity, the roof structure and cable routes. That determines panel capacity, mounting and storage.',
     },
     {
       id: 'equipment',
       icon: 'ShieldCheck',
-      title: 'Tier-1 equipment only',
-      text: 'Longi and Jinko panels, Deye, Huawei, and Victron inverters. We don’t install unbranded components that come with no warranty and no service five years from now.',
+      title: 'Equipment and electrical protection',
+      text: 'Longi and Jinko panels; Deye, Huawei and Victron inverters. The design includes grounding, AC/DC breakers and surge protection.',
     },
     {
-      id: 'blackout',
-      icon: 'BatteryCharging',
-      title: 'Keeps running through outages',
-      text: 'Hybrid systems with a backed-up critical-load circuit keep the house powered when the grid goes down. We design for the realities of the Ukrainian grid, not a catalogue spec sheet.',
+      id: 'turnkey',
+      icon: 'FileCheck2',
+      title: 'Installation through to grid paperwork',
+      text: 'One point of contact for the site visit, design, mounting, commissioning and grid-operator documents.',
     },
     {
       id: 'service',
       icon: 'Headset',
-      title: 'Support after handover',
-      text: 'Output monitoring, scheduled inspections, and warranty support. You get the direct contact of the engineer who ran your project, not a general support line.',
+      title: 'Backup and support after handover',
+      text: 'Hybrid systems can keep critical circuits running during outages. After commissioning, you have monitoring and direct contact with your project engineer.',
     },
   ],
   services: [
@@ -103,28 +103,6 @@ export const en = {
     { id: 'objects', value: '380+', label: 'stations installed in Lviv and the region' },
     { id: 'power', value: '6.4 MW', label: 'total installed capacity' },
     { id: 'warranty', value: '25', label: 'year panel warranty' },
-  ],
-  expertise: [
-    {
-      id: 'design',
-      title: 'Designed against a real load profile',
-      text: 'We size systems against your actual daily curve — when the pump, water heater, and AC run, and what’s left for overnight — not a national average.',
-    },
-    {
-      id: 'roofs',
-      title: 'Complex roofs and mounting',
-      text: 'Standing-seam and corrugated metal, slate, bitumen shingle, ballasted flat roofs, and ground mounts. We fit the mounting system to the roof, not the other way around.',
-    },
-    {
-      id: 'grid',
-      title: 'Grid-operator paperwork',
-      text: 'We know the wiring-diagram, protection, and metering requirements, and package the submission so it clears review the first time.',
-    },
-    {
-      id: 'safety',
-      title: 'Electrical safety, no shortcuts',
-      text: 'Arc-fault protection, separate AC/DC breakers, proper grounding, and surge protection. Not an optional extra.',
-    },
   ],
   testimonials: [
     {
@@ -306,11 +284,6 @@ export const en = {
       isPlaceholder: true,
     },
   ],
-  quote: {
-    text: 'A solar station isn’t only equipment you buy — it’s also an engineering project. The same kit mounts differently on two different roofs, which is why we name the kit price up front and the installation cost after the visit.',
-    author: 'The INVICSOL team',
-    authorRole: 'Lviv',
-  },
   contact: {
     phone: SITE.phone,
     phoneDisplay: SITE.phoneDisplay,

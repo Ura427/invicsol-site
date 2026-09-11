@@ -15,13 +15,18 @@ export function Stats() {
   const { stats } = getContent(locale);
 
   return (
-    <section className="bg-navy-800 py-24 text-white">
+    <section className="bg-navy-800 py-14 sm:py-20 lg:py-24 text-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] lg:items-start lg:gap-20">
           {/* Top-aligned with the figures, inset by the cells' own padding, so the
               eyebrow and the first row of numbers share a line. */}
           <div className="lg:pt-7">
-            <SectionHeading eyebrow={t('eyebrow')} title={t('heading')} align="left" tone="light" />
+            <SectionHeading
+              eyebrow={t('eyebrow')}
+              title={t('heading')}
+              align="left"
+              tone="light"
+            />
           </div>
 
           <div className="grid gap-px bg-white/15 sm:grid-cols-2 lg:grid-cols-4">
@@ -30,7 +35,9 @@ export function Stats() {
               // parent, and without a bottom/left inset the figures sit flush
               // against those rules.
               <div key={stat.id} className="bg-navy-800 px-6 py-7">
-                <p className="text-gold-400 text-5xl font-light tracking-[-0.03em]">{stat.value}</p>
+                <p className="text-gold-400 text-5xl font-light tracking-[-0.03em]">
+                  {stat.value}
+                </p>
                 <p className="mt-3 text-sm leading-snug text-white/70">{stat.label}</p>
               </div>
             ))}

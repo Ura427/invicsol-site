@@ -3,6 +3,7 @@ import userEvent from '@testing-library/user-event';
 import { NextIntlClientProvider } from 'next-intl';
 import messages from '../../../../messages/uk.json';
 import { Nav } from '../Nav';
+jest.mock('next/navigation', () => ({ useSearchParams: () => new URLSearchParams() }));
 
 jest.mock('@/i18n/navigation', () => ({
   Link: ({ href, children, ...rest }: { href: string; children: React.ReactNode }) => (
@@ -46,6 +47,8 @@ describe('Nav', () => {
 
     await user.click(screen.getByRole('button', { name: messages.Nav.openMenu }));
 
-    expect(screen.getByRole('button', { name: messages.Nav.closeMenu })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: messages.Nav.closeMenu }),
+    ).toBeInTheDocument();
   });
 });

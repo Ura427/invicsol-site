@@ -58,12 +58,6 @@ export interface StatItem {
   readonly label: string;
 }
 
-export interface ExpertiseCard {
-  readonly id: string;
-  readonly title: string;
-  readonly text: string;
-}
-
 export interface Testimonial {
   readonly id: string;
   readonly author: string;
@@ -115,12 +109,6 @@ export interface FinancingOption {
   readonly isPlaceholder: boolean;
 }
 
-export interface PullQuote {
-  readonly text: string;
-  readonly author: string;
-  readonly authorRole: string;
-}
-
 export interface ContactDetails {
   readonly phone: string;
   readonly phoneDisplay: string;
@@ -137,13 +125,11 @@ export interface SiteContent {
   readonly services: readonly ServiceItem[];
   readonly process: readonly ProcessStep[];
   readonly stats: readonly StatItem[];
-  readonly expertise: readonly ExpertiseCard[];
   readonly testimonials: readonly Testimonial[];
   readonly faq: readonly FaqItem[];
   readonly brands: readonly EquipmentBrand[];
   readonly team: readonly TeamMember[];
   readonly warranty: readonly WarrantyItem[];
   readonly financing: readonly FinancingOption[];
-  readonly quote: PullQuote;
   readonly contact: ContactDetails;
 }

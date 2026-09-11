@@ -13,7 +13,7 @@ export function Faq() {
   const [openId, setOpenId] = useState<string | null>(faq[0]?.id ?? null);
 
   return (
-    <section className="mx-auto max-w-3xl px-4 py-24 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-3xl px-4 py-14 sm:py-20 lg:py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('heading')} />
       {/* Full-width rows separated by hairline rules, rather than a rounded
           bordered box. Same reasoning as the cards: this design draws with
@@ -37,7 +37,9 @@ export function Faq() {
                 />
               </button>
               {isOpen ? (
-                <p className="text-muted max-w-[58ch] pb-6 text-sm leading-relaxed">{item.answer}</p>
+                <p className="text-muted max-w-[58ch] pb-6 text-sm leading-relaxed">
+                  {item.answer}
+                </p>
               ) : null}
             </div>
           );

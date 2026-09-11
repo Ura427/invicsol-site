@@ -1,6 +1,7 @@
 'use client';
 
 import useEmblaCarousel from 'embla-carousel-react';
+import { useEffect, useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTranslations } from 'next-intl';
 import { ProjectCard } from '@/entities/project/ui/ProjectCard';
@@ -23,6 +24,20 @@ export function ProjectsCarouselClient({ items }: ProjectsCarouselClientProps) {
     duration: 38,
     containScroll: 'trimSnaps',
   });
+  const [canScrollPrev, setCanScrollPrev] = useState(false);
+  const [canScrollNext, setCanScrollNext] = useState(false);
+  useEffect(() => {
+    if (!emblaApi) return;
+    const update = () => {
+      setCanScrollPrev(emblaApi.canScrollPrev());
+      setCanScrollNext(emblaApi.canScrollNext());
+    };
+    update();
+    emblaApi.on('select', update).on('reInit', update);
+    return () => {
+      emblaApi.off('select', update).off('reInit', update);
+    };
+  }, [emblaApi]);
 
   return (
     <div className="relative">
@@ -46,16 +61,18 @@ export function ProjectsCarouselClient({ items }: ProjectsCarouselClientProps) {
         <button
           type="button"
           onClick={() => emblaApi?.scrollPrev()}
-          aria-label={t('viewAll')}
-          className="border-border text-navy-800 hover:bg-navy-800 flex h-10 w-10 items-center justify-center rounded-full border transition-colors hover:text-white"
+          aria-label={t('previousProject')}
+          disabled={!canScrollPrev}
+          className="border-border text-navy-800 hover:bg-navy-800 flex h-10 w-10 items-center justify-center rounded-full border transition-colors hover:text-white disabled:cursor-default disabled:opacity-35 disabled:hover:bg-transparent disabled:hover:text-navy-800"
         >
           <ChevronLeft className="h-5 w-5" />
         </button>
         <button
           type="button"
           onClick={() => emblaApi?.scrollNext()}
-          aria-label={t('viewAll')}
-          className="border-border text-navy-800 hover:bg-navy-800 flex h-10 w-10 items-center justify-center rounded-full border transition-colors hover:text-white"
+          aria-label={t('nextProject')}
+          disabled={!canScrollNext}
+          className="border-border text-navy-800 hover:bg-navy-800 flex h-10 w-10 items-center justify-center rounded-full border transition-colors hover:text-white disabled:cursor-default disabled:opacity-35 disabled:hover:bg-transparent disabled:hover:text-navy-800"
         >
           <ChevronRight className="h-5 w-5" />
         </button>

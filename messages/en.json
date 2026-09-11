@@ -44,12 +44,6 @@
     "eyebrow": "Track record",
     "heading": "INVICSOL by the numbers"
   },
-  "Expertise": {
-    "heading": "Our expertise"
-  },
-  "Quote": {
-    "heading": "Our approach"
-  },
   "Testimonials": {
     "heading": "Client reviews",
     "placeholderBadge": "Demo content"
@@ -98,14 +92,31 @@
     "payback": {
       "eyebrow": "Worth it?",
       "heading": "What this station returns",
-      "tariffLabel": "Your electricity tariff",
+      "tariffLabel": "Electricity tariff (UAH/kWh)",
       "tariffUnit": "UAH per kWh",
-      "annualOutput": "Produces a year",
-      "annualSaving": "Saves a year",
-      "payback": "Pays for itself in",
+      "annualOutput": "Annual generation",
+      "annualSaving": "Annual bill savings",
+      "payback": "Simple payback",
       "kwhPerYear": "kWh",
       "years": "{years} years",
-      "disclaimer": "An estimate for {power} kW at four peak sun hours a day and 80% system performance — typical for the Lviv region. It is not a price: what a station costs depends on your roof, mounting and cable runs, which we settle at the free site visit."
+      "monthlyConsumption": "Monthly use (kWh, optional)",
+      "selfConsumption": "Solar generation used on site (%)",
+      "systemType": "System to estimate",
+      "gridTied": "Grid-tied, without batteries",
+      "hybrid": "Hybrid, with batteries",
+      "illustrative": "Illustrative scenario — not a personalised forecast",
+      "scenario": "Estimated scenario range",
+      "assumptions": "Assumptions behind these figures",
+      "energyAssumptions": "Assumes 900–1,200 kWh per kW each year, with {share}% of generation used on site. This is a scenario range, not a roof survey. No income from exported energy is included.",
+      "missingConsumption": "No consumption entered — savings are not capped to your use.",
+      "consumptionCap": "Savings are capped at {monthly} kWh × 12 months. Seasonal and hourly differences still require a load profile.",
+      "gridCosts": "Cost basis: grid-tied catalogue equipment plus the listed installation range, scaled per kW. No batteries included.",
+      "hybridCosts": "Cost basis: hybrid catalogue kits, including their listed batteries, plus installation, scaled per kW. This does not size a battery for your home.",
+      "exampleCosts": "The reference prices are demo figures. This payback range is illustrative until real equipment and installation costs are confirmed.",
+      "exclusions": "Simple payback excludes maintenance, battery replacement, degradation, financing and tariff changes. A site visit and confirmed quote are needed before making a purchase decision.",
+      "noPayback": "A payback range needs matching installed-cost data and positive savings. These inputs do not provide both.",
+      "backupOnly": "Backup-only storage does not generate solar energy. Its value is outage protection; no solar payback is calculated.",
+      "invalidInputs": "Enter positive power and tariff values and a self-consumption share from 0 to 100% to see a scenario."
     },
     "reviewsHeading": "Reviews",
     "reviewsEmpty": "No reviews yet",
@@ -200,7 +211,9 @@
       "bryukhovychi": "Bryukhovychi",
       "horodok": "Horodok district",
       "sokilnyky": "Sokilnyky"
-    }
+    },
+    "previousProject": "Previous project",
+    "nextProject": "Next project"
   },
   "Calculator": {
     "heading": "Estimate payback",
@@ -245,7 +258,9 @@
     "parameters": {
       "title": "Station parameters",
       "tariff": "Tariff, ₴/kWh",
-      "desiredPower": "Desired power, kW"
+      "desiredPower": "Desired power, kW",
+      "selfConsumption": "Solar generation used on site",
+      "selfConsumptionHint": "Assumed share you use instead of exporting. Adjust for daytime use and storage; actual use needs a load profile."
     },
     "mount": {
       "title": "Mounting and extras",
@@ -267,12 +282,11 @@
       "namePlaceholder": "Your name",
       "phonePlaceholder": "+380"
     },
-    "paybackEstimate": "Estimated payback period: {years} years",
     "errors": {
       "required": "This field is required",
       "phoneInvalid": "Enter a valid phone number",
       "selectAtLeastOne": "Select at least one option",
-      "submitFailed": "Could not send your request. Please try again or call us.",
+      "submitFailed": "Could not send your request. Check your connection and try again.",
       "selectOption": "Choose an option to continue",
       "fillFields": "Fill in the fields to continue"
     }
@@ -290,7 +304,7 @@
     "methodPhone": "Phone call",
     "methodViber": "Viber",
     "methodTelegram": "Telegram",
-    "error": "Could not send your request. Please try again or call us."
+    "error": "Could not send your request. Check your connection and try again."
   },
   "Contact": {
     "pageTitle": "Contact",
@@ -466,7 +480,8 @@
   "Forms": {
     "requiredNote": "* — required fields",
     "errRequired": "Please fill in this field",
-    "errPhone": "Enter a number as +380XXXXXXXXX or 0XXXXXXXXX"
+    "errPhone": "Enter a number as +380XXXXXXXXX or 0XXXXXXXXX",
+    "errSubmit": "Could not send your request. Check your connection and try again."
   },
   "Admin": {
     "panel": "Admin",

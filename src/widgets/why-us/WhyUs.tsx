@@ -17,11 +17,11 @@ export function WhyUs() {
   const { why } = getContent(locale);
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
-      <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-20">
+    <section className="mx-auto max-w-7xl px-4 py-14 sm:py-20 lg:py-24 sm:px-6 lg:px-8">
+      <div className="grid items-start gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.1fr)] lg:gap-20">
         <div>
           <SectionHeading eyebrow={t('eyebrow')} title={t('heading')} align="left" />
-          <div className="relative mt-10 aspect-[4/3] overflow-hidden rounded-[var(--radius-image)]">
+          <div className="relative mt-6 sm:mt-10 aspect-[4/3] overflow-hidden rounded-[var(--radius-image)]">
             <Image
               src="/projects/sokilnyky-house-12kw.jpg"
               alt=""
@@ -36,11 +36,13 @@ export function WhyUs() {
           {why.map((card) => {
             const Icon = ICONS[card.icon];
             return (
-              <div key={card.id} className="flex gap-6 py-8">
+              <div key={card.id} className="flex gap-4 py-5 sm:gap-6 sm:py-8">
                 <Icon className="text-gold-700 mt-1 h-5 w-5 shrink-0" aria-hidden />
                 <div>
                   <h3 className="text-navy-800 text-xl">{card.title}</h3>
-                  <p className="text-muted mt-3 max-w-[52ch] leading-relaxed">{card.text}</p>
+                  <p className="text-muted mt-3 max-w-[52ch] leading-relaxed">
+                    {card.text}
+                  </p>
                 </div>
               </div>
             );

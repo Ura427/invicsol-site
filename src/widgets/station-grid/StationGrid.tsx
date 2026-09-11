@@ -13,13 +13,18 @@ export async function StationGrid() {
   );
 
   return (
-    <section id="stations" className="mx-auto max-w-7xl scroll-mt-24 px-4 py-24 sm:px-6 lg:px-8">
+    <section
+      id="stations"
+      className="mx-auto max-w-7xl scroll-mt-24 px-4 py-14 sm:py-20 lg:py-24 sm:px-6 lg:px-8"
+    >
       <SectionHeading title={t('heading')} description={t('teaser')} />
       <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {stations.map((station) => {
           const translation = translations.get(station.id);
           if (!translation) return null;
-          return <StationCard key={station.id} station={station} translation={translation} />;
+          return (
+            <StationCard key={station.id} station={station} translation={translation} />
+          );
         })}
       </div>
     </section>

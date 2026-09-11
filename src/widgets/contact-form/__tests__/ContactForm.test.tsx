@@ -24,6 +24,33 @@ function renderForm() {
 }
 
 describe('ContactForm', () => {
+  it('recovers from a rejected request without clearing the contact details', async () => {
+    submitLeadMock.mockRejectedValueOnce(new Error('Network unavailable'));
+    const user = userEvent.setup();
+    renderForm();
+    await user.type(
+      screen.getByLabelText(new RegExp(messages.ContactForm.name)),
+      'Олена',
+    );
+    await user.type(
+      screen.getByLabelText(new RegExp(messages.ContactForm.phone)),
+      '+380671234567',
+    );
+    await user.click(screen.getByRole('button', { name: messages.ContactForm.submit }));
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      messages.ContactForm.error,
+    );
+    expect(
+      screen.getByRole('button', { name: messages.ContactForm.submit }),
+    ).toBeEnabled();
+    expect(screen.getByLabelText(new RegExp(messages.ContactForm.name))).toHaveValue(
+      'Олена',
+    );
+    expect(screen.getByLabelText(new RegExp(messages.ContactForm.phone))).toHaveValue(
+      '+380671234567',
+    );
+    expect(pushMock).not.toHaveBeenCalled();
+  });
   beforeEach(() => {
     pushMock.mockClear();
     submitLeadMock.mockClear();
@@ -35,7 +62,10 @@ describe('ContactForm', () => {
     const user = userEvent.setup();
     renderForm();
 
-    await user.type(screen.getByLabelText(new RegExp(messages.ContactForm.name)), 'Олена');
+    await user.type(
+      screen.getByLabelText(new RegExp(messages.ContactForm.name)),
+      'Олена',
+    );
     await user.type(
       screen.getByLabelText(new RegExp(messages.ContactForm.phone)),
       'подзвоніть мені',
@@ -61,8 +91,14 @@ describe('ContactForm', () => {
     const user = userEvent.setup();
     renderForm();
 
-    await user.type(screen.getByLabelText(new RegExp(messages.ContactForm.name)), 'Олена');
-    await user.type(screen.getByLabelText(new RegExp(messages.ContactForm.phone)), '+380671234567');
+    await user.type(
+      screen.getByLabelText(new RegExp(messages.ContactForm.name)),
+      'Олена',
+    );
+    await user.type(
+      screen.getByLabelText(new RegExp(messages.ContactForm.phone)),
+      '+380671234567',
+    );
     await user.click(screen.getByRole('button', { name: messages.ContactForm.submit }));
 
     expect(submitLeadMock).toHaveBeenCalledWith(
@@ -81,8 +117,14 @@ describe('ContactForm', () => {
     const user = userEvent.setup();
     renderForm();
 
-    await user.type(screen.getByLabelText(new RegExp(messages.ContactForm.name)), 'Олена');
-    await user.type(screen.getByLabelText(new RegExp(messages.ContactForm.phone)), '+380671234567');
+    await user.type(
+      screen.getByLabelText(new RegExp(messages.ContactForm.name)),
+      'Олена',
+    );
+    await user.type(
+      screen.getByLabelText(new RegExp(messages.ContactForm.phone)),
+      '+380671234567',
+    );
     await user.click(screen.getByRole('button', { name: messages.ContactForm.submit }));
 
     expect(pushMock).not.toHaveBeenCalled();

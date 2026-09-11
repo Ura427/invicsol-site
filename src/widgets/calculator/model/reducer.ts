@@ -1,5 +1,10 @@
 import { estimatePowerFromConsumption } from './estimatePower';
-import { initialCalculatorState, TOTAL_STEPS, type CalculatorAction, type CalculatorState } from './types';
+import {
+  initialCalculatorState,
+  TOTAL_STEPS,
+  type CalculatorAction,
+  type CalculatorState,
+} from './types';
 
 /**
  * Pure, independently testable — no DOM, no submission side effect. The wizard
@@ -53,6 +58,8 @@ export function calculatorReducer(
           : [...state.goals, action.value],
       };
     }
+    case 'SET_SELF_CONSUMPTION':
+      return { ...state, selfConsumptionPercent: action.value };
     case 'SET_TARIFF':
       return { ...state, tariff: action.value };
     case 'SET_DESIRED_POWER_KW':

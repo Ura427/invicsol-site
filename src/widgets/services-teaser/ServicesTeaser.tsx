@@ -20,9 +20,13 @@ export function ServicesTeaser() {
   const { services } = getContent(locale);
 
   return (
-    <section id="services" className="bg-surface scroll-mt-24 py-24">
+    <section id="services" className="bg-surface scroll-mt-24 py-14 sm:py-20 lg:py-24">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <SectionHeading eyebrow={t('eyebrow')} title={t('heading')} description={t('teaser')} />
+        <SectionHeading
+          eyebrow={t('eyebrow')}
+          title={t('heading')}
+          description={t('teaser')}
+        />
 
         <div className="bg-border border-border mt-14 grid gap-px border-y sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service) => {

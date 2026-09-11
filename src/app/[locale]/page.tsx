@@ -7,14 +7,16 @@ import { ServicesTeaser } from '@/widgets/services-teaser';
 import { StationGrid } from '@/widgets/station-grid';
 import { ProjectsCarousel } from '@/widgets/projects-carousel';
 import { Stats } from '@/widgets/stats';
-import { Expertise } from '@/widgets/expertise';
-import { Quote } from '@/widgets/quote';
 import { Testimonials } from '@/widgets/testimonials';
 import { Faq } from '@/widgets/faq';
 import { ContactForm } from '@/widgets/contact-form';
 import { ScrollToHash } from '@/shared/ui/ScrollToHash';
 
-export default async function HomePage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
   const { faq } = getContent(locale);
@@ -22,7 +24,10 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
 
   return (
     <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
       <ScrollToHash />
       <Hero />
       <WhyUs />
@@ -37,8 +42,6 @@ export default async function HomePage({ params }: { params: Promise<{ locale: s
         <ProjectsCarousel />
       </div>
       <Stats />
-      <Expertise />
-      <Quote />
       <div className="bg-surface">
         <Testimonials />
       </div>

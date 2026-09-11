@@ -16,6 +16,7 @@ import { Step3Consumption } from './ui/Step3Consumption';
 import { Step4Goals } from './ui/Step4Goals';
 import { Step5Parameters } from './ui/Step5Parameters';
 import { Step6Mount } from './ui/Step6Mount';
+import type { CostReference } from './model/payback';
 import { Step7Contact } from './ui/Step7Contact';
 
 const STEP_COMPONENTS = [
@@ -28,7 +29,11 @@ const STEP_COMPONENTS = [
   Step7Contact,
 ] as const;
 
-export function CalculatorWizard() {
+export function CalculatorWizard({
+  references = [],
+}: {
+  references?: readonly CostReference[];
+}) {
   const t = useTranslations('Calculator');
   const tf = useTranslations('Forms');
   const locale = useLocale();
@@ -43,6 +48,7 @@ export function CalculatorWizard() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (isSubmitting) return;
 
     // Guard every step, not just the last one. Previously the wizard let you click
     // straight through all seven steps without answering anything, and then did
@@ -78,28 +84,35 @@ export function CalculatorWizard() {
     setIsSubmitting(true);
 
     const formData = new FormData(event.currentTarget);
-    const result = await submitLead({
-      source: 'calculator',
-      name: state.name,
-      phone: state.phone,
-      contactMethod: state.contactMethod,
-      locale,
-      website: String(formData.get('website') ?? ''),
-      extra: {
-        propertyType: state.propertyType,
-        solutionType: state.solutionType,
-        phase: state.phase,
-        monthlyKwh: state.monthlyKwh,
-        goals: state.goals,
-        tariff: state.tariff,
-        desiredPowerKw: state.desiredPowerKw,
-        mountType: state.mountType,
-        wantsGenerator: state.wantsGenerator,
-        wantsCriticalBackup: state.wantsCriticalBackup,
-      },
-    });
-
-    setIsSubmitting(false);
+    let result: Awaited<ReturnType<typeof submitLead>>;
+    try {
+      result = await submitLead({
+        source: 'calculator',
+        name: state.name,
+        phone: state.phone,
+        contactMethod: state.contactMethod,
+        locale,
+        website: String(formData.get('website') ?? ''),
+        extra: {
+          propertyType: state.propertyType,
+          solutionType: state.solutionType,
+          phase: state.phase,
+          monthlyKwh: state.monthlyKwh,
+          goals: state.goals,
+          tariff: state.tariff,
+          selfConsumptionPercent: state.selfConsumptionPercent,
+          desiredPowerKw: state.desiredPowerKw,
+          mountType: state.mountType,
+          wantsGenerator: state.wantsGenerator,
+          wantsCriticalBackup: state.wantsCriticalBackup,
+        },
+      });
+    } catch {
+      setError(t('errors.submitFailed'));
+      return;
+    } finally {
+      setIsSubmitting(false);
+    }
 
     if (!result.ok) {
       if (result.error === 'invalid_phone') {
@@ -117,7 +130,12 @@ export function CalculatorWizard() {
   return (
     <div className="mx-auto max-w-xl">
       <form noValidate onSubmit={handleSubmit} className="relative">
-        <StepComponent state={state} dispatch={dispatch} fieldErrors={fieldErrors} />
+        <StepComponent
+          state={state}
+          dispatch={dispatch}
+          fieldErrors={fieldErrors}
+          references={references}
+        />
 
         <p className="mt-4 text-sm text-red-600" role="alert" aria-live="polite">
           {error}
@@ -128,7 +146,7 @@ export function CalculatorWizard() {
             type="button"
             variant="outline"
             onClick={() => dispatch({ type: 'PREV_STEP' })}
-            disabled={state.step === 1}
+            disabled={state.step === 1 || isSubmitting}
             className={state.step === 1 ? 'invisible' : ''}
           >
             {t('back')}

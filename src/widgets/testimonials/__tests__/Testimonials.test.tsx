@@ -5,16 +5,19 @@ import { uk } from '@/shared/lib/content/uk';
 import { Testimonials } from '../Testimonials';
 
 describe('Testimonials', () => {
-  it('badges every placeholder testimonial so none reads as a real review', () => {
+  it('hides the entire section when only placeholder reviews exist', () => {
     render(
       <NextIntlClientProvider locale="uk" messages={messages}>
         <Testimonials />
       </NextIntlClientProvider>,
     );
 
-    const placeholderCount = uk.testimonials.filter((item) => item.isPlaceholder).length;
-    expect(screen.getAllByText(messages.Testimonials.placeholderBadge)).toHaveLength(
-      placeholderCount,
-    );
+    expect(uk.testimonials.every((item) => item.isPlaceholder)).toBe(true);
+    expect(
+      screen.queryByRole('heading', { name: messages.Testimonials.heading }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(messages.Testimonials.placeholderBadge),
+    ).not.toBeInTheDocument();
   });
 });

@@ -9,13 +9,16 @@ const HOMEPAGE_PROJECT_COUNT = 6;
 export async function ProjectsCarousel() {
   const locale = await getLocale();
   const t = await getTranslations('Projects');
-  const results = await getFilteredProjects({ type: null, usage: null, capacity: null }, locale);
+  const results = await getFilteredProjects(
+    { type: null, usage: null, capacity: null },
+    locale,
+  );
   const recent = results.slice(0, HOMEPAGE_PROJECT_COUNT);
 
   if (recent.length === 0) return null;
 
   return (
-    <section className="mx-auto max-w-7xl px-4 py-24 sm:px-6 lg:px-8">
+    <section className="mx-auto max-w-7xl px-4 py-14 sm:py-20 lg:py-24 sm:px-6 lg:px-8">
       <SectionHeading title={t('heading')} description={t('teaser')} />
       <div className="mt-12">
         <ProjectsCarouselClient items={recent} />

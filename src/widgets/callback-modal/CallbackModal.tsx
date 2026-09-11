@@ -23,6 +23,7 @@ export function CallbackModal() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<{ name?: string; phone?: string }>({});
 
   // Syncing React state to an imperative DOM API is exactly what an effect is for.
@@ -40,10 +41,13 @@ export function CallbackModal() {
   function handleClose() {
     setIsOpen(false);
     setIsSuccess(false);
+    setError(null);
   }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    if (isSubmitting) return;
+    setError(null);
 
     const formData = new FormData(event.currentTarget);
     const name = String(formData.get('name') ?? '').trim();
@@ -57,16 +61,22 @@ export function CallbackModal() {
     if (Object.keys(nextErrors).length > 0) return;
 
     setIsSubmitting(true);
-    const result = await submitLead({
-      source: 'callback',
-      name,
-      phone,
-      contactMethod: 'phone',
-      locale,
-      website: String(formData.get('website') ?? ''),
-    });
-
-    setIsSubmitting(false);
+    let result: Awaited<ReturnType<typeof submitLead>>;
+    try {
+      result = await submitLead({
+        source: 'callback',
+        name,
+        phone,
+        contactMethod: 'phone',
+        locale,
+        website: String(formData.get('website') ?? ''),
+      });
+    } catch {
+      setError(tf('errSubmit'));
+      return;
+    } finally {
+      setIsSubmitting(false);
+    }
     if (!result.ok && result.error === 'invalid_phone') {
       setFieldErrors({ phone: tf('errPhone') });
       return;
@@ -74,6 +84,8 @@ export function CallbackModal() {
     if (result.ok) {
       trackEvent('Lead', { source: 'callback' });
       setIsSuccess(true);
+    } else {
+      setError(tf('errSubmit'));
     }
   }
 
@@ -152,9 +164,17 @@ export function CallbackModal() {
               error={fieldErrors.phone ?? null}
             />
 
-            <Button type="submit" variant="gold" disabled={isSubmitting} className="w-full">
+            <Button
+              type="submit"
+              variant="gold"
+              disabled={isSubmitting}
+              className="w-full"
+            >
               {isSubmitting ? t('submitting') : t('submit')}
             </Button>
+            <p className="text-sm text-red-600" role="alert" aria-live="polite">
+              {error}
+            </p>
           </form>
         )}
       </dialog>

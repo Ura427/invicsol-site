@@ -16,6 +16,7 @@ export interface CalculatorState {
   useAutoEstimate: boolean;
   goals: readonly Goal[];
   tariff: number | null;
+  selfConsumptionPercent: number;
   desiredPowerKw: number | null;
   mountType: MountType | null;
   wantsGenerator: boolean;
@@ -34,6 +35,7 @@ export const initialCalculatorState: CalculatorState = {
   useAutoEstimate: false,
   goals: [],
   tariff: null,
+  selfConsumptionPercent: 50,
   desiredPowerKw: null,
   mountType: null,
   wantsGenerator: false,
@@ -53,6 +55,7 @@ export type CalculatorAction =
   | { type: 'SET_USE_AUTO_ESTIMATE'; value: boolean }
   | { type: 'TOGGLE_GOAL'; value: Goal }
   | { type: 'SET_TARIFF'; value: number | null }
+  | { type: 'SET_SELF_CONSUMPTION'; value: number }
   | { type: 'SET_DESIRED_POWER_KW'; value: number | null }
   | { type: 'SET_MOUNT_TYPE'; value: MountType }
   | { type: 'SET_WANTS_GENERATOR'; value: boolean }

@@ -1,3 +1,5 @@
+import { getAllStations } from '@/entities/station/queries';
+import { toCostReferences } from '@/widgets/calculator/model/payback';
 import type { Metadata } from 'next';
 import Image from 'next/image';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
@@ -68,6 +70,7 @@ export default async function StationDetailPage({
   // The bespoke configuration is a different kind of page: no fixed power, no
   // fixed kit, no price. It shares the shell but not the middle.
   const isCustom = station.systemType === 'custom';
+  const references = toCostReferences(isCustom ? await getAllStations() : [station]);
   const { process } = getContent(locale);
   const customFacts = isCustom
     ? (t.raw('customFacts') as { value: string; label: string }[])
@@ -252,13 +255,17 @@ export default async function StationDetailPage({
       {isCustom ? (
         <section className="bg-navy-800 mt-14 py-16 md:mt-16 md:py-20">
           <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-            <PowerPaybackCalculator />
+            <PowerPaybackCalculator references={references} />
           </div>
         </section>
       ) : station.powerKw !== null ? (
         <div className="mx-auto max-w-6xl px-4 pt-14 sm:px-6 md:pt-16 lg:px-8">
           <div className="border-border border-t pt-10">
-            <PaybackCalculator powerKw={station.powerKw} />
+            <PaybackCalculator
+              powerKw={station.powerKw}
+              references={references}
+              systemType={station.systemType === 'hybrid' ? 'hybrid' : 'grid-tied'}
+            />
           </div>
         </div>
       ) : null}
@@ -279,7 +286,7 @@ export default async function StationDetailPage({
                 <p className="text-muted mt-4 leading-relaxed">{t('customWizardText')}</p>
               </div>
               <div className="mt-10">
-                <CalculatorWizard />
+                <CalculatorWizard references={references} />
               </div>
             </div>
           </div>
