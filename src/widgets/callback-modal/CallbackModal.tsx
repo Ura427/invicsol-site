@@ -15,7 +15,8 @@ import { TextField } from '@/shared/ui/TextField';
  * restore to the trigger on close, and inert-ing of the rest of the page — all
  * from the browser. Hand-rolling those is the usual source of inaccessible modals.
  */
-export function CallbackModal() {
+/** `triggerClassName` lets the mobile menu render the trigger full-width. */
+export function CallbackModal({ triggerClassName = '' }: { triggerClassName?: string }) {
   const t = useTranslations('CallbackModal');
   const tf = useTranslations('Forms');
   const locale = useLocale();
@@ -91,7 +92,11 @@ export function CallbackModal() {
 
   return (
     <>
-      <Button variant="outline" onClick={() => setIsOpen(true)}>
+      <Button
+        variant="outline"
+        className={triggerClassName}
+        onClick={() => setIsOpen(true)}
+      >
         {t('trigger')}
       </Button>
 

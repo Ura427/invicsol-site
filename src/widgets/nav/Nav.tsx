@@ -50,7 +50,9 @@ export function Nav() {
           {/* Solid, not a bg-clip-text gradient. Gradient type is decorative
               rather than meaningful and is a common generated-UI tell; it also
               fights the restraint the rest of this design commits to. */}
-          <span className="text-navy-800 text-xl font-medium tracking-[-0.03em]">INVICSOL</span>
+          <span className="text-navy-800 text-xl font-medium tracking-[-0.03em]">
+            INVICSOL
+          </span>
         </Link>
 
         {/* gap-5 until xl: 1024px is the tightest desktop width and Ukrainian
@@ -65,7 +67,9 @@ export function Nav() {
                 <Link
                   href={link.href}
                   className={`relative text-sm font-medium transition-colors after:absolute after:-bottom-1 after:left-0 after:h-0.5 after:w-full after:origin-left after:scale-x-0 after:bg-current after:transition-transform hover:after:scale-x-100 ${
-                    isActive ? 'text-gold-700 after:scale-x-100' : 'text-navy-800 hover:text-gold-700'
+                    isActive
+                      ? 'text-gold-700 after:scale-x-100'
+                      : 'text-navy-800 hover:text-gold-700'
                   }`}
                 >
                   {t(link.key)}
@@ -136,7 +140,10 @@ export function Nav() {
           <div className="border-border mt-6 border-t pt-5">
             <LocaleSwitcher />
           </div>
-          <div className="mt-5">
+          {/* The menu stays open behind the callback dialog on purpose: the
+              dialog is mounted inside this panel, so closing the menu would
+              unmount it mid-conversation. */}
+          <div className="mt-5 flex flex-col gap-3">
             <Button
               href="/contact"
               variant="gold"
@@ -145,6 +152,7 @@ export function Nav() {
             >
               {t('contactCta')}
             </Button>
+            <CallbackModal triggerClassName="w-full" />
           </div>
         </div>
       ) : null}
