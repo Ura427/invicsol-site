@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import type { Metadata } from 'next';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Phone, Mail, MapPin, Clock } from 'lucide-react';
@@ -15,7 +16,11 @@ export async function generateMetadata({
   return { title: t('pageTitle'), description: t('pageDescription') };
 }
 
-export default async function ContactPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations('Contact');
@@ -63,12 +68,40 @@ export default async function ContactPage({ params }: { params: Promise<{ locale
             </div>
           </div>
 
-          <iframe
-            title="INVICSOL — map"
-            src={contact.mapEmbedUrl}
-            className="border-border mt-4 h-64 w-full rounded-[var(--radius-lg)] border"
-            loading="lazy"
-          />
+          {/* A static image, not the OSM embed: the embed's own attribution
+              bar wrapped over the map at phone widths and pulled a third-party
+              page into ours. Tiles stitched once from OpenStreetMap; the link
+              opens the live map. Regenerate public/map-lviv.jpg if the address
+              changes. */}
+          <a
+            href={contact.mapUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="group relative mt-4 block aspect-[2/1] overflow-hidden rounded-[var(--radius-lg)]"
+          >
+            <Image
+              src="/map-lviv.jpg"
+              alt={t('mapAlt')}
+              fill
+              sizes="(max-width: 1024px) 100vw, 560px"
+              className="object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+            />
+            <span className="bg-elevated/90 text-navy-800 absolute right-3 bottom-3 rounded-[var(--radius-pill)] px-3 py-1.5 text-xs font-medium">
+              {t('mapOpen')} ↗
+            </span>
+          </a>
+          <p className="text-muted mt-2 text-xs">
+            ©{' '}
+            <a
+              href="https://www.openstreetmap.org/copyright"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline underline-offset-2"
+            >
+              OpenStreetMap
+            </a>{' '}
+            contributors
+          </p>
         </div>
 
         <div className="bg-elevated rounded-[var(--radius-lg)]">

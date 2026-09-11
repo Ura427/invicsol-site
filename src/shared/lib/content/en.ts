@@ -292,7 +292,6 @@ export const en = {
     hours: 'Mon–Fri 9:00–18:00, Sat 10:00–15:00',
     telegram: SITE.telegram,
     viber: SITE.viber,
-    mapEmbedUrl:
-      'https://www.openstreetmap.org/export/embed.html?bbox=23.98%2C49.80%2C24.09%2C49.87&layer=mapnik&marker=49.8397%2C24.0297',
+    mapUrl: `https://www.openstreetmap.org/?mlat=${SITE.geo.latitude}&mlon=${SITE.geo.longitude}#map=15/${SITE.geo.latitude}/${SITE.geo.longitude}`,
   },
 } satisfies SiteContent;

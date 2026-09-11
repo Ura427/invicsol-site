@@ -117,7 +117,8 @@ export interface ContactDetails {
   readonly hours: string;
   readonly telegram: string;
   readonly viber: string;
-  readonly mapEmbedUrl: string;
+  /** Where the static map image links to. */
+  readonly mapUrl: string;
 }
 
 export interface SiteContent {

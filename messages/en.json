@@ -314,7 +314,9 @@
     "email": "Email",
     "address": "Address",
     "hours": "Business hours",
-    "messengers": "Messengers"
+    "messengers": "Messengers",
+    "mapOpen": "Open in maps",
+    "mapAlt": "Map of Lviv with the INVICSOL office marked"
   },
   "About": {
     "pageTitle": "About",

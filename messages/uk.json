@@ -314,7 +314,9 @@
     "email": "Email",
     "address": "Адреса",
     "hours": "Графік роботи",
-    "messengers": "Месенджери"
+    "messengers": "Месенджери",
+    "mapOpen": "Відкрити на карті",
+    "mapAlt": "Карта Львова з позначкою офісу INVICSOL"
   },
   "About": {
     "pageTitle": "Про нас",
